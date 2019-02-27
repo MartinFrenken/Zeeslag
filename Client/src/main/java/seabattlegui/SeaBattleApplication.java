@@ -34,18 +34,18 @@ public class SeaBattleApplication extends Application implements ISeaBattleGUI {
 
     private static final Logger log = LoggerFactory.getLogger(SeaBattleApplication.class);
 
-    // Constants to define size of GUI elements
-    private final int BORDERSIZE = 10; // Size of borders in pixels
-    private final int AREAWIDTH = 400; // Width of area in pixels
-    private final int AREAHEIGHT = AREAWIDTH; // Height of area in pixels
-    private final int SQUAREWIDTH = 36; // Width of single square in pixels
-    private final int SQUAREHEIGHT = 36; // Height of single square in pixels
-    private final int BUTTONWIDTH = 180; // Width of button
 
-    // Constants to define number of squares horizontal and vertical
+    private final int BORDERSIZE = 10;
+    private final int AREAWIDTH = 400;
+    private final int AREAHEIGHT = AREAWIDTH;
+    private final int SQUAREWIDTH = 36;
+    private final int SQUAREHEIGHT = 36;
+    private final int BUTTONWIDTH = 180;
+
+
     private final int NRSQUARESHORIZONTAL = 10;
     private final int NRSQUARESVERTICAL = 10;
-    // Player's number (to be determined by the sea battle game)
+
     int playerNr = 0;
     Button buttonPlaceAllShips;
     Button buttonRemoveAllShips;
@@ -57,53 +57,32 @@ public class SeaBattleApplication extends Application implements ISeaBattleGUI {
     Button buttonPlaceSubmarine;
     Button buttonPlaceMineSweeper;
     Button buttonRemoveShip;
-    // Opponent's name
+
     private String opponentName;
-    // Label for opponent's name
     private Label labelOpponentName;
-    // Target area, a 10 x 10 grid where the opponent's ships are placed
     private Rectangle targetArea;
-    // Squares for the target area
     private Rectangle[][] squaresTargetArea;
-    // Player's name
     private String playerName = null;
-    // Player that may fire a shot (player 0 or player 1)
     private int playerTurn = 0;
-    // Label for player's name
     private Label labelPlayerName;
-    // Text field to set player's name
     private Label labelYourName;
     private TextField textFieldPlayerName;
-    // Password field to set player's password
     private Label labelYourPassword;
     private PasswordField passwordFieldPlayerPassword;
-    // Ocean area, a 10 x 10 grid where the player's ships are placed
     private Rectangle oceanArea;
-    // Squares for the ocean area
     private Rectangle[][] squaresOceanArea;
-    // Sea battle game
     private ISeaBattleGame game;
-    // Flag to indicate whether game is in single-player or multiplayer mode
     private boolean singlePlayerMode = true;
-    // Radio buttons to indicate whether game is in single-player or multiplayer mode
     private RadioButton radioSinglePlayer;
     private RadioButton radioMultiPlayer;
-    // Flag to indicate whether the game is in playing mode
     private boolean playingMode = false;
-    // Flag to indicate that the game is endend
     private boolean gameEnded = false;
-    // Flag to indicate whether next ship should be placed horizontally or vertically
     private boolean horizontal = true;
-    // Radio buttons to indicate whether next ship should be placed horizontally or vertically
     private Label labelHorizontalVertical;
     private RadioButton radioHorizontal;
     private RadioButton radioVertical;
-    // Buttons to register player, start the game, and place or remove ships
     private Button buttonRegisterPlayer;
-    // Flag to indicate whether square is selected in ocean area
     private boolean squareSelectedInOceanArea = false;
-
-    // X and y-position of selected square in ocean region
     private int selectedSquareX;
     private int selectedSquareY;
 
@@ -130,7 +109,7 @@ public class SeaBattleApplication extends Application implements ISeaBattleGUI {
         // Make de grid lines visible
         // grid.setGridLinesVisible(true);
 
-        // Create the scene and add the grid pane
+
         Group root = new Group();
         Scene scene = new Scene(root, AREAWIDTH + BUTTONWIDTH + 3 * BORDERSIZE, 2 * AREAHEIGHT + 2 * BORDERSIZE + 65);
         root.getChildren().add(grid);
