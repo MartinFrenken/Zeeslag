@@ -4,6 +4,7 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import zeeslag.server.webSocket.WebSocketEventServlet;
 
 public class SeaBattleServer {
 
@@ -24,7 +25,7 @@ public class SeaBattleServer {
 
     private static ServerConnector createConnector(Server server) {
         ServerConnector connector = new ServerConnector(server);
-        connector.setPort(8080);
+        connector.setPort(3000);
         return connector;
     }
 
