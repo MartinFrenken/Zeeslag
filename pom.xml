@@ -19,11 +19,11 @@
         <jersey-server.version>2.7</jersey-server.version>
         <gson.version>2.8.2</gson.version>
         <httpclient.version>4.5.3</httpclient.version>
-        <jetty-server.version>9.4.11.v20180605</jetty-server.version>
         <javax.ws.rs-api.version>2.1</javax.ws.rs-api.version>
         <logback-classic.version>1.2.3</logback-classic.version>
         <maven-surefire-plugin.version>2.16</maven-surefire-plugin.version>
         <maven-compiler-plugin.version>3.1</maven-compiler-plugin.version>
+        <jetty-version>9.4.15.v20190215</jetty-version>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
     </properties>
@@ -87,25 +87,7 @@
             <type>jar</type>
         </dependency>
 
-        <!-- Jetty server
-             Note by Nico Kuijpers
-             Use version jetty-9.3.12 or higher for WebSockets
-             to avoid java.lang.NoClassDefFoundError, see
-             https://stackoverflow.com/questions/28170244/
-             jetty-throws-noclassdeffounderror-org-eclipse-jetty-util-futurecallback-on-shut
-        -->
-        <dependency>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-server</artifactId>
-            <version>${jetty-server.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-servlet</artifactId>
-            <version>${jetty-server.version}</version>
-        </dependency>
-
-        <!-- Jersey -->
+        <!-- Jersey
         <dependency>
             <groupId>org.glassfish.jersey.core</groupId>
             <artifactId>jersey-server</artifactId>
@@ -125,7 +107,7 @@
             <groupId>org.glassfish.jersey.media</groupId>
             <artifactId>jersey-media-moxy</artifactId>
             <version>${jersey-server.version}</version>
-        </dependency>
+        </dependency>-->
 
         <!--  Gson: Java to Json conversion -->
         <dependency>
@@ -154,6 +136,26 @@
             <artifactId>annotations</artifactId>
             <version>16.0.2</version>
             <scope>compile</scope>
+        </dependency>
+
+
+        <!-- To write basic websockets against -->
+        <dependency>
+            <groupId>org.eclipse.jetty.websocket</groupId>
+            <artifactId>websocket-api</artifactId>
+            <version>${jetty-version}</version>
+        </dependency>
+        <!-- To run websockets in embedded server -->
+        <dependency>
+            <groupId>org.eclipse.jetty.websocket</groupId>
+            <artifactId>websocket-server</artifactId>
+            <version>${jetty-version}</version>
+        </dependency>
+        <!-- To run websockets client -->
+        <dependency>
+            <groupId>org.eclipse.jetty.websocket</groupId>
+            <artifactId>websocket-client</artifactId>
+            <version>${jetty-version}</version>
         </dependency>
 
     </dependencies>
