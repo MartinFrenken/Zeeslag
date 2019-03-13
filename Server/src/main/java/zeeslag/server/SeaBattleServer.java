@@ -4,7 +4,8 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
-import zeeslag.server.webSocket.WebSocketEventServlet;
+import zeeslag.server.network.LoginServlet;
+import zeeslag.server.network.WebSocketEventServlet;
 
 public class SeaBattleServer {
 
@@ -34,6 +35,8 @@ public class SeaBattleServer {
         ServletContextHandler contextHandler = new ServletContextHandler(ServletContextHandler.SESSIONS);
         contextHandler.setContextPath("/");
         contextHandler.addServlet(new ServletHolder("ws-events", WebSocketEventServlet.class), "/events/*");
+
+        contextHandler.addServlet(new ServletHolder(new LoginServlet("Soeka Bliet")), "/hello");
         return contextHandler;
     }
 
