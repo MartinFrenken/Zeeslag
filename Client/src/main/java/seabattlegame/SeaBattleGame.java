@@ -3,7 +3,7 @@
  */
 package seabattlegame;
 
-import org.apache.http.client.HttpClient;
+import com.mashape.unirest.http.exceptions.UnirestException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import seabattlegui.ISeaBattleGUI;
@@ -17,13 +17,16 @@ import java.io.IOException;
  * @author Nico Kuijpers
  */
 public class SeaBattleGame implements ISeaBattleGame {
-    SeaBattleApi sa = new SeaBattleApi("http://localhost:3000/hello");
+
+    SeaBattleApi sa = new SeaBattleApi("http://localhost:3000/login");
     public SeaBattleGame()
     {
         try {
             System.out.println(sa.get());
             sa.post("Donald","Trump");
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (UnirestException e) {
             e.printStackTrace();
         }
     }

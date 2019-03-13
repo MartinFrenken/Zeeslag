@@ -1,17 +1,14 @@
 package seabattlegame;
 
-import com.google.gson.Gson;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.entity.StringEntity;
+import com.google.gson.JsonObject;
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.Unirest;
+import com.mashape.unirest.http.exceptions.UnirestException;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 public class SeaBattleApi
@@ -22,7 +19,9 @@ public class SeaBattleApi
     {
       url = serverlink;
     }
-    public String get() throws MalformedURLException, IOException
+
+
+    public String get() throws IOException
     {
         String output;
         try {
@@ -56,15 +55,26 @@ public class SeaBattleApi
         }
         return output;
   }
-  public void post(String username,String password) throws IOException {
-      User steve = new User(username,password);
-      HttpClient httpclient = HttpClients.createDefault();
-      HttpPost httppost = new HttpPost(url);
-      Gson gson = new Gson();
-      StringEntity postingString = new StringEntity(gson.toJson(steve));
-      httppost.setEntity(postingString);
-      httppost.setHeader("Content-type","application/json");
-      HttpResponse response = httpclient.execute(httppost);
+
+
+    public void post(String username, String password) throws IOException, UnirestException {
+//      User steve = new User(username,password);
+//      HttpClient httpclient = HttpClients.createDefault();
+//      HttpPost httppost = new HttpPost(url);
+//      Gson gson = new Gson();
+//      StringEntity postingString = new StringEntity(gson.toJson(steve));
+//      httppost.setEntity(postingString);
+//      httppost.setHeader("Accept", "application/json");
+//      httppost.setHeader("Content-type","application/json");
+//      HttpResponse response = httpclient.execute(httppost);
+        var json = new JsonObject();
+        json.addProperty("username", username);
+        json.addProperty("password", password);
+        HttpResponse<String> response = Unirest.post("http://localhost:3000/login?username=Ruurd")
+                .header("cache-control", "no-cache")
+                .body(json.toString())
+                .asString();
+        System.out.println(response.getBody());
   }
 
 
