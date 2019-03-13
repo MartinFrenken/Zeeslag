@@ -5,6 +5,6 @@ module Client {
     requires javafx.graphics;
     requires javafx.controls;
     requires slf4j.api;
-
+    requires httpclient;
     exports seabattlegui;
 }
