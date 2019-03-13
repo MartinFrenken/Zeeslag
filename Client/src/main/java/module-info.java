@@ -6,5 +6,7 @@ module Client {
     requires javafx.controls;
     requires slf4j.api;
     requires httpclient;
+    requires httpcore;
     exports seabattlegui;
+    exports seabattlegame;
 }

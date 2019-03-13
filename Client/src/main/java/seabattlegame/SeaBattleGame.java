@@ -17,11 +17,12 @@ import java.io.IOException;
  * @author Nico Kuijpers
  */
 public class SeaBattleGame implements ISeaBattleGame {
-    SeaBattleApi sa = new SeaBattleApi("https://www.minecraft.net/en-us/");
+    SeaBattleApi sa = new SeaBattleApi("http://localhost:3000/hello");
     public SeaBattleGame()
     {
         try {
-            sa.get();
+            System.out.println(sa.get());
+            sa.post("Donald","Trump");
         } catch (IOException e) {
             e.printStackTrace();
         }
