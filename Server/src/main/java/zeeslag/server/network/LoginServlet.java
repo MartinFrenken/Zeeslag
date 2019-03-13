@@ -1,30 +1,27 @@
 package zeeslag.server.network;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.stream.Collectors;
 
 public class LoginServlet extends HttpServlet {
 
-    private String greeting = "Hello World";
-
-
-    public LoginServlet() {
-    }
-
-
-    public LoginServlet(String greeting) {
-        this.greeting = greeting;
-    }
-
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.setContentType("text/html");
-        response.setStatus(HttpServletResponse.SC_OK);
-        response.getWriter().println("<h1>" + greeting + "</h1>");
-        response.getWriter().println("session=" + request.getSession(true).getId());
+    protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        String username = req.getParameter("username");
+        String password = req.getParameter("password");
+        var test = req.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
+        res.setContentType("application/json");
+        if (username.equals("Ruurd")) {
+            res.getWriter().println("{\"success\":true}" + test);
+            System.out.println("Hello");
+            return;
+        }
+        res.getWriter().println("{\"success\":false}");
     }
 
 }
