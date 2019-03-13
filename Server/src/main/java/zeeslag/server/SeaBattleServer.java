@@ -36,7 +36,7 @@ public class SeaBattleServer {
         contextHandler.setContextPath("/");
         contextHandler.addServlet(new ServletHolder("ws-events", WebSocketEventServlet.class), "/events/*");
 
-        contextHandler.addServlet(new ServletHolder(new LoginServlet("Soeka Bliet")), "/hello");
+        contextHandler.addServlet(new ServletHolder(new LoginServlet()), "/login");
         return contextHandler;
     }
 
