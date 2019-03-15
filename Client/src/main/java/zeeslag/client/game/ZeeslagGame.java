@@ -4,7 +4,6 @@
 package zeeslag.client.game;
 
 import zeeslag.client.gui.ShipType;
-import zeeslag.client.gui.ZeeslagGui;
 
 /**
  * Interface provided by the Sea Battle game to the graphical user interface.
@@ -19,7 +18,6 @@ public interface ZeeslagGame {
      *
      * @param name             Name of the player to be registered
      * @param password         Password of the player to be registered
-     * @param application      Reference to application of player
      * @param singlePlayerMode Single-player (true) or multi-player (false) mode
      * @throws IllegalArgumentException when:
      *                                  name is null or the empty,
@@ -29,7 +27,7 @@ public interface ZeeslagGame {
      *                                  number of players exceeds two in multi-player mode or
      *                                  name is already registered.
      */
-    void registerPlayer(String name, String password, ZeeslagGui application, boolean singlePlayerMode);
+    void loginPlayer(String name, String password, boolean singlePlayerMode);
 
     /**
      * Place ships automatically. Ships that are already placed will be removed.

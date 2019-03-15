@@ -42,7 +42,6 @@ public class ZeeslagClient extends Application implements ZeeslagGui {
     private Button buttonPlaceSubmarine;
     private Button buttonPlaceMineSweeper;
     private Button buttonRemoveShip;
-
     private String opponentName;
     private Label labelOpponentName;
     private Rectangle[][] squaresTargetArea;
@@ -64,10 +63,11 @@ public class ZeeslagClient extends Application implements ZeeslagGui {
     private Label labelHorizontalVertical;
     private RadioButton radioHorizontal;
     private RadioButton radioVertical;
-    private Button buttonRegisterPlayer;
+    private Button buttonLoginPlayer;
     private boolean squareSelectedInOceanArea = false;
     private int selectedSquareX;
     private int selectedSquareY;
+
 
     /**
      * @param args the command line arguments
@@ -203,21 +203,21 @@ public class ZeeslagClient extends Application implements ZeeslagGui {
         grid.add(radioSinglePlayer, 1, 10, 1, 2);
         grid.add(radioMultiPlayer, 1, 12, 1, 2);
 
-        // Button to register the player
-        buttonRegisterPlayer = new Button("Register");
-        buttonRegisterPlayer.setMinWidth(BUTTONWIDTH);
-        Tooltip tooltipRegisterParticipant =
-                new Tooltip("Press this button to register as player");
-        buttonRegisterPlayer.setTooltip(tooltipRegisterParticipant);
-        buttonRegisterPlayer.setOnAction(
+        // Button to login the player
+        buttonLoginPlayer = new Button("Login");
+        buttonLoginPlayer.setMinWidth(BUTTONWIDTH);
+        Tooltip tooltipLoginParticipant =
+                new Tooltip("Press this button to login as player");
+        buttonLoginPlayer.setTooltip(tooltipLoginParticipant);
+        buttonLoginPlayer.setOnAction(
                 (EventHandler) event -> {
                     try {
-                        registerPlayer();
+                        loginPlayer();
                     } catch (Exception e) {
-                        log.error("Register Player error: {}", e.getMessage());
+                        log.error("Login Player error: {}", e.getMessage());
                     }
                 });
-        grid.add(buttonRegisterPlayer, 1, 14, 1, 3);
+        grid.add(buttonLoginPlayer, 1, 14, 1, 3);
 
         // Button to place the player's ships automatically
         buttonPlaceAllShips = new Button("Place ships for me");
@@ -358,8 +358,9 @@ public class ZeeslagClient extends Application implements ZeeslagGui {
         // When invoking methods of class ZeeslagGameImpl an
         // UnsupportedOperationException will be thrown
         // TODO: IMPLEMENT CLASS ZeeslagGameImpl.
-        game = new ZeeslagGameImpl();
+        game = new ZeeslagGameImpl(this);
     }
+
 
     /**
      * Set player number.
@@ -383,7 +384,7 @@ public class ZeeslagClient extends Application implements ZeeslagGui {
             passwordFieldPlayerPassword.setDisable(true);
             radioSinglePlayer.setDisable(true);
             radioMultiPlayer.setDisable(true);
-            buttonRegisterPlayer.setDisable(true);
+            buttonLoginPlayer.setDisable(true);
             labelHorizontalVertical.setDisable(false);
             radioHorizontal.setDisable(false);
             radioVertical.setDisable(false);
@@ -397,8 +398,9 @@ public class ZeeslagClient extends Application implements ZeeslagGui {
             buttonPlaceMineSweeper.setDisable(false);
             buttonRemoveShip.setDisable(false);
         });
-        showMessage("Player " + name + " registered");
+        showMessage("Player " + name + " logined");
     }
+
 
     /**
      * Set the name of the opponent.
@@ -418,6 +420,7 @@ public class ZeeslagClient extends Application implements ZeeslagGui {
         opponentName = name;
         Platform.runLater(() -> labelOpponentName.setText(opponentName + "\'s grid"));
     }
+
 
     /**
      * Notification that the game has started.
@@ -450,6 +453,7 @@ public class ZeeslagClient extends Application implements ZeeslagGui {
         showMessage("Start playing by selecting a square in " + opponentName + "\'s grid");
     }
 
+
     /**
      * Communicate the result of a shot fired by the player.
      * The result of the shot will be one of the following:
@@ -477,6 +481,7 @@ public class ZeeslagClient extends Application implements ZeeslagGui {
             gameEnded = true;
         }
     }
+
 
     /**
      * Communicate the result of a shot fired by the opponent.
@@ -508,6 +513,7 @@ public class ZeeslagClient extends Application implements ZeeslagGui {
         switchTurn();
     }
 
+
     /**
      * Show state of a square in the ocean area.
      * The color of the square depends on the state of the square.
@@ -529,6 +535,7 @@ public class ZeeslagClient extends Application implements ZeeslagGui {
             setSquareColor(square, squareState);
         });
     }
+
 
     /**
      * Show state of a square in the target area.
@@ -552,6 +559,7 @@ public class ZeeslagClient extends Application implements ZeeslagGui {
         });
     }
 
+
     /**
      * Show error message.
      *
@@ -563,6 +571,7 @@ public class ZeeslagClient extends Application implements ZeeslagGui {
         // Show the error message as an alert message
         showMessage(errorMessage);
     }
+
 
     /**
      * Set the color of the square according to position type.
@@ -598,22 +607,24 @@ public class ZeeslagClient extends Application implements ZeeslagGui {
         });
     }
 
+
     /**
-     * Register the player at the game server.
+     * Login the player at the game server.
      */
-    private void registerPlayer() {
+    private void loginPlayer() {
         playerName = textFieldPlayerName.getText();
         if ("".equals(playerName) || playerName == null) {
-            showMessage("Enter your name before registering");
+            showMessage("Enter your name before logining");
             return;
         }
         String playerPassword = passwordFieldPlayerPassword.getText();
         if ("".equals(playerPassword) || playerPassword == null) {
-            showMessage("Enter your password before registering");
+            showMessage("Enter your password before logining");
             return;
         }
-        game.registerPlayer(playerName, playerPassword, this, singlePlayerMode);
+        game.loginPlayer(playerName, playerPassword, singlePlayerMode);
     }
+
 
     /**
      * Place the player's ships automatically.
@@ -623,6 +634,7 @@ public class ZeeslagClient extends Application implements ZeeslagGui {
         game.placeShipsAutomatically(playerNr);
     }
 
+
     /**
      * Remove the player's ships.
      */
@@ -631,6 +643,7 @@ public class ZeeslagClient extends Application implements ZeeslagGui {
         game.removeAllShips(playerNr);
     }
 
+
     /**
      * Notify that the player is ready to start the game.
      */
@@ -638,6 +651,7 @@ public class ZeeslagClient extends Application implements ZeeslagGui {
         // Notify that the player is ready is start the game.
         game.notifyWhenReady(playerNr);
     }
+
 
     /**
      * Start a new game.
@@ -653,8 +667,9 @@ public class ZeeslagClient extends Application implements ZeeslagGui {
         passwordFieldPlayerPassword.setDisable(false);
         radioSinglePlayer.setDisable(false);
         radioMultiPlayer.setDisable(false);
-        buttonRegisterPlayer.setDisable(false);
+        buttonLoginPlayer.setDisable(false);
     }
+
 
     /**
      * Place a ship of a certain ship type. The bow of the ship will
@@ -678,6 +693,7 @@ public class ZeeslagClient extends Application implements ZeeslagGui {
         }
     }
 
+
     /**
      * Remove ship that is positioned at selected square in ocean area.
      */
@@ -690,6 +706,7 @@ public class ZeeslagClient extends Application implements ZeeslagGui {
             showMessage("Select square in " + playerName + "\'s grid to remove ship");
         }
     }
+
 
     /**
      * Show an alert message.
@@ -709,12 +726,14 @@ public class ZeeslagClient extends Application implements ZeeslagGui {
         });
     }
 
+
     /**
      * Event handler when mouse button is pressed in rectangle in target area.
      * A shot will be fired at the selected square when in playing mode.
      * A message will be shown otherwise.
-     *  @param x     x-coordinate of selected square
-     * @param y     y-coordinate of selected square
+     *
+     * @param x x-coordinate of selected square
+     * @param y y-coordinate of selected square
      */
     private void rectangleTargetAreaMousePressed(int x, int y) {
         if (playingMode && !gameEnded) {
@@ -740,13 +759,15 @@ public class ZeeslagClient extends Application implements ZeeslagGui {
         }
     }
 
+
     /**
      * Event handler when mouse button is pressed in rectangle in ocean area.
      * When not in playing mode: the square that was selected before will
      * become light blue and the the selected square will become yellow.
      * A message will be shown when in playing mode.
-     *  @param x     x-coordinate of selected square
-     * @param y     y-coordinate of selected square
+     *
+     * @param x x-coordinate of selected square
+     * @param y y-coordinate of selected square
      */
     private void rectangleOceanAreaMousePressed(int x, int y) {
         if (!playingMode) {
@@ -766,6 +787,7 @@ public class ZeeslagClient extends Application implements ZeeslagGui {
         }
     }
 
+
     /**
      * Method to switch player's turn.
      * This method is synchronized because switchTurn() may be
@@ -776,6 +798,7 @@ public class ZeeslagClient extends Application implements ZeeslagGui {
         playerTurn = 1 - playerTurn;
     }
 
+
     /**
      * Method to check whether it is this player's turn.
      * This method is synchronized because switchTurn() may be
@@ -785,4 +808,5 @@ public class ZeeslagClient extends Application implements ZeeslagGui {
     private synchronized boolean playersTurn() {
         return playerNr == playerTurn;
     }
+
 }

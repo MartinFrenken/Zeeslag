@@ -16,12 +16,22 @@ import zeeslag.client.gui.ZeeslagGui;
 public class ZeeslagGameImpl implements ZeeslagGame {
 
     private static final Logger log = LoggerFactory.getLogger(ZeeslagGameImpl.class);
+    private static final ZeeslagApi api = new ZeeslagApi("http://localhost:3000");
+    private final ZeeslagGui gui;
+
+
+    public ZeeslagGameImpl(ZeeslagGui gui) {
+        this.gui = gui;
+    }
 
 
     @Override
-    public void registerPlayer(String name, String password, ZeeslagGui application, boolean singlePlayerMode) {
+    public void loginPlayer(String name, String password, boolean singlePlayerMode) {
         log.debug("Register Player {} - password {}", name, password);
-        throw new UnsupportedOperationException("Method registerPlayer() not implemented.");
+        var loginSuccessful = api.login(name, password);
+        if (loginSuccessful) {
+            gui.setPlayerNumber(0, name);
+        }
     }
 
 

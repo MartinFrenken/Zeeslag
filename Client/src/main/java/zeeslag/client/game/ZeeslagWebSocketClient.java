@@ -10,7 +10,7 @@ import java.util.concurrent.Future;
 public class ZeeslagWebSocketClient extends WebSocketAdapter {
 
     public ZeeslagWebSocketClient() {
-        URI uri = URI.create("ws://localhost:8080/events/");
+        URI uri = URI.create("ws://localhost:3000/events/");
 
         WebSocketClient client = new WebSocketClient();
         try {

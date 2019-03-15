@@ -7,7 +7,7 @@ module Client {
     requires slf4j.api;
     requires httpclient;
     requires unirest.java;
-    requires httpcore;
+    requires org.apache.httpcomponents.httpcore;
     requires org.eclipse.jetty.websocket.api;
     requires org.eclipse.jetty.websocket.client;
     exports zeeslag.client.gui;
