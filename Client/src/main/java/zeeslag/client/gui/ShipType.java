@@ -1,7 +1,7 @@
 /*
  * Sea Battle Start project.
  */
-package seabattlegui;
+package zeeslag.client.gui;
 
 /**
  * Indicate type of ship.

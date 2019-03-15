@@ -8,6 +8,8 @@ module Client {
     requires httpclient;
     requires unirest.java;
     requires httpcore;
-    exports seabattlegui;
-    exports seabattlegame;
+    requires org.eclipse.jetty.websocket.api;
+    requires org.eclipse.jetty.websocket.client;
+    exports zeeslag.client.gui;
+    exports zeeslag.client.game;
 }

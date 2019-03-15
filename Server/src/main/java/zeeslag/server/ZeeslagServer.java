@@ -7,7 +7,7 @@ import org.eclipse.jetty.servlet.ServletHolder;
 import zeeslag.server.network.LoginServlet;
 import zeeslag.server.network.WebSocketEventServlet;
 
-public class SeaBattleServer {
+public class ZeeslagServer {
 
 
     public static void main(String... args) {

@@ -1,17 +1,17 @@
 /*
  * Sea Battle Start project.
  */
-package seabattlegame;
+package zeeslag.client.game;
 
-import seabattlegui.ISeaBattleGUI;
-import seabattlegui.ShipType;
+import zeeslag.client.gui.ShipType;
+import zeeslag.client.gui.ZeeslagGui;
 
 /**
  * Interface provided by the Sea Battle game to the graphical user interface.
  *
  * @author Nico Kuijpers
  */
-public interface ISeaBattleGame {
+public interface ZeeslagGame {
 
     /**
      * Register player with given name and password. The player number will be
@@ -29,7 +29,7 @@ public interface ISeaBattleGame {
      *                                  number of players exceeds two in multi-player mode or
      *                                  name is already registered.
      */
-    void registerPlayer(String name, String password, ISeaBattleGUI application, boolean singlePlayerMode);
+    void registerPlayer(String name, String password, ZeeslagGui application, boolean singlePlayerMode);
 
     /**
      * Place ships automatically. Ships that are already placed will be removed.

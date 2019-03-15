@@ -1,14 +1,14 @@
 /*
  * Sea Battle Start project.
  */
-package seabattlegui;
+package zeeslag.client.gui;
 
 /**
  * Interface provided by the graphical user interface of the sea battle game.
  *
  * @author Nico Kuijpers
  */
-public interface ISeaBattleGUI {
+public interface ZeeslagGui {
 
     /**
      * Set player number.
