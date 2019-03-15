@@ -16,7 +16,7 @@
 
     <logger level="INFO" name="org.eclipse.jetty.util.log.Logger"/>
 
-    <root level="ERROR">
+    <root level="INFO">
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="FILE"/>
     </root>
