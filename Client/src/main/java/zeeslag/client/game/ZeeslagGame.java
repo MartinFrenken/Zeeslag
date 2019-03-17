@@ -123,5 +123,8 @@ public interface ZeeslagGame {
      *
      * @param playerNr identification of player who starts a new game
      */
-    void startNewGame(int playerNr);
+    void resetGame(int playerNr);
+
+    void stop();
+
 }

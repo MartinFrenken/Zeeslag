@@ -20,7 +20,6 @@ public class LoginServlet extends HttpServlet {
 
             if (!username.equals("Ruurd")) return new RequestResult(false);
             if (!password.equals("Ben123")) return new RequestResult(false);
-
             return new RequestResult(true);
         });
     }

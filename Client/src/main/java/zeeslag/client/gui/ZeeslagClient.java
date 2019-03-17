@@ -286,7 +286,7 @@ public class ZeeslagClient extends Application implements ZeeslagGui {
         Tooltip tooltipPlaceAircraftCarrier =
                 new Tooltip("Press this button to place the aircraft carrier on the selected square");
         buttonPlaceAircraftCarrier.setTooltip(tooltipPlaceAircraftCarrier);
-        buttonPlaceAircraftCarrier.setOnAction((EventHandler) event -> placeShipAtSelectedSquare(ShipType.AIRCRAFTCARRIER, horizontal));
+        buttonPlaceAircraftCarrier.setOnAction((EventHandler) event -> placeShipAtSelectedSquare(ShipType.AIRCRAFT_CARRIER, horizontal));
         buttonPlaceAircraftCarrier.setDisable(true);
         grid.add(buttonPlaceAircraftCarrier, 1, 42, 1, 3);
 
@@ -653,12 +653,18 @@ public class ZeeslagClient extends Application implements ZeeslagGui {
     }
 
 
+    @Override
+    public void stop() {
+        game.stop();
+    }
+
+
     /**
      * Start a new game.
      */
     private void startNewGame() {
         // The player wants to start a new game.
-        game.startNewGame(playerNr);
+        game.resetGame(playerNr);
         playingMode = false;
         gameEnded = false;
         labelYourName.setDisable(false);

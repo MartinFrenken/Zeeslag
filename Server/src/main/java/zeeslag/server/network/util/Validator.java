@@ -1,7 +1,9 @@
 package zeeslag.server.network.util;
 
+import org.jetbrains.annotations.NotNull;
+
 public interface Validator {
 
-    RequestResult validate() throws Exception;
+    @NotNull RequestResult validate() throws Exception;
 
 }

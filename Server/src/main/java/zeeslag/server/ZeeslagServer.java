@@ -34,9 +34,8 @@ public class ZeeslagServer {
     private static ServletContextHandler createContextHandler() {
         ServletContextHandler contextHandler = new ServletContextHandler(ServletContextHandler.SESSIONS);
         contextHandler.setContextPath("/");
-        contextHandler.addServlet(new ServletHolder("ws-events", WebSocketEventServlet.class), "/events/*");
-
-        contextHandler.addServlet(new ServletHolder(new LoginServlet()), "/login");
+        contextHandler.addServlet(new ServletHolder("ws-events", WebSocketEventServlet.class), "/ws");
+        contextHandler.addServlet(new ServletHolder(new LoginServlet()), "/api/login");
         return contextHandler;
     }
 

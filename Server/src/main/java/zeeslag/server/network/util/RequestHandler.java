@@ -1,6 +1,7 @@
 package zeeslag.server.network.util;
 
 import com.google.gson.JsonObject;
+import org.jetbrains.annotations.NotNull;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -11,7 +12,7 @@ public final class RequestHandler {
     }
 
 
-    public static void handleRequest(HttpServletResponse res, Validator validator) throws IOException {
+    public static void handleRequest(@NotNull HttpServletResponse res, @NotNull Validator validator) throws IOException {
         res.setContentType("application/json");
         RequestResult result = new RequestResult(false);
         try {
