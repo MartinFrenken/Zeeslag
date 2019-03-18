@@ -9,7 +9,8 @@ import zeeslag.server.net.WebSocketEventServlet;
 
 public class ZeeslagServer {
 
-    private static final Zeeslag game = new Zeeslag(new WebSocketEventServlet());
+    private static final Zeeslag game = new Zeeslag();
+    private static final WebSocketEventServlet webSocketServlet = new WebSocketEventServlet();
 
 
     public static void main(String... args) {
@@ -36,8 +37,8 @@ public class ZeeslagServer {
     private static ServletContextHandler createContextHandler() {
         ServletContextHandler contextHandler = new ServletContextHandler(ServletContextHandler.SESSIONS);
         contextHandler.setContextPath("/");
-        contextHandler.addServlet(new ServletHolder("ws-events", game.getWebSocketServlet()), "/ws");
-        contextHandler.addServlet(new ServletHolder(new LoginServlet(game)), "/api/login");
+        contextHandler.addServlet(new ServletHolder("ws-events", webSocketServlet), "/ws");
+        contextHandler.addServlet(new ServletHolder(new LoginServlet(webSocketServlet)), "/api/login");
         return contextHandler;
     }
 

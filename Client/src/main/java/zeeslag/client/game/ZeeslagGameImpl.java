@@ -9,8 +9,6 @@ import org.slf4j.LoggerFactory;
 import zeeslag.client.gui.ShipType;
 import zeeslag.client.gui.ZeeslagGui;
 
-import java.util.UUID;
-
 /**
  * The Sea Battle game. To be implemented.
  *
@@ -29,17 +27,18 @@ public class ZeeslagGameImpl implements ZeeslagGame {
         this.gui = gui;
     }
 
-    //TODO get token and playerId from login
-
 
     @Override
     public void loginPlayer(String name, String password, boolean singlePlayerMode) {
         log.debug("Register Player {} - password {}", name, password);
-        var loginSuccessful = api.login(name, password);
-        if (loginSuccessful) {
-            gui.setPlayerNumber(0, name);
-            webSocketClient = new ZeeslagWebSocketClient("ws://localhost:3000/ws", UUID.randomUUID().toString(), 0, new ZeeslagWebSocketEventHandler(this));
+        var authData = api.login(name, password);
+        if (authData == null) {//TODO show error message
+            return;
         }
+
+        gui.setPlayerNumber(authData.id, name);
+        webSocketClient = new ZeeslagWebSocketClient("ws://localhost:3000/ws", authData.token, 0, new ZeeslagWebSocketEventHandler(this));
+        webSocketClient.emitAttack(3, 5);
     }
 
 

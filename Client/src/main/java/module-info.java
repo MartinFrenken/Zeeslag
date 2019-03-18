@@ -11,6 +11,7 @@ module Client {
     requires org.eclipse.jetty.websocket.api;
     requires org.eclipse.jetty.websocket.client;
     requires annotations;
+    requires Shared;
     exports zeeslag.client.gui;
     exports zeeslag.client.game;
 }

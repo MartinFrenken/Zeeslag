@@ -1,4 +1,4 @@
-package zeeslag.server.net.util;
+package zeeslag.server.net;
 
 import org.jetbrains.annotations.NotNull;
 import zeeslag.shared.net.UserAuthData;
@@ -7,6 +7,6 @@ public interface LoginListener {
 
     int getNewUserId();
 
-    void addToAuthTable(@NotNull UserAuthData authData);
+    void addToAuthMap(@NotNull UserAuthData authData);
 
 }

@@ -2,7 +2,6 @@ package zeeslag.server.net;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonParser;
-import zeeslag.server.net.util.LoginListener;
 import zeeslag.server.net.util.RequestHandler;
 import zeeslag.server.net.util.RequestResult;
 import zeeslag.shared.net.UserAuthData;
@@ -35,7 +34,7 @@ public class LoginServlet extends HttpServlet {
 
             var token = UUID.randomUUID().toString();
             var authData = new UserAuthData(loginListener.getNewUserId(), token);
-
+            loginListener.addToAuthMap(authData);
             return new RequestResult(true, new Gson().toJsonTree(authData).getAsJsonObject());
         });
     }
