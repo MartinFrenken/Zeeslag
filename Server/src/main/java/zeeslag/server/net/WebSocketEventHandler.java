@@ -1,4 +1,4 @@
-package zeeslag.server.network;
+package zeeslag.server.net;
 
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.WebSocketAdapter;

@@ -10,6 +10,7 @@
     <modules>
         <module>Client</module>
         <module>Server</module>
+        <module>Shared</module>
     </modules>
     <packaging>pom</packaging>
     <properties>

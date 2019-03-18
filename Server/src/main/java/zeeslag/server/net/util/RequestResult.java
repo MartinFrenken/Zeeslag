@@ -1,4 +1,4 @@
-package zeeslag.server.network.util;
+package zeeslag.server.net.util;
 
 import com.google.gson.JsonObject;
 import org.jetbrains.annotations.Nullable;

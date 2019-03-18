@@ -1,4 +1,4 @@
-package zeeslag.server.network;
+package zeeslag.server.net;
 
 import org.eclipse.jetty.websocket.servlet.WebSocketServlet;
 import org.eclipse.jetty.websocket.servlet.WebSocketServletFactory;

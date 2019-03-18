@@ -4,10 +4,12 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
-import zeeslag.server.network.LoginServlet;
-import zeeslag.server.network.WebSocketEventServlet;
+import zeeslag.server.net.LoginServlet;
+import zeeslag.server.net.WebSocketEventServlet;
 
 public class ZeeslagServer {
+
+    private static final Zeeslag game = new Zeeslag(new WebSocketEventServlet());
 
 
     public static void main(String... args) {
@@ -34,8 +36,8 @@ public class ZeeslagServer {
     private static ServletContextHandler createContextHandler() {
         ServletContextHandler contextHandler = new ServletContextHandler(ServletContextHandler.SESSIONS);
         contextHandler.setContextPath("/");
-        contextHandler.addServlet(new ServletHolder("ws-events", WebSocketEventServlet.class), "/ws");
-        contextHandler.addServlet(new ServletHolder(new LoginServlet()), "/api/login");
+        contextHandler.addServlet(new ServletHolder("ws-events", game.getWebSocketServlet()), "/ws");
+        contextHandler.addServlet(new ServletHolder(new LoginServlet(game)), "/api/login");
         return contextHandler;
     }
 
