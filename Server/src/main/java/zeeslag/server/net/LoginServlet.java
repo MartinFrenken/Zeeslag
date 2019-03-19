@@ -29,8 +29,8 @@ public class LoginServlet extends HttpServlet {
             var username = body.get("username").getAsString();
             var password = body.get("password").getAsString();
 
-            if (!username.equals("Ruurd")) return new RequestResult(false);
-            if (!password.equals("Ben123")) return new RequestResult(false);
+            if (!username.equals("Q")) return new RequestResult(false);
+            if (!password.equals("W")) return new RequestResult(false);
 
             var token = UUID.randomUUID().toString();
             var authData = new UserAuthData(loginListener.getNewUserId(), token);
