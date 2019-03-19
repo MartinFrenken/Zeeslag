@@ -9,6 +9,8 @@ import org.slf4j.LoggerFactory;
 import zeeslag.client.gui.ShipType;
 import zeeslag.client.gui.ZeeslagGui;
 
+import java.util.ArrayList;
+
 /**
  * The Sea Battle game. To be implemented.
  *
@@ -19,12 +21,28 @@ public class ZeeslagGameImpl implements ZeeslagGame {
     private static final Logger log = LoggerFactory.getLogger(ZeeslagGameImpl.class);
     private static final ZeeslagApi api = new ZeeslagApi("http://localhost:3000/api");
     private final ZeeslagGui gui;
+    private Ship[] friendlyShips;
+    private Ship[] enemyShips;
+    int amountOfFriendlyShipsPlaces = 0;
+    int amountOfEnemyShipsPlaces = 0;
+    boolean friendlyPlayerReady=false;
+    boolean enemyPlayerReady=false;
+   private static final int totalAmountOfShips = 5;
+
+    public static final int CarrierSize = 5;
+    public static final int BattleShipSize = 4;
+    public static final int CruiserSize = 3;
+    public static final int SubmarineSize = 2;
+    public static final int MineSweperSize = 1;
     @Nullable
     private ZeeslagWebSocketClient webSocketClient;
 
 
-    public ZeeslagGameImpl(ZeeslagGui gui) {
+    public ZeeslagGameImpl(ZeeslagGui gui)
+    {
         this.gui = gui;
+        friendlyShips=new Ship[totalAmountOfShips];
+        enemyShips = new Ship[totalAmountOfShips];
     }
 
 
@@ -49,8 +67,44 @@ public class ZeeslagGameImpl implements ZeeslagGame {
 
 
     @Override
-    public void placeShip(int playerNr, ShipType shipType, int bowX, int bowY, boolean horizontal) {
-        throw new UnsupportedOperationException("Method placeShip() not implemented.");
+    public boolean placeShip(int playerNr, ShipType shipType, int bowX, int bowY, boolean horizontal) {
+       if(playerNr==0)
+       {
+
+           if(amountOfFriendlyShipsPlaces<totalAmountOfShips)
+           {
+               if(horizontal)
+                   friendlyShips[amountOfFriendlyShipsPlaces]= new Ship(bowX,bowY,Orientation.HORIZONTAL,shipType);
+               if(!horizontal)
+                   friendlyShips[amountOfFriendlyShipsPlaces]= new Ship(bowX,bowY,Orientation.VERTICAL,shipType);
+               amountOfFriendlyShipsPlaces++;
+           }
+           else
+               {
+                   friendlyPlayerReady=true;
+               }
+       }
+        if(playerNr==1)
+        {
+
+            if(amountOfEnemyShipsPlaces<totalAmountOfShips)
+            {
+                if(horizontal)
+                    enemyShips[amountOfEnemyShipsPlaces]= new Ship(bowX,bowY,Orientation.HORIZONTAL,shipType);
+                if(!horizontal)
+                    enemyShips[amountOfEnemyShipsPlaces]= new Ship(bowX,bowY,Orientation.VERTICAL,shipType);
+                amountOfEnemyShipsPlaces++;
+            }
+            else
+                {
+                    enemyPlayerReady=true;
+                }
+        }
+        else
+            {
+                System.out.println(playerNr);
+            }
+        return true;
     }
 
 
@@ -83,11 +137,22 @@ public class ZeeslagGameImpl implements ZeeslagGame {
         throw new UnsupportedOperationException("Method resetGame() not implemented.");
     }
 
+    @Override
+    public Ship[] getFriendlyShips() {
+        return friendlyShips;
+    }
+
+    @Override
+    public Ship[] getEnemyShips() {
+        return enemyShips;
+    }
+
 
     @Override
     public void stop() {
         if (webSocketClient != null) webSocketClient.disconnect();
     }
+
 
 
     public void startGame() {

@@ -14,11 +14,14 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import zeeslag.client.game.Orientation;
+import zeeslag.client.game.Ship;
 import zeeslag.client.game.ZeeslagGame;
 import zeeslag.client.game.ZeeslagGameImpl;
 
@@ -67,8 +70,7 @@ public class ZeeslagClient extends Application implements ZeeslagGui {
     private boolean squareSelectedInOceanArea = false;
     private int selectedSquareX;
     private int selectedSquareY;
-
-
+    private String shipColour = "#ff00cc";
     /**
      * @param args the command line arguments
      */
@@ -694,6 +696,7 @@ public class ZeeslagClient extends Application implements ZeeslagGui {
             int bowX = selectedSquareX;
             int bowY = selectedSquareY;
             game.placeShip(playerNr, shipType, bowX, bowY, horizontal);
+            updateUi();
         } else {
             showMessage("Select square in " + playerName + "\'s grid to place ship");
         }
@@ -794,6 +797,29 @@ public class ZeeslagClient extends Application implements ZeeslagGui {
     }
 
 
+    public void updateUi()
+    {
+        for (Ship ship:game.getFriendlyShips())
+        {
+            if(ship!=null)
+            {
+                    if(ship.orientation== Orientation.VERTICAL)
+                    {
+                        for(int i=0;i<ship.getSize();i++)
+                        {
+                            squaresOceanArea[ship.x][ship.y+i].setFill(Paint.valueOf(shipColour));
+                        }
+                    }
+                    if(ship.orientation== Orientation.HORIZONTAL)
+                    {
+                        for(int i=0;i<ship.getSize();i++)
+                        {
+                            squaresOceanArea[ship.x+i][ship.y].setFill(Paint.valueOf(shipColour));
+                        }
+                    }
+            }
+        }
+    }
     /**
      * Method to switch player's turn.
      * This method is synchronized because switchTurn() may be
