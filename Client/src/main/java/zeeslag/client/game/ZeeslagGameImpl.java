@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import zeeslag.client.gui.ShipType;
 import zeeslag.client.gui.ZeeslagGui;
+import zeeslag.shared.net.Grid;
 
 import java.util.ArrayList;
 
@@ -43,6 +44,9 @@ public class ZeeslagGameImpl implements ZeeslagGame {
         this.gui = gui;
         friendlyShips=new Ship[totalAmountOfShips];
         enemyShips = new Ship[totalAmountOfShips];
+
+        Grid keepo = new Grid(10,10);
+        Grid dansgame = keepo;
     }
 
 

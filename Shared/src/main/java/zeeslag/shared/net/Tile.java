@@ -1,7 +1,7 @@
-package zeeslag.server;
+package zeeslag.shared.net;
 
 import org.jetbrains.annotations.Nullable;
-import zeeslag.server.boats.Boat;
+import zeeslag.shared.net.boats.Boat;
 
 public class Tile {
 

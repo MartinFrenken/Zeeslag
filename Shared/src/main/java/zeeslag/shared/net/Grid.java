@@ -1,4 +1,4 @@
-package zeeslag.server;
+package zeeslag.shared.net;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -13,8 +13,13 @@ public class Grid {
         this.height = height;
 
         tiles = new Tile[height][];
-        for (int y = 0; y < height; ++y) {
-            tiles[y] = new Tile[width];
+
+        for (int x = 0; x < width; ++x)
+        {
+            for(int y=0;y<height;y++) {
+                if (tiles[x]==null) tiles[x] = new Tile[height];
+                tiles[x][y] = new Tile(new Position(x,y),this);
+            }
         }
     }
 

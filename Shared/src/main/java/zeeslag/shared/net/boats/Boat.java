@@ -1,8 +1,8 @@
-package zeeslag.server.boats;
+package zeeslag.shared.net.boats;
 
 import org.jetbrains.annotations.NotNull;
-import zeeslag.server.Direction;
-import zeeslag.server.Tile;
+import zeeslag.shared.net.Direction;
+import zeeslag.shared.net.Tile;
 
 import java.util.HashSet;
 import java.util.Set;
