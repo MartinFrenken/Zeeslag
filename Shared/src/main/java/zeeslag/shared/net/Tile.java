@@ -1,14 +1,14 @@
 package zeeslag.shared.net;
 
 import org.jetbrains.annotations.Nullable;
-import zeeslag.shared.net.boats.Boat;
+import zeeslag.shared.net.boats.Ship;
 
 public class Tile {
 
     private final Position position;
     private final Grid grid;
     @Nullable
-    private Boat boat;
+    private Ship ship;
     private boolean hasBeenHit;
 
 
@@ -18,16 +18,16 @@ public class Tile {
     }
 
     @Nullable
-    public Boat getBoat() {
-        return boat;
+    public Ship getShip() {
+        return ship;
     }
 
-    public void setBoat(@Nullable Boat boat) {
-        this.boat = boat;
+    public void setShip(@Nullable Ship ship) {
+        this.ship = ship;
     }
     
-    public boolean hasBoat() {
-        return boat != null;
+    public boolean hasShip() {
+        return ship != null;
     }
 
     public boolean hasBeenHit() {
