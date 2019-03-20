@@ -1,7 +1,7 @@
 /*
  * Sea Battle Start project.
  */
-package zeeslag.client.gui;
+package zeeslag.shared.net;
 
 /**
  * Indicate type of ship.

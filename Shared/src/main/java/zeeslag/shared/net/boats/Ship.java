@@ -1,9 +1,14 @@
-package zeeslag.client.game;
+package zeeslag.shared.net.boats;
 
 import org.jetbrains.annotations.NotNull;
-import zeeslag.client.gui.ShipType;
+import zeeslag.shared.net.Direction;
+import zeeslag.shared.net.Orientation;
+import zeeslag.shared.net.ShipType;
+import zeeslag.shared.net.Tile;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Ship {
 
@@ -11,7 +16,8 @@ public class Ship {
     public final int y;
     public final Orientation orientation;
     public final ShipType type;
-
+    private Set<Tile> destroyedTiles = new HashSet<>();
+    private Set<Tile> occupiedTiles = new HashSet<>();
 
     public Ship(int x, int y, @NotNull Orientation orientation, @NotNull ShipType type) {
         this.x = x;
@@ -20,6 +26,21 @@ public class Ship {
         this.type = type;
     }
 
+
+    public void remove() {
+        for (Tile tile : occupiedTiles)
+            tile.setBoat(null);
+    }
+
+    @NotNull
+    public Set<Tile> getDestroyedTiles() {
+        return destroyedTiles;
+    }
+
+    @NotNull
+    public Set<Tile> getOccupiedTiles() {
+        return occupiedTiles;
+    }
     public int getSize()
     {
         if(type == ShipType.AIRCRAFT_CARRIER)

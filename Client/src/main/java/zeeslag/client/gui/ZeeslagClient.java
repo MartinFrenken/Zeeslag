@@ -20,8 +20,9 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import zeeslag.client.game.Orientation;
-import zeeslag.client.game.Ship;
+import zeeslag.shared.net.Orientation;
+import zeeslag.shared.net.ShipType;
+import zeeslag.shared.net.boats.Ship;
 import zeeslag.client.game.ZeeslagGame;
 import zeeslag.client.game.ZeeslagGameImpl;
 

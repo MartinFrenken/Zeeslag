@@ -1,4 +1,4 @@
-package zeeslag.client.game;
+package zeeslag.shared.net;
 
 public enum Orientation {
     HORIZONTAL,

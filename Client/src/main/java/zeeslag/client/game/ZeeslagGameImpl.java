@@ -6,11 +6,11 @@ package zeeslag.client.game;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import zeeslag.client.gui.ShipType;
+import zeeslag.shared.net.ShipType;
 import zeeslag.client.gui.ZeeslagGui;
 import zeeslag.shared.net.Grid;
-
-import java.util.ArrayList;
+import zeeslag.shared.net.Orientation;
+import zeeslag.shared.net.boats.Ship;
 
 /**
  * The Sea Battle game. To be implemented.
@@ -72,13 +72,13 @@ public class ZeeslagGameImpl implements ZeeslagGame {
 
     @Override
     public boolean placeShip(int playerNr, ShipType shipType, int bowX, int bowY, boolean horizontal) {
-       if(playerNr==0)
-       {
+                if(playerNr==0)
+           {
 
            if(amountOfFriendlyShipsPlaces<totalAmountOfShips)
            {
                if(horizontal)
-                   friendlyShips[amountOfFriendlyShipsPlaces]= new Ship(bowX,bowY,Orientation.HORIZONTAL,shipType);
+                   friendlyShips[amountOfFriendlyShipsPlaces]= new Ship(bowX,bowY, Orientation.HORIZONTAL,shipType);
                if(!horizontal)
                    friendlyShips[amountOfFriendlyShipsPlaces]= new Ship(bowX,bowY,Orientation.VERTICAL,shipType);
                amountOfFriendlyShipsPlaces++;
