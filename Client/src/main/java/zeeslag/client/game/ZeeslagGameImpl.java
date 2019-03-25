@@ -10,6 +10,8 @@ import zeeslag.client.gui.SquareState;
 import zeeslag.client.gui.ZeeslagGui;
 import zeeslag.shared.net.*;
 
+import java.util.Random;
+
 /**
  * The Sea Battle game. To be implemented.
  *
@@ -49,24 +51,55 @@ public class ZeeslagGameImpl implements ZeeslagGame {
 
     @Override
     public void placeShipsAutomatically(int playerNr) {
-        throw new UnsupportedOperationException("Method placeShipsAutomatically() not implemented.");
+        clearGridAndGui(playerNr);
+        var random = new Random();
+        for (ShipType shipType : ShipType.values()) {
+            var isHorizontal = false;
+            var x = 0;
+            var y = 0;
+            Ship ship = null;
+
+            while (ship == null || !tryPlaceShipAndAddToGui(playerNr, ship)) {
+                isHorizontal = random.nextBoolean();
+                x = random.nextInt(grid.getWidth() - (isHorizontal ? shipType.getSize() : 0));
+                y = random.nextInt(grid.getHeight() - (isHorizontal ? 0 : shipType.getSize()));
+                ship = new Ship(x, y, isHorizontal ? Orientation.HORIZONTAL : Orientation.VERTICAL, shipType);
+            }
+        }
+    }
+
+
+    private void clearGridAndGui(int playerNr) {
+        grid.clear();
+
+        for (var x = 0; x < grid.getWidth(); x++)
+            for (var y = 0; y < grid.getHeight(); y++)
+                gui.showSquarePlayer(playerNr, x, y, SquareState.WATER);
+    }
+
+
+    private boolean tryPlaceShipAndAddToGui(int playerNr, Ship ship) {
+        if (!grid.tryPlace(ship))
+            return false;
+
+        for (Tile tile : ship.getOccupiedTiles())
+            gui.showSquarePlayer(playerNr, tile.getPosition().x, tile.getPosition().y, SquareState.SHIP);
+        return true;
     }
 
 
     @Override
     public void placeShip(int playerNr, ShipType shipType, int bowX, int bowY, boolean horizontal) {
         var ship = new Ship(bowX, bowY, horizontal ? Orientation.HORIZONTAL : Orientation.VERTICAL, shipType);
-        if (!grid.tryPlace(ship))
-            return;
-
-        for (Tile tile : ship.getOccupiedTiles())
-            gui.showSquarePlayer(playerNr, tile.getPosition().x, tile.getPosition().y, SquareState.SHIP);
+        tryPlaceShipAndAddToGui(playerNr, ship);
     }
 
 
     @Override
     public void removeShip(int playerNr, int posX, int posY) {
-        throw new UnsupportedOperationException("Method removeShip() not implemented.");
+        var ship = grid.getTile(posX, posY).getShip();
+        if (ship == null) return;
+        ship.remove();
     }
 
 

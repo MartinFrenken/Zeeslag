@@ -14,6 +14,7 @@ public class Ship {
     private Set<Tile> destroyedTiles = new HashSet<>();
     private Set<Tile> occupiedTiles = new HashSet<>();
 
+
     public Ship(int x, int y, @NotNull Orientation orientation, @NotNull ShipType type) {
         this.x = x;
         this.y = y;
@@ -24,40 +25,24 @@ public class Ship {
 
     public void remove() {
         for (Tile tile : occupiedTiles)
-            tile.setShip(null);
+            tile.removeShip();
     }
+
 
     @NotNull
     public Set<Tile> getDestroyedTiles() {
         return destroyedTiles;
     }
 
+
     @NotNull
     public Set<Tile> getOccupiedTiles() {
         return occupiedTiles;
     }
-    public int getSize()
-    {
-        if(type == ShipType.AIRCRAFT_CARRIER)
-        {
-            return 5;
-        }
-        if(type == ShipType.BATTLESHIP)
-        {
-            return 4;
-        }
-        if(type == ShipType.CRUISER)
-        {
-            return 3;
-        }
-        if (type == ShipType.SUBMARINE) {
-            return 3;
-        }
-        if (type == ShipType.MINESWEEPER) {
-            return 2;
-        }
-        throw new IllegalStateException();
-    }
 
+
+    public int getSize() {
+        return type.getSize();
+    }
 
 }

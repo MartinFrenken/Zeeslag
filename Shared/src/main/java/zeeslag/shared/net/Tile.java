@@ -1,5 +1,6 @@
 package zeeslag.shared.net;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class Tile {
@@ -27,8 +28,14 @@ public class Tile {
     }
 
 
-    public void setShip(@Nullable Ship ship) {
+    public void setShip(@NotNull Ship ship) {
         this.ship = ship;
+    }
+
+
+    public void removeShip() {
+        grid.getShips().remove(ship);
+        ship = null;
     }
     
     public boolean hasShip() {

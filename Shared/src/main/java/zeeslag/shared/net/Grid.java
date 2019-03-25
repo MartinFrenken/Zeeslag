@@ -3,11 +3,15 @@ package zeeslag.shared.net;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Grid {
 
-    public final int width;
-    public final int height;
-    public final Tile[][] tiles;
+    private final int width;
+    private final int height;
+    private final Tile[][] tiles;
+    private final List<Ship> ships = new ArrayList<>();
 
 
     public Grid(final int width, final int height) {
@@ -22,6 +26,26 @@ public class Grid {
                 tiles[x][y] = new Tile(new Position(x, y), this);
             }
         }
+    }
+
+
+    public int getWidth() {
+        return width;
+    }
+
+
+    public int getHeight() {
+        return height;
+    }
+
+
+    public Tile getTile(int x, int y) {
+        return tiles[x][y];
+    }
+
+
+    public List<Ship> getShips() {
+        return ships;
     }
 
 
@@ -69,8 +93,16 @@ public class Grid {
 
             tiles[x][y].setShip(ship);
             ship.getOccupiedTiles().add(tiles[x][y]);
+            ships.add(ship);
         }
         return true;
+    }
+
+
+    public void clear() {
+        for (var x = 0; x < width; x++)
+            for (var y = 0; y < height; y++)
+                tiles[x][y].removeShip();
     }
 
 }
