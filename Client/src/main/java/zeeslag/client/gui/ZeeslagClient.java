@@ -20,11 +20,9 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import zeeslag.shared.net.Orientation;
-import zeeslag.shared.net.ShipType;
-import zeeslag.shared.net.boats.Ship;
 import zeeslag.client.game.ZeeslagGame;
 import zeeslag.client.game.ZeeslagGameImpl;
+import zeeslag.shared.net.ShipType;
 
 /**
  * Main application of the sea battle game.
@@ -697,7 +695,6 @@ public class ZeeslagClient extends Application implements ZeeslagGui {
             int bowX = selectedSquareX;
             int bowY = selectedSquareY;
             game.placeShip(playerNr, shipType, bowX, bowY, horizontal);
-            updateUi();
         } else {
             showMessage("Select square in " + playerName + "\'s grid to place ship");
         }
@@ -779,17 +776,19 @@ public class ZeeslagClient extends Application implements ZeeslagGui {
      * @param x x-coordinate of selected square
      * @param y y-coordinate of selected square
      */
+    private Paint selectedSquareColor;
     private void rectangleOceanAreaMousePressed(int x, int y) {
         if (!playingMode) {
             // Game is not in playing mode: select square to place a ship
             if (squareSelectedInOceanArea) {
                 Rectangle square = squaresOceanArea[selectedSquareX][selectedSquareY];
                 if (square.getFill().equals(Color.YELLOW)) {
-                    square.setFill(Color.LIGHTBLUE);
+                    square.setFill(selectedSquareColor);
                 }
             }
             selectedSquareX = x;
             selectedSquareY = y;
+            selectedSquareColor = squaresOceanArea[x][y].getFill();
             squaresOceanArea[x][y].setFill(Color.YELLOW);
             squareSelectedInOceanArea = true;
         } else {
@@ -798,29 +797,6 @@ public class ZeeslagClient extends Application implements ZeeslagGui {
     }
 
 
-    public void updateUi()
-    {
-        for (Ship ship:game.getFriendlyShips())
-        {
-            if(ship!=null)
-            {
-                    if(ship.orientation== Orientation.VERTICAL)
-                    {
-                        for(int i=0;i<ship.getSize();i++)
-                        {
-                            squaresOceanArea[ship.x][ship.y+i].setFill(Paint.valueOf(shipColour));
-                        }
-                    }
-                    if(ship.orientation== Orientation.HORIZONTAL)
-                    {
-                        for(int i=0;i<ship.getSize();i++)
-                        {
-                            squaresOceanArea[ship.x+i][ship.y].setFill(Paint.valueOf(shipColour));
-                        }
-                    }
-            }
-        }
-    }
     /**
      * Method to switch player's turn.
      * This method is synchronized because switchTurn() may be

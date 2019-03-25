@@ -1,7 +1,6 @@
 package zeeslag.shared.net;
 
 import org.jetbrains.annotations.Nullable;
-import zeeslag.shared.net.boats.Ship;
 
 public class Tile {
 
@@ -22,6 +21,12 @@ public class Tile {
         return ship;
     }
 
+
+    public boolean isOccupied() {
+        return ship != null;
+    }
+
+
     public void setShip(@Nullable Ship ship) {
         this.ship = ship;
     }
@@ -37,4 +42,10 @@ public class Tile {
     public void setHasBeenHit(boolean hasBeenHit) {
         this.hasBeenHit = hasBeenHit;
     }
+
+
+    public Position getPosition() {
+        return position;
+    }
+
 }

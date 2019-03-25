@@ -4,7 +4,6 @@
 package zeeslag.client.game;
 
 import zeeslag.shared.net.ShipType;
-import zeeslag.shared.net.boats.Ship;
 
 /**
  * Interface provided by the Sea Battle game to the graphical user interface.
@@ -58,7 +57,7 @@ public interface ZeeslagGame {
      * @param bowY       y-coordinate of bow
      * @param horizontal indicate whether ship will placed horizontally or vertically
      */
-    boolean placeShip(int playerNr, ShipType shipType, int bowX, int bowY, boolean horizontal);
+    void placeShip(int playerNr, ShipType shipType, int bowX, int bowY, boolean horizontal);
 
     /**
      * Remove the ship that is placed at the square with coordinates (posX, posY).
@@ -126,8 +125,6 @@ public interface ZeeslagGame {
      */
     void resetGame(int playerNr);
 
-    Ship[] getFriendlyShips();
-    Ship[] getEnemyShips();
     void stop();
 
 }

@@ -6,11 +6,9 @@ package zeeslag.client.game;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import zeeslag.shared.net.ShipType;
+import zeeslag.client.gui.SquareState;
 import zeeslag.client.gui.ZeeslagGui;
-import zeeslag.shared.net.Grid;
-import zeeslag.shared.net.Orientation;
-import zeeslag.shared.net.boats.Ship;
+import zeeslag.shared.net.*;
 
 /**
  * The Sea Battle game. To be implemented.
@@ -21,32 +19,15 @@ public class ZeeslagGameImpl implements ZeeslagGame {
 
     private static final Logger log = LoggerFactory.getLogger(ZeeslagGameImpl.class);
     private static final ZeeslagApi api = new ZeeslagApi("http://localhost:3000/api");
+    private static final Grid grid = new Grid(10, 10);
     private final ZeeslagGui gui;
-    private Ship[] friendlyShips;
-    private Ship[] enemyShips;
-    int amountOfFriendlyShipsPlaces = 0;
-    int amountOfEnemyShipsPlaces = 0;
-    boolean friendlyPlayerReady=false;
-    boolean enemyPlayerReady=false;
-   private static final int totalAmountOfShips = 5;
-
-    public static final int CarrierSize = 5;
-    public static final int BattleShipSize = 4;
-    public static final int CruiserSize = 3;
-    public static final int SubmarineSize = 2;
-    public static final int MineSweperSize = 1;
+    private int userId;
     @Nullable
     private ZeeslagWebSocketClient webSocketClient;
 
 
-    public ZeeslagGameImpl(ZeeslagGui gui)
-    {
+    public ZeeslagGameImpl(ZeeslagGui gui) {
         this.gui = gui;
-        friendlyShips=new Ship[totalAmountOfShips];
-        enemyShips = new Ship[totalAmountOfShips];
-
-        Grid keepo = new Grid(10,10);
-        Grid dansgame = keepo;
     }
 
 
@@ -58,8 +39,10 @@ public class ZeeslagGameImpl implements ZeeslagGame {
             return;
         }
 
-        gui.setPlayerNumber(authData.id, name);
-        webSocketClient = new ZeeslagWebSocketClient("ws://localhost:3000/ws", authData.token, 0, new ZeeslagWebSocketEventHandler(this));
+        userId = authData.id;
+
+        gui.setPlayerNumber(userId, name);
+        webSocketClient = new ZeeslagWebSocketClient("ws://localhost:3000/ws", authData.token, userId, new ZeeslagWebSocketEventHandler(this));
         webSocketClient.emitAttack(3, 5);
     }
 
@@ -71,44 +54,13 @@ public class ZeeslagGameImpl implements ZeeslagGame {
 
 
     @Override
-    public boolean placeShip(int playerNr, ShipType shipType, int bowX, int bowY, boolean horizontal) {
-                if(playerNr==0)
-           {
+    public void placeShip(int playerNr, ShipType shipType, int bowX, int bowY, boolean horizontal) {
+        var ship = new Ship(bowX, bowY, horizontal ? Orientation.HORIZONTAL : Orientation.VERTICAL, shipType);
+        if (!grid.tryPlace(ship))
+            return;
 
-           if(amountOfFriendlyShipsPlaces<totalAmountOfShips)
-           {
-               if(horizontal)
-                   friendlyShips[amountOfFriendlyShipsPlaces]= new Ship(bowX,bowY, Orientation.HORIZONTAL,shipType);
-               if(!horizontal)
-                   friendlyShips[amountOfFriendlyShipsPlaces]= new Ship(bowX,bowY,Orientation.VERTICAL,shipType);
-               amountOfFriendlyShipsPlaces++;
-           }
-           else
-               {
-                   friendlyPlayerReady=true;
-               }
-       }
-        if(playerNr==1)
-        {
-
-            if(amountOfEnemyShipsPlaces<totalAmountOfShips)
-            {
-                if(horizontal)
-                    enemyShips[amountOfEnemyShipsPlaces]= new Ship(bowX,bowY,Orientation.HORIZONTAL,shipType);
-                if(!horizontal)
-                    enemyShips[amountOfEnemyShipsPlaces]= new Ship(bowX,bowY,Orientation.VERTICAL,shipType);
-                amountOfEnemyShipsPlaces++;
-            }
-            else
-                {
-                    enemyPlayerReady=true;
-                }
-        }
-        else
-            {
-                System.out.println(playerNr);
-            }
-        return true;
+        for (Tile tile : ship.getOccupiedTiles())
+            gui.showSquarePlayer(playerNr, tile.getPosition().x, tile.getPosition().y, SquareState.SHIP);
     }
 
 
@@ -141,22 +93,11 @@ public class ZeeslagGameImpl implements ZeeslagGame {
         throw new UnsupportedOperationException("Method resetGame() not implemented.");
     }
 
-    @Override
-    public Ship[] getFriendlyShips() {
-        return friendlyShips;
-    }
-
-    @Override
-    public Ship[] getEnemyShips() {
-        return enemyShips;
-    }
-
 
     @Override
     public void stop() {
         if (webSocketClient != null) webSocketClient.disconnect();
     }
-
 
 
     public void startGame() {

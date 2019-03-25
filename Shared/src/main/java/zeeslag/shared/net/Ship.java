@@ -1,12 +1,7 @@
-package zeeslag.shared.net.boats;
+package zeeslag.shared.net;
 
 import org.jetbrains.annotations.NotNull;
-import zeeslag.shared.net.Direction;
-import zeeslag.shared.net.Orientation;
-import zeeslag.shared.net.ShipType;
-import zeeslag.shared.net.Tile;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -29,7 +24,7 @@ public class Ship {
 
     public void remove() {
         for (Tile tile : occupiedTiles)
-            tile.setBoat(null);
+            tile.setShip(null);
     }
 
     @NotNull
@@ -55,14 +50,13 @@ public class Ship {
         {
             return 3;
         }
-        if(type == ShipType.SUBMARINE)
-        {
+        if (type == ShipType.SUBMARINE) {
+            return 3;
+        }
+        if (type == ShipType.MINESWEEPER) {
             return 2;
         }
-        else
-            {
-                return 1;
-            }
+        throw new IllegalStateException();
     }
 
 
