@@ -4,15 +4,17 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Grid {
 
     private final int width;
     private final int height;
     private final Tile[][] tiles;
-    private final List<Ship> ships = new ArrayList<>();
-
+    private final ArrayList<Ship> ships = new ArrayList<Ship>();
+    private Set<ShipType> shipTypes = new HashSet<>();
 
     public Grid(final int width, final int height) {
         this.width = width;
@@ -44,7 +46,7 @@ public class Grid {
     }
 
 
-    public List<Ship> getShips() {
+    public ArrayList<Ship> getShips() {
         return ships;
     }
 
@@ -81,7 +83,7 @@ public class Grid {
     public boolean tryPlace(Ship ship) {
         if (ship.orientation == Orientation.HORIZONTAL && ship.x + ship.getSize() > width) return false;
         if (ship.orientation == Orientation.VERTICAL && ship.y + ship.getSize() > height) return false;
-
+        if(shipTypes.contains(ship.type))return false;
         for (int i = 0; i < ship.getSize(); i++) {
             var x = ship.x + (ship.orientation == Orientation.HORIZONTAL ? i : 0);
             var y = ship.y + (ship.orientation == Orientation.VERTICAL ? i : 0);
@@ -94,6 +96,7 @@ public class Grid {
             tiles[x][y].setShip(ship);
             ship.getOccupiedTiles().add(tiles[x][y]);
             ships.add(ship);
+            shipTypes.add(ship.type);
         }
         return true;
     }
