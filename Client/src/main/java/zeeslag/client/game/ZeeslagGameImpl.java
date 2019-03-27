@@ -24,7 +24,6 @@ public class ZeeslagGameImpl implements ZeeslagGame {
     private static final Grid grid = new Grid();
     private final ZeeslagGui gui;
     private int userId;
-    private String errorMessage;
     @Nullable
     private ZeeslagWebSocketClient webSocketClient;
 
@@ -79,18 +78,14 @@ public class ZeeslagGameImpl implements ZeeslagGame {
 
 
     private boolean tryPlaceShipAndAddToGui(Ship ship) {
-       try
-       {
-           grid.tryPlace(ship);
-       }catch (Exception e)
-       {
-           errorMessage = e.toString();
-           gui.showErrorMessage(1,errorMessage);
-           return false;
-       }
-        for (Tile tile : ship.getOccupiedTiles())
-            gui.showSquarePlayer(userId, tile.getPosition().x, tile.getPosition().y, SquareState.SHIP);
-        return true;
+        if (grid.tryPlace(ship)) {
+            for (Tile tile : ship.getOccupiedTiles())
+                gui.showSquarePlayer(userId, tile.getPosition().x, tile.getPosition().y, SquareState.SHIP);
+            return true;
+        }
+
+        gui.showErrorMessage(userId, "Can't place a ship there");
+        return false;
     }
 
 
@@ -159,7 +154,4 @@ public class ZeeslagGameImpl implements ZeeslagGame {
     public void endGame() {
     }
 
-    public String getErrorMessage() {
-        return errorMessage;
-    }
 }
