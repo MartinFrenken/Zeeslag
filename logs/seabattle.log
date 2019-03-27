@@ -186,3 +186,73 @@
 2019-03-27 11:34:08,747 [main] [INFO ] o.e.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@7161d8d1{/,null,AVAILABLE}
 2019-03-27 11:34:08,970 [main] [INFO ] o.eclipse.jetty.server.AbstractConnector - Started ServerConnector@4f32a3ad{HTTP/1.1,[http/1.1]}{0.0.0.0:3000}
 2019-03-27 11:34:08,970 [main] [INFO ] org.eclipse.jetty.server.Server - Started @831ms
+2019-03-27 11:35:53,574 [main] [INFO ] org.eclipse.jetty.util.log - Logging initialized @491ms to org.eclipse.jetty.util.log.Slf4jLog
+2019-03-27 11:35:53,671 [main] [INFO ] org.eclipse.jetty.server.Server - jetty-9.4.15.v20190215; built: 2019-02-15T16:53:49.381Z; git: eb70b240169fcf1abbd86af36482d1c49826fa0b; jvm 11.0.2+9-LTS
+2019-03-27 11:35:53,711 [main] [INFO ] org.eclipse.jetty.server.session - DefaultSessionIdManager workerName=node0
+2019-03-27 11:35:53,711 [main] [INFO ] org.eclipse.jetty.server.session - No SessionScavenger set, using defaults
+2019-03-27 11:35:53,715 [main] [INFO ] org.eclipse.jetty.server.session - node0 Scavenging every 660000ms
+2019-03-27 11:35:53,756 [main] [INFO ] o.e.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@7161d8d1{/,null,AVAILABLE}
+2019-03-27 11:35:54,021 [main] [INFO ] o.eclipse.jetty.server.AbstractConnector - Started ServerConnector@4f32a3ad{HTTP/1.1,[http/1.1]}{0.0.0.0:3000}
+2019-03-27 11:35:54,021 [main] [INFO ] org.eclipse.jetty.server.Server - Started @945ms
+2019-03-27 11:38:10,521 [main] [INFO ] org.eclipse.jetty.util.log - Logging initialized @464ms to org.eclipse.jetty.util.log.Slf4jLog
+2019-03-27 11:38:10,630 [main] [INFO ] org.eclipse.jetty.server.Server - jetty-9.4.15.v20190215; built: 2019-02-15T16:53:49.381Z; git: eb70b240169fcf1abbd86af36482d1c49826fa0b; jvm 11.0.2+9-LTS
+2019-03-27 11:38:10,676 [main] [INFO ] org.eclipse.jetty.server.session - DefaultSessionIdManager workerName=node0
+2019-03-27 11:38:10,676 [main] [INFO ] org.eclipse.jetty.server.session - No SessionScavenger set, using defaults
+2019-03-27 11:38:10,678 [main] [INFO ] org.eclipse.jetty.server.session - node0 Scavenging every 600000ms
+2019-03-27 11:38:10,715 [main] [INFO ] o.e.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@7161d8d1{/,null,AVAILABLE}
+2019-03-27 11:38:10,984 [main] [INFO ] o.eclipse.jetty.server.AbstractConnector - Started ServerConnector@4f32a3ad{HTTP/1.1,[http/1.1]}{0.0.0.0:3000}
+2019-03-27 11:38:10,984 [main] [INFO ] org.eclipse.jetty.server.Server - Started @932ms
+2019-03-27 11:39:39,255 [main] [INFO ] org.eclipse.jetty.util.log - Logging initialized @469ms to org.eclipse.jetty.util.log.Slf4jLog
+2019-03-27 11:39:39,339 [main] [INFO ] org.eclipse.jetty.server.Server - jetty-9.4.15.v20190215; built: 2019-02-15T16:53:49.381Z; git: eb70b240169fcf1abbd86af36482d1c49826fa0b; jvm 11.0.2+9-LTS
+2019-03-27 11:39:39,377 [main] [INFO ] org.eclipse.jetty.server.session - DefaultSessionIdManager workerName=node0
+2019-03-27 11:39:39,377 [main] [INFO ] org.eclipse.jetty.server.session - No SessionScavenger set, using defaults
+2019-03-27 11:39:39,379 [main] [INFO ] org.eclipse.jetty.server.session - node0 Scavenging every 660000ms
+2019-03-27 11:39:39,406 [main] [INFO ] o.e.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@7161d8d1{/,null,AVAILABLE}
+2019-03-27 11:39:39,636 [main] [INFO ] o.eclipse.jetty.server.AbstractConnector - Started ServerConnector@4f32a3ad{HTTP/1.1,[http/1.1]}{0.0.0.0:3000}
+2019-03-27 11:39:39,637 [main] [INFO ] org.eclipse.jetty.server.Server - Started @857ms
+2019-03-27 11:41:31,020 [main] [INFO ] org.eclipse.jetty.util.log - Logging initialized @1108ms to org.eclipse.jetty.util.log.Slf4jLog
+2019-03-27 11:41:31,125 [main] [INFO ] org.eclipse.jetty.server.Server - jetty-9.4.15.v20190215; built: 2019-02-15T16:53:49.381Z; git: eb70b240169fcf1abbd86af36482d1c49826fa0b; jvm 11.0.2+9-LTS
+2019-03-27 11:41:31,170 [main] [INFO ] org.eclipse.jetty.server.session - DefaultSessionIdManager workerName=node0
+2019-03-27 11:41:31,170 [main] [INFO ] org.eclipse.jetty.server.session - No SessionScavenger set, using defaults
+2019-03-27 11:41:31,174 [main] [INFO ] org.eclipse.jetty.server.session - node0 Scavenging every 600000ms
+2019-03-27 11:41:31,237 [main] [INFO ] o.e.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@1a4927d6{/,null,AVAILABLE}
+2019-03-27 11:41:31,267 [main] [INFO ] o.eclipse.jetty.server.AbstractConnector - Started ServerConnector@6d492f43{HTTP/1.1,[http/1.1]}{0.0.0.0:3000}
+2019-03-27 11:41:31,268 [main] [INFO ] org.eclipse.jetty.server.Server - Started @1362ms
+2019-03-27 11:41:32,242 [main] [INFO ] org.eclipse.jetty.util.log - Logging initialized @447ms to org.eclipse.jetty.util.log.Slf4jLog
+2019-03-27 11:41:32,321 [main] [INFO ] org.eclipse.jetty.server.Server - jetty-9.4.15.v20190215; built: 2019-02-15T16:53:49.381Z; git: eb70b240169fcf1abbd86af36482d1c49826fa0b; jvm 11.0.2+9-LTS
+2019-03-27 11:41:32,362 [main] [INFO ] org.eclipse.jetty.server.session - DefaultSessionIdManager workerName=node0
+2019-03-27 11:41:32,362 [main] [INFO ] org.eclipse.jetty.server.session - No SessionScavenger set, using defaults
+2019-03-27 11:41:32,365 [main] [INFO ] org.eclipse.jetty.server.session - node0 Scavenging every 600000ms
+2019-03-27 11:41:32,395 [main] [INFO ] o.e.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@7161d8d1{/,null,AVAILABLE}
+2019-03-27 11:42:09,050 [main] [INFO ] org.eclipse.jetty.util.log - Logging initialized @447ms to org.eclipse.jetty.util.log.Slf4jLog
+2019-03-27 11:42:09,129 [main] [INFO ] org.eclipse.jetty.server.Server - jetty-9.4.15.v20190215; built: 2019-02-15T16:53:49.381Z; git: eb70b240169fcf1abbd86af36482d1c49826fa0b; jvm 11.0.2+9-LTS
+2019-03-27 11:42:09,165 [main] [INFO ] org.eclipse.jetty.server.session - DefaultSessionIdManager workerName=node0
+2019-03-27 11:42:09,165 [main] [INFO ] org.eclipse.jetty.server.session - No SessionScavenger set, using defaults
+2019-03-27 11:42:09,167 [main] [INFO ] org.eclipse.jetty.server.session - node0 Scavenging every 660000ms
+2019-03-27 11:42:09,195 [main] [INFO ] o.e.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@7161d8d1{/,null,AVAILABLE}
+2019-03-27 11:42:09,439 [main] [INFO ] o.eclipse.jetty.server.AbstractConnector - Started ServerConnector@4f32a3ad{HTTP/1.1,[http/1.1]}{0.0.0.0:3000}
+2019-03-27 11:42:09,440 [main] [INFO ] org.eclipse.jetty.server.Server - Started @840ms
+2019-03-27 11:44:13,642 [main] [INFO ] org.eclipse.jetty.util.log - Logging initialized @488ms to org.eclipse.jetty.util.log.Slf4jLog
+2019-03-27 11:44:13,751 [main] [INFO ] org.eclipse.jetty.server.Server - jetty-9.4.15.v20190215; built: 2019-02-15T16:53:49.381Z; git: eb70b240169fcf1abbd86af36482d1c49826fa0b; jvm 11.0.2+9-LTS
+2019-03-27 11:44:13,819 [main] [INFO ] org.eclipse.jetty.server.session - DefaultSessionIdManager workerName=node0
+2019-03-27 11:44:13,820 [main] [INFO ] org.eclipse.jetty.server.session - No SessionScavenger set, using defaults
+2019-03-27 11:44:13,821 [main] [INFO ] org.eclipse.jetty.server.session - node0 Scavenging every 660000ms
+2019-03-27 11:44:13,866 [main] [INFO ] o.e.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@7161d8d1{/,null,AVAILABLE}
+2019-03-27 11:44:14,048 [main] [INFO ] o.eclipse.jetty.server.AbstractConnector - Started ServerConnector@4f32a3ad{HTTP/1.1,[http/1.1]}{0.0.0.0:3000}
+2019-03-27 11:44:14,048 [main] [INFO ] org.eclipse.jetty.server.Server - Started @900ms
+2019-03-27 14:07:08,300 [main] [INFO ] org.eclipse.jetty.util.log - Logging initialized @640ms to org.eclipse.jetty.util.log.Slf4jLog
+2019-03-27 14:07:08,420 [main] [INFO ] org.eclipse.jetty.server.Server - jetty-9.4.15.v20190215; built: 2019-02-15T16:53:49.381Z; git: eb70b240169fcf1abbd86af36482d1c49826fa0b; jvm 11.0.2+9-LTS
+2019-03-27 14:07:08,472 [main] [INFO ] org.eclipse.jetty.server.session - DefaultSessionIdManager workerName=node0
+2019-03-27 14:07:08,472 [main] [INFO ] org.eclipse.jetty.server.session - No SessionScavenger set, using defaults
+2019-03-27 14:07:08,475 [main] [INFO ] org.eclipse.jetty.server.session - node0 Scavenging every 600000ms
+2019-03-27 14:07:08,601 [main] [INFO ] o.e.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@53045c6c{/,null,AVAILABLE}
+2019-03-27 14:07:08,832 [main] [INFO ] o.eclipse.jetty.server.AbstractConnector - Started ServerConnector@6f01b95f{HTTP/1.1,[http/1.1]}{0.0.0.0:3000}
+2019-03-27 14:07:08,833 [main] [INFO ] org.eclipse.jetty.server.Server - Started @1180ms
+2019-03-27 16:05:29,607 [main] [INFO ] org.eclipse.jetty.util.log - Logging initialized @717ms to org.eclipse.jetty.util.log.Slf4jLog
+2019-03-27 16:05:29,840 [main] [INFO ] org.eclipse.jetty.server.Server - jetty-9.4.15.v20190215; built: 2019-02-15T16:53:49.381Z; git: eb70b240169fcf1abbd86af36482d1c49826fa0b; jvm 11.0.2+9-LTS
+2019-03-27 16:05:29,912 [main] [INFO ] org.eclipse.jetty.server.session - DefaultSessionIdManager workerName=node0
+2019-03-27 16:05:29,912 [main] [INFO ] org.eclipse.jetty.server.session - No SessionScavenger set, using defaults
+2019-03-27 16:05:29,917 [main] [INFO ] org.eclipse.jetty.server.session - node0 Scavenging every 600000ms
+2019-03-27 16:05:29,965 [main] [INFO ] o.e.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@795509d9{/,null,AVAILABLE}
+2019-03-27 16:05:30,171 [main] [INFO ] o.eclipse.jetty.server.AbstractConnector - Started ServerConnector@69dd91b6{HTTP/1.1,[http/1.1]}{0.0.0.0:3000}
+2019-03-27 16:05:30,172 [main] [INFO ] org.eclipse.jetty.server.Server - Started @1289ms

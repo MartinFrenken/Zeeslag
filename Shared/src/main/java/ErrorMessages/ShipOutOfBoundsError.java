@@ -1,6 +1,6 @@
-package zeeslag.shared.net.Exceptions;
+package ErrorMessages;
 
-class ShipOutOfBoundsException extends Exception {
+public class ShipOutOfBoundsError extends ErrorMessage{
 
 
     public String toString()

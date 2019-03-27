@@ -1,6 +1,6 @@
-package zeeslag.shared.net.Exceptions;
+package ErrorMessages;
 
-class ShipCollisionException extends Exception {
+public class ShipCollisionError extends ErrorMessage{
 
     public String toString()
     {
