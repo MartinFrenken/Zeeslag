@@ -24,6 +24,7 @@ public class ZeeslagGameImpl implements ZeeslagGame {
     private static final Grid grid = new Grid(10, 10);
     private final ZeeslagGui gui;
     private int userId;
+    private String errorMessage;
     @Nullable
     private ZeeslagWebSocketClient webSocketClient;
 
@@ -84,6 +85,8 @@ public class ZeeslagGameImpl implements ZeeslagGame {
            grid.tryPlace(ship);
        }catch (Exception e)
        {
+           errorMessage = e.toString();
+           gui.showErrorMessage(1,errorMessage);
            return false;
        }
         for (Tile tile : ship.getOccupiedTiles())
@@ -151,4 +154,7 @@ public class ZeeslagGameImpl implements ZeeslagGame {
     public void endGame() {
     }
 
+    public String getErrorMessage() {
+        return errorMessage;
+    }
 }
