@@ -51,7 +51,7 @@ public class ZeeslagGameImpl implements ZeeslagGame {
 
     @Override
     public void placeShipsAutomatically(int playerNr) {
-        clearGridAndGui(playerNr);
+        clearGridAndGui();
         var random = new Random();
         for (ShipType shipType : ShipType.values()) {
             var isHorizontal = false;
@@ -59,7 +59,7 @@ public class ZeeslagGameImpl implements ZeeslagGame {
             var y = 0;
             Ship ship = null;
 
-            while (ship == null || !tryPlaceShipAndAddToGui(playerNr, ship)) {
+            while (ship == null || !tryPlaceShipAndAddToGui(ship)) {
                 isHorizontal = random.nextBoolean();
                 x = random.nextInt(grid.getWidth() - (isHorizontal ? shipType.getSize() : 0));
                 y = random.nextInt(grid.getHeight() - (isHorizontal ? 0 : shipType.getSize()));
@@ -69,21 +69,21 @@ public class ZeeslagGameImpl implements ZeeslagGame {
     }
 
 
-    private void clearGridAndGui(int playerNr) {
+    private void clearGridAndGui() {
         grid.clear();
 
         for (var x = 0; x < grid.getWidth(); x++)
             for (var y = 0; y < grid.getHeight(); y++)
-                gui.showSquarePlayer(playerNr, x, y, SquareState.WATER);
+                gui.showSquarePlayer(userId, x, y, SquareState.WATER);
     }
 
 
-    private boolean tryPlaceShipAndAddToGui(int playerNr, Ship ship) {
+    private boolean tryPlaceShipAndAddToGui(Ship ship) {
         if (!grid.tryPlace(ship))
             return false;
 
         for (Tile tile : ship.getOccupiedTiles())
-            gui.showSquarePlayer(playerNr, tile.getPosition().x, tile.getPosition().y, SquareState.SHIP);
+            gui.showSquarePlayer(userId, tile.getPosition().x, tile.getPosition().y, SquareState.SHIP);
         return true;
     }
 
@@ -91,7 +91,7 @@ public class ZeeslagGameImpl implements ZeeslagGame {
     @Override
     public void placeShip(int playerNr, ShipType shipType, int bowX, int bowY, boolean horizontal) {
         var ship = new Ship(bowX, bowY, horizontal ? Orientation.HORIZONTAL : Orientation.VERTICAL, shipType);
-        tryPlaceShipAndAddToGui(playerNr, ship);
+        tryPlaceShipAndAddToGui(ship);
     }
 
 
@@ -99,13 +99,20 @@ public class ZeeslagGameImpl implements ZeeslagGame {
     public void removeShip(int playerNr, int posX, int posY) {
         var ship = grid.getTile(posX, posY).getShip();
         if (ship == null) return;
+        removeShipFromGui(ship);
         ship.remove();
+    }
+
+
+    private void removeShipFromGui(Ship ship) {
+        for (Tile tile : ship.getOccupiedTiles())
+            gui.showSquarePlayer(userId, tile.getPosition().x, tile.getPosition().y, SquareState.WATER);
     }
 
 
     @Override
     public void removeAllShips(int playerNr) {
-        throw new UnsupportedOperationException("Method removeAllShips() not implemented.");
+        clearGridAndGui();
     }
 
 

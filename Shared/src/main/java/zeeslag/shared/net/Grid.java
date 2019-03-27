@@ -3,9 +3,7 @@ package zeeslag.shared.net;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class Grid {
@@ -13,9 +11,10 @@ public class Grid {
     private final int width;
     private final int height;
     private final Tile[][] tiles;
-    private final ArrayList<Ship> ships = new ArrayList<Ship>();
-    private Set<ShipType> shipTypes = new HashSet<>();
-   // private Strin
+    private final Set<Ship> ships = new HashSet<>();
+    private final Set<ShipType> shipTypes = new HashSet<>();
+
+
     public Grid(final int width, final int height) {
         this.width = width;
         this.height = height;
@@ -46,7 +45,7 @@ public class Grid {
     }
 
 
-    public ArrayList<Ship> getShips() {
+    public Set<Ship> getShips() {
         return ships;
     }
 
@@ -80,11 +79,11 @@ public class Grid {
     }
 
 
-    public boolean tryPlace(Ship ship) {
-        if (ship.orientation == Orientation.HORIZONTAL && ship.x + ship.getSize() > width)
-        {return false;}
+    public boolean tryPlace(@NotNull Ship ship) {
+        if (ship.orientation == Orientation.HORIZONTAL && ship.x + ship.getSize() > width) return false;
         if (ship.orientation == Orientation.VERTICAL && ship.y + ship.getSize() > height) return false;
-        if(shipTypes.contains(ship.type))return false;
+        if (shipTypes.contains(ship.type)) return false;
+
         for (int i = 0; i < ship.getSize(); i++) {
             var x = ship.x + (ship.orientation == Orientation.HORIZONTAL ? i : 0);
             var y = ship.y + (ship.orientation == Orientation.VERTICAL ? i : 0);
@@ -96,17 +95,27 @@ public class Grid {
 
             tiles[x][y].setShip(ship);
             ship.getOccupiedTiles().add(tiles[x][y]);
-            ships.add(ship);
-            shipTypes.add(ship.type);
         }
+        ship.setGrid(this);
+        ships.add(ship);
+        shipTypes.add(ship.type);
         return true;
     }
 
 
     public void clear() {
+        ships.clear();
+        shipTypes.clear();
+        
         for (var x = 0; x < width; x++)
             for (var y = 0; y < height; y++)
                 tiles[x][y].removeShip();
+    }
+
+
+    public void removeShip(@NotNull Ship ship) {
+        ships.remove(ship);
+        shipTypes.remove(ship.type);
     }
 
 }

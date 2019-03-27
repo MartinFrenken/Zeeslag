@@ -34,7 +34,6 @@ public class Tile {
 
 
     public void removeShip() {
-        grid.getShips().remove(ship);
         ship = null;
     }
     
@@ -53,6 +52,11 @@ public class Tile {
 
     public Position getPosition() {
         return position;
+    }
+
+
+    public Grid getGrid() {
+        return grid;
     }
 
 }

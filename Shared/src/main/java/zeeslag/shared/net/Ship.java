@@ -1,6 +1,7 @@
 package zeeslag.shared.net;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -11,8 +12,10 @@ public class Ship {
     public final int y;
     public final Orientation orientation;
     public final ShipType type;
-    private Set<Tile> destroyedTiles = new HashSet<>();
-    private Set<Tile> occupiedTiles = new HashSet<>();
+    private final Set<Tile> destroyedTiles = new HashSet<>();
+    private final Set<Tile> occupiedTiles = new HashSet<>();
+    @Nullable
+    private Grid grid;
 
 
     public Ship(int x, int y, @NotNull Orientation orientation, @NotNull ShipType type) {
@@ -24,8 +27,17 @@ public class Ship {
 
 
     public void remove() {
-        for (Tile tile : occupiedTiles)
+        for (Tile tile : occupiedTiles) {
             tile.removeShip();
+        }
+
+        if (grid != null)
+            grid.removeShip(this);
+    }
+
+
+    public void setGrid(@NotNull Grid grid) {
+        this.grid = grid;
     }
 
 
