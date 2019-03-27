@@ -16,24 +16,24 @@ public class WebSocketServerEventHandler implements WebSocketServerEventListener
 
     @Override
     public void onPlaceShips(int userId, @NotNull Ship[] ships) {
-        if (game.getPlayerState(userId) != PlayerState.PLACING) return;
+        if (game.getPlayerState(userId) != PlayerState.PLACING) throw new IllegalStateException();
 
         for (Ship ship : ships) {
             System.out.println(ship.getX());
             if (!game.getGrid(userId).tryPlace(ship)) {
                 game.getGrid(userId).clear();
-                return;
+                throw new IllegalStateException();
             }
         }
 
         if (game.getGrid(userId).getShips().size() != ShipType.values().length) {
             game.getGrid(userId).clear();
-            return;
+            throw new IllegalStateException();
         }
 
         game.setPlayerReady(userId);
 
-        if (game.gameState == GameState.FIGHTING)
+        if (game.getGameState() == GameState.FIGHTING)
             ZeeslagServer.getWebSocketServlet().emitStart();
     }
 
@@ -47,6 +47,16 @@ public class WebSocketServerEventHandler implements WebSocketServerEventListener
     @Override
     public void onPlayerLeave(int userId) {
         game.removePlayer(userId);
+    }
+
+
+    @Override
+    public void onAttack(int sender, int x, int y) {
+        if (game.getGameState() != GameState.FIGHTING) throw new IllegalStateException();
+        if (game.getPlayerState(sender) != PlayerState.ATTACKING) throw new IllegalStateException();
+
+        var hitType = game.attack(1 - sender, x, y);
+        ZeeslagServer.getWebSocketServlet().emitAttackResult(1 - sender, x, y, hitType);
     }
 
 }

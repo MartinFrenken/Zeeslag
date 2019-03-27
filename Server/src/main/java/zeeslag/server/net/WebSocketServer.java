@@ -7,6 +7,7 @@ import org.eclipse.jetty.websocket.api.WebSocketAdapter;
 import org.jetbrains.annotations.Nullable;
 import zeeslag.server.WebSocketServerEventListener;
 import zeeslag.shared.net.Ship;
+import zeeslag.shared.net.HitType;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -52,10 +53,23 @@ class WebSocketServer extends WebSocketAdapter {
         switch (action) {
             case "placeShips":
                 onPlaceShips(json);
-                break;
+                return;
+            case "attack":
+                onAttack(json);
+                return;
             default:
                 throw new IllegalStateException("Invalid action: " + action);
         }
+    }
+
+
+    private void onAttack(JsonObject json) {
+        var data = json.get("data").getAsJsonObject();
+        var userId = json.get("sender").getAsInt();
+        var x = data.get("x").getAsInt();
+        var y = data.get("y").getAsInt();
+
+        eventListener.onAttack(userId, x, y);
     }
 
 
@@ -90,6 +104,24 @@ class WebSocketServer extends WebSocketAdapter {
         try {
             var json = new JsonObject();
             json.addProperty("action", "start");
+            session.getRemote().sendString(json.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void emitAttackResult(int receiver, int x, int y, HitType hit) {
+        try {
+            var json = new JsonObject();
+            json.addProperty("action", "attackResult");
+
+            var data = new JsonObject();
+            data.addProperty("receiver", receiver);
+            data.addProperty("x", x);
+            data.addProperty("y", y);
+            data.addProperty("hitType", hit.toString());
+            json.add("data", data);
             session.getRemote().sendString(json.toString());
         } catch (IOException e) {
             e.printStackTrace();

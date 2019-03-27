@@ -16,6 +16,7 @@ public class Ship {
     private transient final Set<Tile> occupiedTiles;
     @Nullable
     private transient Grid grid;
+    private transient boolean hasSunk = false;
 
 
     //Only used by json deserializer
@@ -90,6 +91,18 @@ public class Ship {
     public @NotNull ShipType getType() {
         if (type == null) throw new NullPointerException();
         return type;
+    }
+
+
+    public void destroyTile(Tile tile) {
+        destroyedTiles.add(tile);
+        if (destroyedTiles.size() == occupiedTiles.size() && occupiedTiles.size() > 0)
+            hasSunk = true;
+    }
+
+
+    public boolean hasSunk() {
+        return hasSunk;
     }
 
 }

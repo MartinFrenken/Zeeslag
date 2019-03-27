@@ -11,4 +11,6 @@ public interface WebSocketServerEventListener {
 
     void onPlayerLeave(int userId);
 
+    void onAttack(int userId, int x, int y);
+
 }

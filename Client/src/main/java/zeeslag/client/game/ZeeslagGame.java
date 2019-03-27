@@ -3,6 +3,7 @@
  */
 package zeeslag.client.game;
 
+import zeeslag.shared.net.HitType;
 import zeeslag.shared.net.ShipType;
 
 /**
@@ -36,9 +37,8 @@ public interface ZeeslagGame {
      * player's application will be kept up-to-date by method calls of
      * showSquarePlayer().
      *
-     * @param playerNr identification of player for which ships will be placed
      */
-    void placeShipsAutomatically(int playerNr);
+    void placeShipsAutomatically();
 
     /**
      * Place ship of given type. A ship of given type will be placed with its
@@ -50,34 +50,29 @@ public interface ZeeslagGame {
      * placed, that ship will be removed. The state of the ocean area in the
      * player's application will be kept up-to-date by method calls of
      * showSquarePlayer().
-     *
-     * @param playerNr   identification of player for which ship will be placed
-     * @param shipType   type of ship to be placed
+     *  @param shipType   type of ship to be placed
      * @param bowX       x-coordinate of bow
      * @param bowY       y-coordinate of bow
      * @param horizontal indicate whether ship will placed horizontally or vertically
      */
-    void placeShip(int playerNr, ShipType shipType, int bowX, int bowY, boolean horizontal);
+    void placeShip(ShipType shipType, int bowX, int bowY, boolean horizontal);
 
     /**
      * Remove the ship that is placed at the square with coordinates (posX, posY).
      * The state of the ocean area in the player's application will be kept
      * up-to-date by method calls of showSquarePlayer().
-     *
-     * @param playerNr identification of player for which ship will be removed
-     * @param posX     x-coordinate of square where ship was placed
+     *  @param posX     x-coordinate of square where ship was placed
      * @param posY     y-coordinate of square where ship was placed
      */
-    void removeShip(int playerNr, int posX, int posY);
+    void removeShip(int posX, int posY);
 
     /**
      * Remove all ships that are placed. The state of the ocean area in the
      * player's application will be kept up-to-date by method calls of
      * showSquarePlayer().
      *
-     * @param playerNr identification of player for which ships will be removed
      */
-    void removeAllShips(int playerNr);
+    void removeAllShips();
 
     /**
      * Notify that the player is ready to play the game, i.e., all ships have
@@ -85,17 +80,16 @@ public interface ZeeslagGame {
      * "Not all ships have been placed!" will be sent to the player's application
      * by a method call of showErrorMessage().
      *
-     * @param playerNr identification of player who is ready to play the game
      */
-    void notifyWhenReady(int playerNr);
+    void notifyWhenReady();
 
     /**
      * Fire a shot at the opponent's square with given coordinates.
      * Firing a shot gives one of the following results:
-     * ShotType.MISSED - No ship was hit
-     * ShotType.HIT - A ship has been hit
-     * ShotType.SUNK - A ship has been sunk (all squares of the ship have been hit)
-     * ShotType.ALLSUNK - All ships have been sunk (all other ships were already sunk)
+     * HitType.MISSED - No ship was hit
+     * HitType.HIT - A ship has been hit
+     * HitType.SUNK - A ship has been sunk (all squares of the ship have been hit)
+     * HitType.ALL_SUNK - All ships have been sunk (all other ships were already sunk)
      * The result of the shot will sent to the player's application by a method call
      * of playerFiresShot() and to the opponent's application by a method call
      * of opponentFiresShot(). The target area in the player's application
@@ -105,12 +99,10 @@ public interface ZeeslagGame {
      * The result of the opponent's shot will be sent to the player's application
      * by a method call of opponentFiresShot() and the ocean area of the player's
      * application will by kept up-to-date by method calls of showSquarePlayer().
-     *
-     * @param playerNr identification of player who fires.
-     * @param posX     x-coordinate of square
+     *  @param posX     x-coordinate of square
      * @param posY     y-coordinate of square
      */
-    void fireShot(int playerNr, int posX, int posY);
+    void fireShotGui(int posX, int posY);
 
     /**
      * Start a new game. Remove all ships and unregister the player.
@@ -121,10 +113,11 @@ public interface ZeeslagGame {
      * the target area of the player's application will be updated by method
      * calls of showSquareOpponent().
      *
-     * @param playerNr identification of player who starts a new game
      */
-    void resetGame(int playerNr);
+    void resetGame();
 
     void stop();
+
+    void onAttackResult(int to, int x, int y, HitType hitType);
 
 }

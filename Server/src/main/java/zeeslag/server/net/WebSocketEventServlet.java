@@ -4,6 +4,7 @@ import org.eclipse.jetty.websocket.servlet.WebSocketServlet;
 import org.eclipse.jetty.websocket.servlet.WebSocketServletFactory;
 import org.jetbrains.annotations.NotNull;
 import zeeslag.server.WebSocketServerEventListener;
+import zeeslag.shared.net.HitType;
 import zeeslag.shared.net.UserAuthData;
 
 import java.util.HashMap;
@@ -62,6 +63,12 @@ public class WebSocketEventServlet extends WebSocketServlet implements LoginList
 
     public Set<WebSocketServer> getSocketServers() {
         return socketServers;
+    }
+
+
+    public void emitAttackResult(int receiver, int x, int y, HitType hit) {
+        for (WebSocketServer socketServer : socketServers)
+            socketServer.emitAttackResult(receiver, x, y, hit);
     }
 
 }
