@@ -15,7 +15,7 @@ public class Grid {
     private final Tile[][] tiles;
     private final ArrayList<Ship> ships = new ArrayList<Ship>();
     private Set<ShipType> shipTypes = new HashSet<>();
-
+   // private Strin
     public Grid(final int width, final int height) {
         this.width = width;
         this.height = height;
@@ -81,7 +81,8 @@ public class Grid {
 
 
     public boolean tryPlace(Ship ship) {
-        if (ship.orientation == Orientation.HORIZONTAL && ship.x + ship.getSize() > width) return false;
+        if (ship.orientation == Orientation.HORIZONTAL && ship.x + ship.getSize() > width)
+        {return false;}
         if (ship.orientation == Orientation.VERTICAL && ship.y + ship.getSize() > height) return false;
         if(shipTypes.contains(ship.type))return false;
         for (int i = 0; i < ship.getSize(); i++) {
