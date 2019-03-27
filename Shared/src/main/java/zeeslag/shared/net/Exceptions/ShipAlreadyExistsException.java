@@ -11,6 +11,6 @@ public class ShipAlreadyExistsException extends Exception
     }
     public String toString()
     {
-        return "You have alraedy placed a "+shipTypeThatAlreadyExisted;
+        return "You have already placed a "+shipTypeThatAlreadyExisted;
     }
 }
