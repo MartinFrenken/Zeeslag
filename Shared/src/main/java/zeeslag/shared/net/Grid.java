@@ -2,6 +2,9 @@ package zeeslag.shared.net;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import zeeslag.shared.net.Exceptions.ShipAlreadyExistsException;
+import zeeslag.shared.net.Exceptions.ShipCollisionException;
+import zeeslag.shared.net.Exceptions.ShipOutOfBoundsException;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -79,10 +82,13 @@ public class Grid {
     }
 
 
-    public boolean tryPlace(@NotNull Ship ship) {
-        if (ship.orientation == Orientation.HORIZONTAL && ship.x + ship.getSize() > width) return false;
-        if (ship.orientation == Orientation.VERTICAL && ship.y + ship.getSize() > height) return false;
-        if (shipTypes.contains(ship.type)) return false;
+    public boolean tryPlace(@NotNull Ship ship)throws ShipCollisionException, ShipOutOfBoundsException, ShipAlreadyExistsException {
+        if (ship.orientation == Orientation.HORIZONTAL && ship.x + ship.getSize() > width)
+            throw new ShipOutOfBoundsException();
+        if (ship.orientation == Orientation.VERTICAL && ship.y + ship.getSize() > height)
+            throw new ShipOutOfBoundsException();
+        if (shipTypes.contains(ship.type))
+            throw new ShipAlreadyExistsException(ship.type);
 
         for (int i = 0; i < ship.getSize(); i++) {
             var x = ship.x + (ship.orientation == Orientation.HORIZONTAL ? i : 0);
@@ -90,7 +96,7 @@ public class Grid {
 
             if (tiles[x][y].isOccupied()) {
                 ship.remove();
-                return false;
+                throw new ShipCollisionException();
             }
 
             tiles[x][y].setShip(ship);

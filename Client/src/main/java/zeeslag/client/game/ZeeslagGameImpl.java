@@ -79,9 +79,13 @@ public class ZeeslagGameImpl implements ZeeslagGame {
 
 
     private boolean tryPlaceShipAndAddToGui(Ship ship) {
-        if (!grid.tryPlace(ship))
-            return false;
-
+       try
+       {
+           grid.tryPlace(ship);
+       }catch (Exception e)
+       {
+           return false;
+       }
         for (Tile tile : ship.getOccupiedTiles())
             gui.showSquarePlayer(userId, tile.getPosition().x, tile.getPosition().y, SquareState.SHIP);
         return true;
