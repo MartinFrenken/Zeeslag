@@ -13,7 +13,7 @@ public enum Direction {
     WEST;
 
     @NotNull
-    public static final List<Direction> ALL_CARDINALS = new ArrayList<>();
+    private static final List<Direction> ALL_CARDINALS = new ArrayList<>();
 
     static {
         ALL_CARDINALS.add(NORTH);

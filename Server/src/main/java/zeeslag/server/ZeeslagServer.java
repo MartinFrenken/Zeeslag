@@ -10,7 +10,12 @@ import zeeslag.server.net.WebSocketEventServlet;
 public class ZeeslagServer {
 
     private static final Zeeslag game = new Zeeslag();
-    private static final WebSocketEventServlet webSocketServlet = new WebSocketEventServlet();
+    private static final WebSocketEventServlet webSocketServlet = new WebSocketEventServlet(new WebSocketServerEventHandler(game));
+
+
+    public static WebSocketEventServlet getWebSocketServlet() {
+        return webSocketServlet;
+    }
 
 
     public static void main(String... args) {

@@ -8,14 +8,25 @@ import java.util.Set;
 
 public class Ship {
 
-    public final int x;
-    public final int y;
-    public final Orientation orientation;
-    public final ShipType type;
-    private final Set<Tile> destroyedTiles = new HashSet<>();
-    private final Set<Tile> occupiedTiles = new HashSet<>();
+    private final int x;
+    private final int y;
+    private final Orientation orientation;
+    private final ShipType type;
+    private transient final Set<Tile> destroyedTiles;
+    private transient final Set<Tile> occupiedTiles;
     @Nullable
-    private Grid grid;
+    private transient Grid grid;
+
+
+    //Only used by json deserializer
+    public Ship() {
+        x = 0;
+        y = 0;
+        orientation = null;
+        type = null;
+        destroyedTiles = new HashSet<>();
+        occupiedTiles = new HashSet<>();
+    }
 
 
     public Ship(int x, int y, @NotNull Orientation orientation, @NotNull ShipType type) {
@@ -23,6 +34,8 @@ public class Ship {
         this.y = y;
         this.orientation = orientation;
         this.type = type;
+        destroyedTiles = new HashSet<>();
+        occupiedTiles = new HashSet<>();
     }
 
 
@@ -54,7 +67,29 @@ public class Ship {
 
 
     public int getSize() {
-        return type.getSize();
+        return getType().getSize();
+    }
+
+
+    public int getX() {
+        return x;
+    }
+
+
+    public int getY() {
+        return y;
+    }
+
+
+    public @NotNull Orientation getOrientation() {
+        if (orientation == null) throw new NullPointerException();
+        return orientation;
+    }
+
+
+    public @NotNull ShipType getType() {
+        if (type == null) throw new NullPointerException();
+        return type;
     }
 
 }

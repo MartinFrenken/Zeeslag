@@ -2,13 +2,10 @@ package zeeslag.server;
 
 import org.jetbrains.annotations.NotNull;
 
-public class User {
-
-    private final String name;
-    private final String passwordHash;
+class User {
 
     public User(@NotNull String name, @NotNull String passwordHash) {
-        this.name = name;
-        this.passwordHash = passwordHash;
+        String name1 = name;
+        String passwordHash1 = passwordHash;
     }
 }

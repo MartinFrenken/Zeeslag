@@ -1,6 +1,6 @@
 package zeeslag.client.game;
 
-public interface ZeeslagWebSocketEventListener {
+interface ZeeslagWebSocketEventListener {
 
     void onAttack(int userId, int x, int y);
 

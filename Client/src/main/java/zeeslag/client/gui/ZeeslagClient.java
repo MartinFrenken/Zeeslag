@@ -455,6 +455,25 @@ public class ZeeslagClient extends Application implements ZeeslagGui {
     }
 
 
+    @Override
+    public void waitForOtherPlayerToBeReady() {
+        labelHorizontalVertical.setDisable(true);
+        radioHorizontal.setDisable(true);
+        radioVertical.setDisable(true);
+        buttonPlaceAllShips.setDisable(true);
+        buttonRemoveAllShips.setDisable(true);
+        buttonReadyToPlay.setDisable(true);
+        buttonStartNewGame.setDisable(true);
+        buttonPlaceAircraftCarrier.setDisable(true);
+        buttonPlaceBattleShip.setDisable(true);
+        buttonPlaceCruiser.setDisable(true);
+        buttonPlaceSubmarine.setDisable(true);
+        buttonPlaceMineSweeper.setDisable(true);
+        buttonRemoveShip.setDisable(true);
+        showMessage("Waiting for " + opponentName + " to be ready");
+    }
+
+
     /**
      * Communicate the result of a shot fired by the player.
      * The result of the shot will be one of the following:

@@ -10,6 +10,7 @@ import zeeslag.shared.net.Ship;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.Set;
 
 public class ZeeslagWebSocketClient extends WebSocketAdapter {
 
@@ -67,7 +68,7 @@ public class ZeeslagWebSocketClient extends WebSocketAdapter {
     }
 
 
-    void emitPlaceShips(@NotNull Ship[] ships) {
+    void emitPlaceShips(@NotNull Set<Ship> ships) {
         try {
             var json = createBaseActionJson("placeShips");
             json.add("data", new Gson().toJsonTree(ships));
@@ -115,7 +116,7 @@ public class ZeeslagWebSocketClient extends WebSocketAdapter {
         var json = new Gson().fromJson(message, JsonObject.class);
         var action = json.get("action").getAsString();
 
-        if (json.get("sender").getAsInt() == playerId)
+        if (json.get("sender") != null && json.get("sender").getAsInt() == playerId)
             return;
 
         switch (action) {

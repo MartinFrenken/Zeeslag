@@ -2,9 +2,9 @@ package zeeslag.shared.net.Exceptions;
 
 import zeeslag.shared.net.ShipType;
 
-public class ShipAlreadyExistsException extends Exception
-{
-    ShipType shipTypeThatAlreadyExisted;
+class ShipAlreadyExistsException extends Exception {
+
+    private final ShipType shipTypeThatAlreadyExisted;
     public ShipAlreadyExistsException(ShipType shipTypeThatAlreadyExisted)
     {
         this.shipTypeThatAlreadyExisted=shipTypeThatAlreadyExisted;

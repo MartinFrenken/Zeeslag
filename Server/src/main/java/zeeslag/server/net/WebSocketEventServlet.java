@@ -4,24 +4,36 @@ import org.eclipse.jetty.websocket.servlet.WebSocketServlet;
 import org.eclipse.jetty.websocket.servlet.WebSocketServletFactory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import zeeslag.server.WebSocketServerEventListener;
 import zeeslag.shared.net.UserAuthData;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class WebSocketEventServlet extends WebSocketServlet implements LoginListener {
 
-    private static final Map<String, Integer> authMap = new HashMap<>();
+    private final Map<String, Integer> authMap = new HashMap<>();
+    private final Set<WebSocketServer> socketServers = new HashSet<>();
+    private final WebSocketServerEventListener eventListener;
+
+
+    public WebSocketEventServlet(WebSocketServerEventListener eventListener) {
+        this.eventListener = eventListener;
+    }
 
 
     @Override
     public void configure(WebSocketServletFactory factory) {
-        factory.setCreator((req, resp) -> new WebSocketEventHandler(this));
+        factory.setCreator((req, resp) -> new WebSocketServer(this, eventListener));
     }
 
 
     @Override
     public int getNewUserId() {
+        if (authMap.size() > 2) throw new IllegalStateException("Authmap larger than 2");
+        eventListener.onPlayerJoin(authMap.size());
         return authMap.size();
     }
 
@@ -33,12 +45,24 @@ public class WebSocketEventServlet extends WebSocketServlet implements LoginList
 
 
     void removeFromAuthMap(@Nullable String token) {
+        eventListener.onPlayerLeave(authMap.get(token));
         authMap.remove(token);
     }
 
 
     int getPlayerId(@NotNull String token) {
         return authMap.get(token);
+    }
+
+
+    public void emitStart() {
+        for (WebSocketServer socketServer : socketServers)
+            socketServer.emitStart();
+    }
+
+
+    public Set<WebSocketServer> getSocketServers() {
+        return socketServers;
     }
 
 }

@@ -21,7 +21,7 @@ public class ZeeslagGameImpl implements ZeeslagGame {
 
     private static final Logger log = LoggerFactory.getLogger(ZeeslagGameImpl.class);
     private static final ZeeslagApi api = new ZeeslagApi("http://localhost:3000/api");
-    private static final Grid grid = new Grid(10, 10);
+    private static final Grid grid = new Grid();
     private final ZeeslagGui gui;
     private int userId;
     @Nullable
@@ -45,7 +45,6 @@ public class ZeeslagGameImpl implements ZeeslagGame {
 
         gui.setPlayerNumber(userId, name);
         webSocketClient = new ZeeslagWebSocketClient("ws://localhost:3000/ws", authData.token, userId, new ZeeslagWebSocketEventHandler(this));
-        webSocketClient.emitAttack(3, 5);
     }
 
 
@@ -118,13 +117,18 @@ public class ZeeslagGameImpl implements ZeeslagGame {
 
     @Override
     public void notifyWhenReady(int playerNr) {
-        throw new UnsupportedOperationException("Method notifyWhenReady() not implemented.");
+        if (webSocketClient == null) return;
+
+        if (grid.getShips().size() != ShipType.values().length) return;
+
+        webSocketClient.emitPlaceShips(grid.getShips());
+        gui.waitForOtherPlayerToBeReady();
     }
 
 
     @Override
     public void fireShot(int playerNr, int posX, int posY) {
-        throw new UnsupportedOperationException("Method fireShot() not implemented.");
+
     }
 
 
@@ -141,6 +145,7 @@ public class ZeeslagGameImpl implements ZeeslagGame {
 
 
     public void startGame() {
+        gui.notifyStartGame(userId);
     }
 
 

@@ -33,6 +33,8 @@ public interface ZeeslagGui {
      */
     void notifyStartGame(int playerNr);
 
+    void waitForOtherPlayerToBeReady();
+
     /**
      * Communicate the result of a shot fired by the player.
      * The result of the shot will be one of the following:

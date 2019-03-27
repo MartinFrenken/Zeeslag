@@ -8,16 +8,14 @@ import java.util.Set;
 
 public class Grid {
 
-    private final int width;
-    private final int height;
+    private final int width = 10;
+    private final int height = 10;
     private final Tile[][] tiles;
     private final Set<Ship> ships = new HashSet<>();
     private final Set<ShipType> shipTypes = new HashSet<>();
 
 
-    public Grid(final int width, final int height) {
-        this.width = width;
-        this.height = height;
+    public Grid() {
 
         tiles = new Tile[height][];
 
@@ -45,7 +43,7 @@ public class Grid {
     }
 
 
-    public Set<Ship> getShips() {
+    public @NotNull Set<Ship> getShips() {
         return ships;
     }
 
@@ -72,21 +70,22 @@ public class Grid {
 
 
     @NotNull
-    public Position normalize(@NotNull final Position position) {
+    private Position normalize(@NotNull final Position position) {
         final int x = ((position.x % width) + width) % width;
         final int y = ((position.y % height) + height) % height;
         return new Position(x, y);
     }
 
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public boolean tryPlace(@NotNull Ship ship) {
-        if (ship.orientation == Orientation.HORIZONTAL && ship.x + ship.getSize() > width) return false;
-        if (ship.orientation == Orientation.VERTICAL && ship.y + ship.getSize() > height) return false;
-        if (shipTypes.contains(ship.type)) return false;
+        if (ship.getOrientation() == Orientation.HORIZONTAL && ship.getX() + ship.getSize() > width) return false;
+        if (ship.getOrientation() == Orientation.VERTICAL && ship.getY() + ship.getSize() > height) return false;
+        if (shipTypes.contains(ship.getType())) return false;
 
         for (int i = 0; i < ship.getSize(); i++) {
-            var x = ship.x + (ship.orientation == Orientation.HORIZONTAL ? i : 0);
-            var y = ship.y + (ship.orientation == Orientation.VERTICAL ? i : 0);
+            var x = ship.getX() + (ship.getOrientation() == Orientation.HORIZONTAL ? i : 0);
+            var y = ship.getY() + (ship.getOrientation() == Orientation.VERTICAL ? i : 0);
 
             if (tiles[x][y].isOccupied()) {
                 ship.remove();
@@ -98,7 +97,7 @@ public class Grid {
         }
         ship.setGrid(this);
         ships.add(ship);
-        shipTypes.add(ship.type);
+        shipTypes.add(ship.getType());
         return true;
     }
 
@@ -115,7 +114,7 @@ public class Grid {
 
     public void removeShip(@NotNull Ship ship) {
         ships.remove(ship);
-        shipTypes.remove(ship.type);
+        shipTypes.remove(ship.getType());
     }
 
 }

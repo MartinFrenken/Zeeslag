@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 public enum PlayerState {
 
     PLACING,
+    READY,
     ATTACKING,
     WAITING;
 
@@ -12,7 +13,9 @@ public enum PlayerState {
     public PlayerState getNextState() {
         switch (this) {
             case PLACING:
-                return ATTACKING;
+                return READY;
+            case READY:
+                throw new IllegalStateException("Ready has no default next state");
             case ATTACKING:
                 return WAITING;
             case WAITING:
