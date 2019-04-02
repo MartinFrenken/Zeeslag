@@ -3,6 +3,8 @@
  */
 package zeeslag.client.gui;
 
+import zeeslag.shared.net.HitType;
+
 /**
  * Interface provided by the graphical user interface of the sea battle game.
  *
@@ -41,12 +43,12 @@ public interface ZeeslagGui {
      * MISSED  - No ship was hit
      * HIT     - A ship was hit
      * SUNK    - A ship was sunk
-     * ALLSUNK - All ships are sunk
+     * ALL_SUNK - All ships are sunk
      *
      * @param playerNr identification of player
      * @param shotType result of shot fired by player
      */
-    void playerFiresShot(int playerNr, ShotType shotType);
+    void playerFiresShot(int playerNr, HitType shotType);
 
     /**
      * Communicate the result of a shot fired by the opponent.
@@ -54,12 +56,12 @@ public interface ZeeslagGui {
      * MISSED  - No ship was hit
      * HIT     - A ship was hit
      * SUNK    - A ship was sunk
-     * ALLSUNK - All ships are sunk
+     * ALL_SUNK - All ships are sunk
      *
      * @param playerNr identification of player
      * @param shotType result of shot fired by opponent
      */
-    void opponentFiresShot(int playerNr, ShotType shotType);
+    void opponentFiresShot(int playerNr, HitType shotType);
 
     /**
      * Show state of a square in the ocean area.

@@ -5,7 +5,7 @@
     <option name="VM_PARAMETERS" value="--add-opens Shared/zeeslag.shared.net=gson" />
     <extension name="coverage">
       <pattern>
-        <option name="PATTERN" value="zeeslag.client.gui.*" />
+        <option name="PATTERN" value="zeeslag.shared.net.*" />
         <option name="ENABLED" value="true" />
       </pattern>
     </extension>

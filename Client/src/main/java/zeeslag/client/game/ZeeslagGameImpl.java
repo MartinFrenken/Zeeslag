@@ -6,10 +6,12 @@ package zeeslag.client.game;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import zeeslag.shared.net.HitType;
 import zeeslag.client.gui.SquareState;
 import zeeslag.client.gui.ZeeslagGui;
 import zeeslag.shared.net.*;
 
+import java.util.Objects;
 import java.util.Random;
 
 /**
@@ -49,7 +51,7 @@ public class ZeeslagGameImpl implements ZeeslagGame {
 
 
     @Override
-    public void placeShipsAutomatically(int playerNr) {
+    public void placeShipsAutomatically() {//TODO disable error message when autoplacing
         clearGridAndGui();
         var random = new Random();
         for (ShipType shipType : ShipType.values()) {
@@ -103,14 +105,14 @@ public class ZeeslagGameImpl implements ZeeslagGame {
 
 
     @Override
-    public void placeShip(int playerNr, ShipType shipType, int bowX, int bowY, boolean horizontal) {
+    public void placeShip(ShipType shipType, int bowX, int bowY, boolean horizontal) {
         var ship = new Ship(bowX, bowY, horizontal ? Orientation.HORIZONTAL : Orientation.VERTICAL, shipType);
         tryPlaceShipAndAddToGui(ship);
     }
 
 
     @Override
-    public void removeShip(int playerNr, int posX, int posY) {
+    public void removeShip(int posX, int posY) {
         var ship = grid.getTile(posX, posY).getShip();
         if (ship == null) return;
         removeShipFromGui(ship);
@@ -125,30 +127,29 @@ public class ZeeslagGameImpl implements ZeeslagGame {
 
 
     @Override
-    public void removeAllShips(int playerNr) {
+    public void removeAllShips() {
         clearGridAndGui();
     }
 
 
     @Override
-    public void notifyWhenReady(int playerNr) {
-        if (webSocketClient == null) return;
-
+    public void notifyWhenReady() {
         if (grid.getShips().size() != ShipType.values().length) return;
 
-        webSocketClient.emitPlaceShips(grid.getShips());
+        Objects.requireNonNull(webSocketClient).emitPlaceShips(grid.getShips());
         gui.waitForOtherPlayerToBeReady();
     }
 
 
     @Override
-    public void fireShot(int playerNr, int posX, int posY) {
-
+    public void fireShotGui(int posX, int posY) {
+        Objects.requireNonNull(webSocketClient).emitAttack(posX, posY);
+        gui.playerFiresShot(userId, HitType.HIT);
     }
 
 
     @Override
-    public void resetGame(int playerNr) {
+    public void resetGame() {
         throw new UnsupportedOperationException("Method resetGame() not implemented.");
     }
 
@@ -156,6 +157,18 @@ public class ZeeslagGameImpl implements ZeeslagGame {
     @Override
     public void stop() {
         if (webSocketClient != null) webSocketClient.disconnect();
+    }
+
+
+    @Override
+    public void onAttackResult(int to, int x, int y, HitType hitType) {//TODO loop through all ship tiles when a ship is sunk to update the tile color in the gui
+        if (userId == to) {
+            gui.opponentFiresShot(userId, hitType);
+            gui.showSquarePlayer(userId, x, y, SquareState.getSquareState(hitType));
+        } else {
+            gui.playerFiresShot(userId, hitType);
+            gui.showSquareOpponent(userId, x, y, SquareState.getSquareState(hitType));
+        }
     }
 
 

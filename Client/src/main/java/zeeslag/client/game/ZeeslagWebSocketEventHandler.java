@@ -1,5 +1,7 @@
 package zeeslag.client.game;
 
+import zeeslag.shared.net.HitType;
+
 public class ZeeslagWebSocketEventHandler implements ZeeslagWebSocketEventListener {
 
     private final ZeeslagGameImpl zeeslagGame;
@@ -11,14 +13,14 @@ public class ZeeslagWebSocketEventHandler implements ZeeslagWebSocketEventListen
 
 
     @Override
-    public void onAttack(int userId, int x, int y) {
-        zeeslagGame.fireShot(userId, x, y);
+    public void onAttackResult(int to, int x, int y, HitType hitType) {
+        zeeslagGame.onAttackResult(to, x, y, hitType);
     }
 
 
     @Override
     public void onReady(int userId) {
-        zeeslagGame.notifyWhenReady(userId);
+        zeeslagGame.notifyWhenReady();
     }
 
 

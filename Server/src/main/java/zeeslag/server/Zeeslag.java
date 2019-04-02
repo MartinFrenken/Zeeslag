@@ -2,6 +2,8 @@ package zeeslag.server;
 
 import org.jetbrains.annotations.NotNull;
 import zeeslag.shared.net.Grid;
+import zeeslag.shared.net.Ship;
+import zeeslag.shared.net.HitType;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,7 +11,7 @@ import java.util.Map;
 class Zeeslag {
 
     @NotNull
-    public GameState gameState = GameState.PREPARING;
+    private GameState gameState = GameState.PREPARING;
     private final Grid[] grids = new Grid[]{
             new Grid(),
             new Grid()
@@ -50,7 +52,7 @@ class Zeeslag {
         playerStates.put(0, PlayerState.ATTACKING);
         playerStates.put(1, PlayerState.WAITING);
 
-        gameState = gameState.getNextState();
+        setGameState(getGameState().getNextState());
     }
 
 
@@ -61,6 +63,50 @@ class Zeeslag {
         for (PlayerState state : playerStates.values())
             allPlayersReady = allPlayersReady && state == PlayerState.READY;
         return allPlayersReady;
+    }
+
+
+    @NotNull
+    public HitType attack(int to, int x, int y) {
+        var tile = grids[to].getTile(x, y);
+        var ship = tile.getShip();
+
+        for (int userId : playerStates.keySet())
+            playerStates.put(userId, playerStates.get(userId).getNextState());
+
+        if (ship == null) return HitType.MISSED;
+
+        ship.destroyTile(tile);
+
+        if (allShipsSunk(to)) {
+            gameState = gameState.getNextState();
+            return HitType.ALL_SUNK;
+        }
+
+        if (ship.hasSunk())
+            return HitType.SUNK;
+
+        return HitType.HIT;
+    }
+
+
+    @NotNull
+    public GameState getGameState() {
+        return gameState;
+    }
+
+
+    public void setGameState(@NotNull GameState gameState) {
+        this.gameState = gameState;
+    }
+
+
+    private boolean allShipsSunk(int userId) {
+        var allSunk = true;
+        for (Ship ship : grids[userId].getShips()) {
+            allSunk = allSunk && ship.hasSunk();
+        }
+        return allSunk;
     }
 
 }

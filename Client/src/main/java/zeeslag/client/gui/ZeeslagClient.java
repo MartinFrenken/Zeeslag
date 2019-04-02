@@ -22,6 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import zeeslag.client.game.ZeeslagGame;
 import zeeslag.client.game.ZeeslagGameImpl;
+import zeeslag.shared.net.HitType;
 import zeeslag.shared.net.ShipType;
 
 /**
@@ -480,22 +481,22 @@ public class ZeeslagClient extends Application implements ZeeslagGui {
      * MISSED  - No ship was hit
      * HIT     - A ship was hit
      * SUNK    - A ship was sunk
-     * ALLSUNK - All ships are sunk
+     * ALL_SUNK - All ships are sunk
      *
      * @param playerNr identification of player
-     * @param shotType result of shot fired by player
+     * @param hitType result of shot fired by player
      */
     @Override
-    public void playerFiresShot(int playerNr, ShotType shotType) {
+    public void playerFiresShot(int playerNr, HitType hitType) {
         // Check identification of player
         if (playerNr != this.playerNr) {
             showMessage("ERROR: Wrong player number method playerFiresShot()");
             return;
         }
-        if (shotType.equals(ShotType.SUNK)) {
+        if (hitType.equals(HitType.SUNK)) {
             showMessage("Ship of " + opponentName + " is sunk");
         }
-        if (shotType.equals(ShotType.ALLSUNK)) {
+        if (hitType.equals(HitType.ALL_SUNK)) {
             showMessage("Winner: " + playerName + ".\nPress Start new game to continue");
             buttonStartNewGame.setDisable(false);
             gameEnded = true;
@@ -509,22 +510,22 @@ public class ZeeslagClient extends Application implements ZeeslagGui {
      * MISSED  - No ship was hit
      * HIT     - A ship was hit
      * SUNK    - A ship was sunk
-     * ALLSUNK - All ships are sunk
+     * ALL_SUNK - All ships are sunk
      *
      * @param playerNr identification of player
      * @param shotType result of shot fired by opponent
      */
     @Override
-    public void opponentFiresShot(int playerNr, ShotType shotType) {
+    public void opponentFiresShot(int playerNr, HitType shotType) {
         // Check identification of player
         if (playerNr != this.playerNr) {
             showMessage("ERROR: Wrong player number method opponentFiresShot()");
             return;
         }
-        if (shotType.equals(ShotType.SUNK)) {
+        if (shotType.equals(HitType.SUNK)) {
             showMessage("Ship of " + playerName + " is sunk");
         }
-        if (shotType.equals(ShotType.ALLSUNK)) {
+        if (shotType.equals(HitType.ALL_SUNK)) {
             showMessage("Winner: " + opponentName + ".\nPress Start new game to continue");
             buttonStartNewGame.setDisable(false);
             gameEnded = true;
@@ -611,13 +612,13 @@ public class ZeeslagClient extends Application implements ZeeslagGui {
                 case SHIP:
                     square.setFill(Color.DARKGRAY);
                     break;
-                case SHOTMISSED:
+                case SHOT_MISSED:
                     square.setFill(Color.BLUE);
                     break;
-                case SHOTHIT:
+                case SHOT_HIT:
                     square.setFill(Color.RED);
                     break;
-                case SHIPSUNK:
+                case SHIP_SUNK:
                     square.setFill(Color.GREEN);
                     break;
                 default:
@@ -651,7 +652,7 @@ public class ZeeslagClient extends Application implements ZeeslagGui {
      */
     private void placeShipsAutomatically() {
         // Place the player's ships automatically.
-        game.placeShipsAutomatically(playerNr);
+        game.placeShipsAutomatically();
     }
 
 
@@ -660,7 +661,7 @@ public class ZeeslagClient extends Application implements ZeeslagGui {
      */
     private void removeAllShips() {
         // Remove the player's ships
-        game.removeAllShips(playerNr);
+        game.removeAllShips();
     }
 
 
@@ -669,7 +670,7 @@ public class ZeeslagClient extends Application implements ZeeslagGui {
      */
     private void notifyWhenReady() {
         // Notify that the player is ready is start the game.
-        game.notifyWhenReady(playerNr);
+        game.notifyWhenReady();
     }
 
 
@@ -684,7 +685,7 @@ public class ZeeslagClient extends Application implements ZeeslagGui {
      */
     private void startNewGame() {
         // The player wants to start a new game.
-        game.resetGame(playerNr);
+        game.resetGame();
         playingMode = false;
         gameEnded = false;
         labelYourName.setDisable(false);
@@ -713,7 +714,7 @@ public class ZeeslagClient extends Application implements ZeeslagGui {
         if (squareSelectedInOceanArea) {
             int bowX = selectedSquareX;
             int bowY = selectedSquareY;
-            game.placeShip(playerNr, shipType, bowX, bowY, horizontal);
+            game.placeShip(shipType, bowX, bowY, horizontal);
         } else {
             showMessage("Select square in " + playerName + "\'s grid to place ship");
         }
@@ -727,7 +728,7 @@ public class ZeeslagClient extends Application implements ZeeslagGui {
         if (squareSelectedInOceanArea) {
             int posX = selectedSquareX;
             int posY = selectedSquareY;
-            game.removeShip(playerNr, posX, posY);
+            game.removeShip(posX, posY);
         } else {
             showMessage("Select square in " + playerName + "\'s grid to remove ship");
         }
@@ -763,13 +764,12 @@ public class ZeeslagClient extends Application implements ZeeslagGui {
      */
     private void rectangleTargetAreaMousePressed(int x, int y) {
         if (playingMode && !gameEnded) {
-            // Game is in playing mode
-            squaresTargetArea[x][y].setFill(Color.YELLOW);
+            // Game is in playing modev
             if (playersTurn()) {
                 // It is this player's turn
                 // Player fires a shot at the selected target area
-                game.fireShot(playerNr, x, y);
-
+                game.fireShotGui(x, y);
+                squaresTargetArea[x][y].setFill(Color.YELLOW);
                 // Opponent's turn
                 switchTurn();
             } else {

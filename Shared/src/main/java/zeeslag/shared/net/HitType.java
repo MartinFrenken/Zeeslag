@@ -1,16 +1,16 @@
 /*
  * Sea Battle Start project.
  */
-package zeeslag.client.gui;
+package zeeslag.shared.net;
 
 /**
  * Indicate the result of a shot.
  *
  * @author Nico Kuijpers
  */
-public enum ShotType {
+public enum HitType {
     MISSED,   // Shot missed
     HIT,      // Shot hit
     SUNK,     // Ship sunk
-    ALLSUNK  // All ships sunk
+    ALL_SUNK  // All ships sunk
 }

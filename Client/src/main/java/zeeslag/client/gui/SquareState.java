@@ -3,6 +3,8 @@
  */
 package zeeslag.client.gui;
 
+import zeeslag.shared.net.HitType;
+
 /**
  * Indicate the state of a square.
  *
@@ -11,7 +13,23 @@ package zeeslag.client.gui;
 public enum SquareState {
     WATER,        // No ship is positioned at this square
     SHIP,         // A ship is positioned at this square
-    SHOTMISSED,   // A shot was fired at this square, but no hit
-    SHOTHIT,      // A shot was fired at this square and a ship was hit
-    SHIPSUNK     // A shot was fired at this square and a ship is sunk
+    SHOT_MISSED,   // A shot was fired at this square, but no hit
+    SHOT_HIT,      // A shot was fired at this square and a ship was hit
+    SHIP_SUNK;     // A shot was fired at this square and a ship is sunk
+
+
+    public static SquareState getSquareState(HitType shotType) {
+        switch (shotType) {
+            case MISSED:
+                return SHOT_MISSED;
+            case HIT:
+                return SHOT_HIT;
+            case SUNK:
+                return SHIP_SUNK;
+            case ALL_SUNK:
+                return SHIP_SUNK;
+            default:
+                throw new IllegalStateException("Invalid shot type " + shotType);
+        }
+    }
 }

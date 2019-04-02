@@ -6,6 +6,7 @@ import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.WebSocketAdapter;
 import org.eclipse.jetty.websocket.client.WebSocketClient;
 import org.jetbrains.annotations.NotNull;
+import zeeslag.shared.net.HitType;
 import zeeslag.shared.net.Ship;
 
 import java.io.IOException;
@@ -123,12 +124,12 @@ public class ZeeslagWebSocketClient extends WebSocketAdapter {
         var json = new Gson().fromJson(message, JsonObject.class);
         var action = json.get("action").getAsString();
 
-        if (json.get("sender") != null && json.get("sender").getAsInt() == playerId)
-            return;
+//        if (json.get("sender") != null && json.get("sender").getAsInt() == playerId)
+//            return;
 
         switch (action) {
-            case "attack":
-                onAttack(json);
+            case "attackResult":
+                onAttackResult(json);
                 break;
             case "ready":
                 onReady(json);
@@ -145,11 +146,13 @@ public class ZeeslagWebSocketClient extends WebSocketAdapter {
     }
 
 
-    private void onAttack(@NotNull JsonObject json) {
-        var position = json.get("data").getAsJsonObject();
-        var x = position.get("x").getAsInt();
-        var y = position.get("y").getAsInt();
-        eventListener.onAttack(json.get("sender").getAsInt(), x, y);
+    private void onAttackResult(@NotNull JsonObject json) {
+        var data = json.get("data").getAsJsonObject();
+        var to = data.get("receiver").getAsInt();
+        var x = data.get("x").getAsInt();
+        var y = data.get("y").getAsInt();
+        var hitType = new Gson().fromJson(data.get("hitType"), HitType.class);
+        eventListener.onAttackResult(to, x, y, hitType);
     }
 
 
