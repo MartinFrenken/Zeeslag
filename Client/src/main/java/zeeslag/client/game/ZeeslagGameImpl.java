@@ -84,15 +84,17 @@ public class ZeeslagGameImpl implements ZeeslagGame {
 
 
     private boolean tryPlaceShipAndAddToGui(Ship ship, boolean auto) {
+
         if (grid.tryPlace(ship)) {
             for (Tile tile : ship.getOccupiedTiles())
                 gui.showSquarePlayer(userId, tile.getPosition().x, tile.getPosition().y, SquareState.SHIP);
-            return true;
+        } else {
+            gui.showErrorMessage(userId, grid.getErrorMessage().toString());
+            return false;
         }
-
         if (!auto)
             gui.showErrorMessage(userId, "Can't place a ship there");
-        return false;
+        return true;
     }
 
 
@@ -176,6 +178,11 @@ public class ZeeslagGameImpl implements ZeeslagGame {
         for (var x = 0; x < grid.getWidth(); x++)
             for (var y = 0; y < grid.getHeight(); y++)
                 gui.showSquareOpponent(userId, x, y, SquareState.WATER);
+    }
+
+
+    public static Grid getGrid() {
+        return grid;
     }
 
 }
