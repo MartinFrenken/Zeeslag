@@ -23,6 +23,7 @@ public class ZeeslagGameImpl implements ZeeslagGame {
 
     private static final Logger log = LoggerFactory.getLogger(ZeeslagGameImpl.class);
     private static final ZeeslagApi api = new ZeeslagApi("http://localhost:3000/api");
+
     private static final Grid grid = new Grid();
     private final ZeeslagGui gui;
     private int userId;
@@ -171,5 +172,9 @@ public class ZeeslagGameImpl implements ZeeslagGame {
 
     public void endGame() {
     }
+    public static Grid getGrid() {
+        return grid;
+    }
+
 
 }
