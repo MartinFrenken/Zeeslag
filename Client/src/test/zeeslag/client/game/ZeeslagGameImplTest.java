@@ -31,8 +31,7 @@ class ZeeslagGameImplTest
         //
         game.placeShip(shipType,x,y,horizontal);
 
-       Set<Tile> occupiedTiles= game.getGrid().getTile(x,y).getShip().getOccupiedTiles();
-        int expectedX=0;
+
         ShipType actualShipType =game.getGrid().getTile(x,y).getShip().getType();
         assertEquals(ShipType.SUBMARINE,actualShipType);
 
