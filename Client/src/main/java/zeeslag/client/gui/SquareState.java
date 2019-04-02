@@ -25,9 +25,9 @@ public enum SquareState {
             case HIT:
                 return SHOT_HIT;
             case SUNK:
-                return SHIP_SUNK;
+                return SHOT_HIT;
             case ALL_SUNK:
-                return SHIP_SUNK;
+                return SHOT_HIT;
             default:
                 throw new IllegalStateException("Invalid shot type " + shotType);
         }

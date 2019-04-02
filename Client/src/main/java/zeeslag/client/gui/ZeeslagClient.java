@@ -71,6 +71,8 @@ public class ZeeslagClient extends Application implements ZeeslagGui {
     private int selectedSquareX;
     private int selectedSquareY;
     private String shipColour = "#ff00cc";
+
+
     /**
      * @param args the command line arguments
      */
@@ -359,7 +361,7 @@ public class ZeeslagClient extends Application implements ZeeslagGui {
         // The class ZeeslagGameImpl is not implemented yet.
         // When invoking methods of class ZeeslagGameImpl an
         // UnsupportedOperationException will be thrown
-        // TODO: IMPLEMENT CLASS ZeeslagGameImpl.
+      
         game = new ZeeslagGameImpl(this);
     }
 
@@ -484,7 +486,7 @@ public class ZeeslagClient extends Application implements ZeeslagGui {
      * ALL_SUNK - All ships are sunk
      *
      * @param playerNr identification of player
-     * @param hitType result of shot fired by player
+     * @param hitType  result of shot fired by player
      */
     @Override
     public void playerFiresShot(int playerNr, HitType hitType) {
@@ -796,6 +798,8 @@ public class ZeeslagClient extends Application implements ZeeslagGui {
      * @param y y-coordinate of selected square
      */
     private Paint selectedSquareColor;
+
+
     private void rectangleOceanAreaMousePressed(int x, int y) {
         if (!playingMode) {
             // Game is not in playing mode: select square to place a ship

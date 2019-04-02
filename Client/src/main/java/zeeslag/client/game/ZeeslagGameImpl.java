@@ -40,7 +40,8 @@ public class ZeeslagGameImpl implements ZeeslagGame {
         log.debug("Register Player {} - password {}", name, password);
         this.name = name;
         var authData = api.login(name, password);
-        if (authData == null) {//TODO show error message
+        if (authData == null) {
+            gui.showErrorMessage(userId, "Failed to login");
             return;
         }
 
@@ -54,7 +55,7 @@ public class ZeeslagGameImpl implements ZeeslagGame {
 
 
     @Override
-    public void placeShipsAutomatically() {//TODO disable error message when autoplacing
+    public void placeShipsAutomatically() {
         clearGridAndGui();
         var random = new Random();
         for (ShipType shipType : ShipType.values()) {
@@ -152,7 +153,7 @@ public class ZeeslagGameImpl implements ZeeslagGame {
 
 
     @Override
-    public void onAttackResult(int to, int x, int y, HitType hitType) {//TODO loop through all ship tiles when a ship is sunk to update the tile color in the gui
+    public void onAttackResult(int to, int x, int y, HitType hitType) {
         if (userId == to) {
             gui.opponentFiresShot(userId, hitType);
             gui.showSquarePlayer(userId, x, y, SquareState.getSquareState(hitType));
