@@ -10,6 +10,6 @@ interface ZeeslagWebSocketEventListener {
 
     void onStart();
 
-    void onEnd();
+    void onReset();
 
 }

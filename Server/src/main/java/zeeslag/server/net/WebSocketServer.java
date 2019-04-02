@@ -6,8 +6,8 @@ import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.WebSocketAdapter;
 import org.jetbrains.annotations.Nullable;
 import zeeslag.server.WebSocketServerEventListener;
-import zeeslag.shared.net.Ship;
 import zeeslag.shared.net.HitType;
+import zeeslag.shared.net.Ship;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -21,7 +21,7 @@ class WebSocketServer extends WebSocketAdapter {
     private Session session;
 
 
-    public WebSocketServer(WebSocketEventServlet webSocketEventServlet, WebSocketServerEventListener eventListener) {
+    WebSocketServer(WebSocketEventServlet webSocketEventServlet, WebSocketServerEventListener eventListener) {
         this.webSocketEventServlet = webSocketEventServlet;
         this.eventListener = eventListener;
     }
@@ -56,6 +56,12 @@ class WebSocketServer extends WebSocketAdapter {
                 return;
             case "attack":
                 onAttack(json);
+                return;
+            case "singlePlayer":
+                eventListener.onSinglePlayer();
+                return;
+            case "reset":
+                eventListener.onReset();
                 return;
             default:
                 throw new IllegalStateException("Invalid action: " + action);
@@ -100,7 +106,7 @@ class WebSocketServer extends WebSocketAdapter {
     }
 
 
-    public void emitStart() {
+    void emitStart() {
         try {
             var json = new JsonObject();
             json.addProperty("action", "start");
@@ -111,7 +117,7 @@ class WebSocketServer extends WebSocketAdapter {
     }
 
 
-    public void emitAttackResult(int receiver, int x, int y, HitType hit) {
+    void emitAttackResult(int receiver, int x, int y, HitType hit) {
         try {
             var json = new JsonObject();
             json.addProperty("action", "attackResult");
@@ -122,6 +128,18 @@ class WebSocketServer extends WebSocketAdapter {
             data.addProperty("y", y);
             data.addProperty("hitType", hit.toString());
             json.add("data", data);
+            session.getRemote().sendString(json.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    void emitReset() {
+        var json = new JsonObject();
+        json.addProperty("action", "reset");
+        try {
+
             session.getRemote().sendString(json.toString());
         } catch (IOException e) {
             e.printStackTrace();

@@ -22,7 +22,7 @@ public class ZeeslagWebSocketClient extends WebSocketAdapter {
     private Session session;
 
 
-    public ZeeslagWebSocketClient(@NotNull String url, @NotNull String token, int playerId, @NotNull ZeeslagWebSocketEventListener eventListener) {
+    ZeeslagWebSocketClient(@NotNull String url, @NotNull String token, int playerId, @NotNull ZeeslagWebSocketEventListener eventListener) {
         this.token = token;
         this.playerId = playerId;
         this.eventListener = eventListener;
@@ -50,7 +50,7 @@ public class ZeeslagWebSocketClient extends WebSocketAdapter {
     }
 
 
-    public void disconnect() {
+    void disconnect() {
         try {
             session.close();
             client.stop();
@@ -137,8 +137,8 @@ public class ZeeslagWebSocketClient extends WebSocketAdapter {
             case "start":
                 onStart();
                 break;
-            case "end":
-                onEnd();
+            case "reset":
+                onReset();
                 break;
             default:
                 throw new IllegalStateException("Invalid action: " + action);
@@ -167,8 +167,8 @@ public class ZeeslagWebSocketClient extends WebSocketAdapter {
     }
 
 
-    private void onEnd() {
-        eventListener.onEnd();
+    private void onReset() {
+        eventListener.onReset();
     }
 
 
@@ -183,6 +183,26 @@ public class ZeeslagWebSocketClient extends WebSocketAdapter {
     public void onWebSocketError(Throwable cause) {
         super.onWebSocketError(cause);
         cause.printStackTrace(System.err);
+    }
+
+
+    void emitSinglePlayer() {
+        var json = createBaseActionJson("singlePlayer");
+        try {
+            session.getRemote().sendString(json.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    void emitReset() {
+        var json = createBaseActionJson("reset");
+        try {
+            session.getRemote().sendString(json.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

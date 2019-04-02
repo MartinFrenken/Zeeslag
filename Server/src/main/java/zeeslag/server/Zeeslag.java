@@ -2,8 +2,8 @@ package zeeslag.server;
 
 import org.jetbrains.annotations.NotNull;
 import zeeslag.shared.net.Grid;
-import zeeslag.shared.net.Ship;
 import zeeslag.shared.net.HitType;
+import zeeslag.shared.net.Ship;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,34 +17,42 @@ class Zeeslag {
             new Grid()
     };
     private final Map<Integer, PlayerState> playerStates = new HashMap<>();
+    private final Ai ai;
+    private boolean isSinglePlayer;
 
 
-    public Grid getGrid(int userId) {
+    Zeeslag(Ai ai) {
+        this.ai = ai;
+        ai.setGame(this);
+    }
+
+
+    Grid getGrid(int userId) {
         return grids[userId];
     }
 
 
-    public void addPlayer(int userId) {
+    void addPlayer(int userId) {
         playerStates.put(userId, PlayerState.PLACING);
     }
 
 
-    public void removePlayer(int userId) {
+    void removePlayer(int userId) {
         playerStates.remove(userId);
     }
 
 
-    public PlayerState getPlayerState(int userId) {
+    PlayerState getPlayerState(int userId) {
         return playerStates.get(userId);
     }
 
 
-    public void setPlayerState(int userId, PlayerState state) {
+    void setPlayerState(int userId, PlayerState state) {
         playerStates.put(userId, state);
     }
 
 
-    public void setPlayerReady(int userId) {
+    void setPlayerReady(int userId) {
         playerStates.put(userId, PlayerState.READY);
 
         if (!allPlayersReady()) return;
@@ -67,7 +75,7 @@ class Zeeslag {
 
 
     @NotNull
-    public HitType attack(int to, int x, int y) {
+    HitType attack(int to, int x, int y) {
         var tile = grids[to].getTile(x, y);
         var ship = tile.getShip();
 
@@ -91,12 +99,12 @@ class Zeeslag {
 
 
     @NotNull
-    public GameState getGameState() {
+    GameState getGameState() {
         return gameState;
     }
 
 
-    public void setGameState(@NotNull GameState gameState) {
+    void setGameState(@NotNull GameState gameState) {
         this.gameState = gameState;
     }
 
@@ -107,6 +115,28 @@ class Zeeslag {
             allSunk = allSunk && ship.hasSunk();
         }
         return allSunk;
+    }
+
+
+    void setIsSinglePlayer(boolean isSinglePlayer) {
+        this.isSinglePlayer = isSinglePlayer;
+    }
+
+
+    boolean isSinglePlayer() {
+        return isSinglePlayer;
+    }
+
+
+    Ai getAi() {
+        return ai;
+    }
+
+
+    void reset() {
+        gameState = GameState.PREPARING;
+        for (int i = 0; i < grids.length; i++) grids[i] = new Grid();
+        for (int i : playerStates.keySet()) playerStates.put(i, PlayerState.PLACING);
     }
 
 }

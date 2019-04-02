@@ -5,6 +5,8 @@ import zeeslag.shared.net.Ship;
 
 public interface WebSocketServerEventListener {
 
+    void onSinglePlayer();
+
     void onPlaceShips(int userId, @NotNull Ship[] ships);
 
     void onPlayerJoin(int userId);
@@ -12,5 +14,7 @@ public interface WebSocketServerEventListener {
     void onPlayerLeave(int userId);
 
     void onAttack(int userId, int x, int y);
+
+    void onReset();
 
 }

@@ -9,8 +9,16 @@ public class WebSocketServerEventHandler implements WebSocketServerEventListener
     private final Zeeslag game;
 
 
-    public WebSocketServerEventHandler(Zeeslag game) {
+    WebSocketServerEventHandler(Zeeslag game) {
         this.game = game;
+    }
+
+
+    @Override
+    public void onSinglePlayer() {
+        System.out.println("sp");
+        game.setIsSinglePlayer(true);
+        game.addPlayer(game.getAi().getId());
     }
 
 
@@ -35,6 +43,8 @@ public class WebSocketServerEventHandler implements WebSocketServerEventListener
 
         if (game.getGameState() == GameState.FIGHTING)
             ZeeslagServer.getWebSocketServlet().emitStart();
+
+        if (game.isSinglePlayer()) game.getAi().placeShips();
     }
 
 
@@ -57,6 +67,15 @@ public class WebSocketServerEventHandler implements WebSocketServerEventListener
 
         var hitType = game.attack(1 - sender, x, y);
         ZeeslagServer.getWebSocketServlet().emitAttackResult(1 - sender, x, y, hitType);
+
+        if (game.isSinglePlayer()) game.getAi().attack();
+    }
+
+
+    @Override
+    public void onReset() {
+        game.reset();
+        ZeeslagServer.getWebSocketServlet().emitReset();
     }
 
 }

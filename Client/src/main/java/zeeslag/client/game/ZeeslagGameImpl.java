@@ -6,7 +6,6 @@ package zeeslag.client.game;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import zeeslag.shared.net.HitType;
 import zeeslag.client.gui.SquareState;
 import zeeslag.client.gui.ZeeslagGui;
 import zeeslag.shared.net.*;
@@ -28,6 +27,7 @@ public class ZeeslagGameImpl implements ZeeslagGame {
     private int userId;
     @Nullable
     private ZeeslagWebSocketClient webSocketClient;
+    private String name;
 
 
     public ZeeslagGameImpl(ZeeslagGui gui) {
@@ -38,6 +38,7 @@ public class ZeeslagGameImpl implements ZeeslagGame {
     @Override
     public void loginPlayer(String name, String password, boolean singlePlayerMode) {
         log.debug("Register Player {} - password {}", name, password);
+        this.name = name;
         var authData = api.login(name, password);
         if (authData == null) {//TODO show error message
             return;
@@ -47,6 +48,8 @@ public class ZeeslagGameImpl implements ZeeslagGame {
 
         gui.setPlayerNumber(userId, name);
         webSocketClient = new ZeeslagWebSocketClient("ws://localhost:3000/ws", authData.token, userId, new ZeeslagWebSocketEventHandler(this));
+        if (singlePlayerMode)
+            webSocketClient.emitSinglePlayer();
     }
 
 
@@ -60,7 +63,7 @@ public class ZeeslagGameImpl implements ZeeslagGame {
             var y = 0;
             Ship ship = null;
 
-            while (ship == null || !tryPlaceShipAndAddToGui(ship)) {
+            while (ship == null || !tryPlaceShipAndAddToGui(ship, true)) {
                 isHorizontal = random.nextBoolean();
                 x = random.nextInt(grid.getWidth() - (isHorizontal ? shipType.getSize() : 0));
                 y = random.nextInt(grid.getHeight() - (isHorizontal ? 0 : shipType.getSize()));
@@ -79,14 +82,15 @@ public class ZeeslagGameImpl implements ZeeslagGame {
     }
 
 
-    private boolean tryPlaceShipAndAddToGui(Ship ship) {
+    private boolean tryPlaceShipAndAddToGui(Ship ship, boolean auto) {
         if (grid.tryPlace(ship)) {
             for (Tile tile : ship.getOccupiedTiles())
                 gui.showSquarePlayer(userId, tile.getPosition().x, tile.getPosition().y, SquareState.SHIP);
             return true;
         }
 
-        gui.showErrorMessage(userId, "Can't place a ship there");
+        if (!auto)
+            gui.showErrorMessage(userId, "Can't place a ship there");
         return false;
     }
 
@@ -94,7 +98,7 @@ public class ZeeslagGameImpl implements ZeeslagGame {
     @Override
     public void placeShip(ShipType shipType, int bowX, int bowY, boolean horizontal) {
         var ship = new Ship(bowX, bowY, horizontal ? Orientation.HORIZONTAL : Orientation.VERTICAL, shipType);
-        tryPlaceShipAndAddToGui(ship);
+        tryPlaceShipAndAddToGui(ship, false);
     }
 
 
@@ -137,7 +141,7 @@ public class ZeeslagGameImpl implements ZeeslagGame {
 
     @Override
     public void resetGame() {
-        throw new UnsupportedOperationException("Method resetGame() not implemented.");
+        Objects.requireNonNull(webSocketClient).emitReset();
     }
 
 
@@ -159,12 +163,18 @@ public class ZeeslagGameImpl implements ZeeslagGame {
     }
 
 
-    public void startGame() {
+    void startGame() {
         gui.notifyStartGame(userId);
     }
 
 
-    public void endGame() {
+    void onReset() {
+        gui.setPlayerNumber(userId, name);
+        clearGridAndGui();
+
+        for (var x = 0; x < grid.getWidth(); x++)
+            for (var y = 0; y < grid.getHeight(); y++)
+                gui.showSquareOpponent(userId, x, y, SquareState.WATER);
     }
 
 }

@@ -31,8 +31,8 @@ public class ZeeslagWebSocketEventHandler implements ZeeslagWebSocketEventListen
 
 
     @Override
-    public void onEnd() {
-        zeeslagGame.endGame();
+    public void onReset() {
+        zeeslagGame.onReset();
     }
 
 }

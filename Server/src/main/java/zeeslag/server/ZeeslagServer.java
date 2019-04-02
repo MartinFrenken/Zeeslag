@@ -9,11 +9,11 @@ import zeeslag.server.net.WebSocketEventServlet;
 
 public class ZeeslagServer {
 
-    private static final Zeeslag game = new Zeeslag();
+    private static final Zeeslag game = new Zeeslag(new BasicAi());
     private static final WebSocketEventServlet webSocketServlet = new WebSocketEventServlet(new WebSocketServerEventHandler(game));
 
 
-    public static WebSocketEventServlet getWebSocketServlet() {
+    static WebSocketEventServlet getWebSocketServlet() {
         return webSocketServlet;
     }
 
