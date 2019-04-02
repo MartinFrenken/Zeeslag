@@ -58,21 +58,6 @@ public class Grid {
         return tiles[normalized.y][normalized.x];
     }
 
-
-    public int calculateDistance(@NotNull final Position source, @NotNull final Position target) {
-        final Position normalizedSource = normalize(source);
-        final Position normalizedTarget = normalize(target);
-
-        final int dx = Math.abs(normalizedSource.x - normalizedTarget.x);
-        final int dy = Math.abs(normalizedSource.y - normalizedTarget.y);
-
-        final int toroidal_dx = Math.min(dx, width - dx);
-        final int toroidal_dy = Math.min(dy, height - dy);
-
-        return toroidal_dx + toroidal_dy;
-    }
-
-
     @NotNull
     private Position normalize(@NotNull final Position position) {
         final int x = ((position.x % width) + width) % width;
