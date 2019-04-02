@@ -3,7 +3,6 @@ package zeeslag.server.net;
 import org.eclipse.jetty.websocket.servlet.WebSocketServlet;
 import org.eclipse.jetty.websocket.servlet.WebSocketServletFactory;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import zeeslag.server.WebSocketServerEventListener;
 import zeeslag.shared.net.UserAuthData;
 
@@ -44,7 +43,7 @@ public class WebSocketEventServlet extends WebSocketServlet implements LoginList
     }
 
 
-    void removeFromAuthMap(@Nullable String token) {
+    void removeFromAuthMap(@NotNull String token) {
         eventListener.onPlayerLeave(authMap.get(token));
         authMap.remove(token);
     }

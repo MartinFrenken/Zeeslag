@@ -106,6 +106,13 @@ public class ZeeslagWebSocketClient extends WebSocketAdapter {
     @Override
     public void onWebSocketConnect(Session session) {
         super.onWebSocketConnect(session);
+        try {
+            var json = new JsonObject();
+            json.addProperty("token", token);
+            session.getRemote().sendString(json.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         System.out.println("Socket Connected: " + session);
     }
 

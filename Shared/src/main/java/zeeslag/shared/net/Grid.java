@@ -81,7 +81,6 @@ public class Grid {
     }
 
 
-    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public boolean tryPlace(@NotNull Ship ship) {
         if (ship.getOrientation() == Orientation.HORIZONTAL && ship.getX() + ship.getSize() > width)
         {

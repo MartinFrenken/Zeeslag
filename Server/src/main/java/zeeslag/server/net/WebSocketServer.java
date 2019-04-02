@@ -9,6 +9,7 @@ import zeeslag.server.WebSocketServerEventListener;
 import zeeslag.shared.net.Ship;
 
 import java.io.IOException;
+import java.util.Objects;
 
 class WebSocketServer extends WebSocketAdapter {
 
@@ -39,8 +40,10 @@ class WebSocketServer extends WebSocketAdapter {
     public void onWebSocketText(String message) {
         super.onWebSocketText(message);
         var json = new Gson().fromJson(message, JsonObject.class);
-        if (token == null)
+        if (token == null) {
             token = json.get("token").getAsString();
+            return;
+        }
         if (webSocketEventServlet.getPlayerId(token) != json.get("sender").getAsInt())
             return;
 
@@ -70,8 +73,8 @@ class WebSocketServer extends WebSocketAdapter {
     @Override
     public void onWebSocketClose(int statusCode, String reason) {
         super.onWebSocketClose(statusCode, reason);
+        webSocketEventServlet.removeFromAuthMap(Objects.requireNonNull(token));
         webSocketEventServlet.getSocketServers().remove(this);
-        webSocketEventServlet.removeFromAuthMap(token);
         System.out.println("Socket Closed: [" + statusCode + "] " + reason);
     }
 
