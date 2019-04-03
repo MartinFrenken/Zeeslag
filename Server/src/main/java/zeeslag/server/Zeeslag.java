@@ -17,6 +17,7 @@ class Zeeslag {
             new Grid()
     };
     private final Map<Integer, PlayerState> playerStates = new HashMap<>();
+    @NotNull
     private final Ai ai;
     private boolean isSinglePlayer;
 
@@ -128,7 +129,7 @@ class Zeeslag {
     }
 
 
-    Ai getAi() {
+    @NotNull Ai getAi() {
         return ai;
     }
 

@@ -1,6 +1,6 @@
 package zeeslag.shared;
 
-import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class Position {
 
@@ -8,44 +8,14 @@ public class Position {
     public final int y;
 
 
-    public Position(final int x, final int y) {
+    Position(final int x, final int y) {
         this.x = x;
         this.y = y;
     }
 
 
-    @NotNull
-    public Position directionalOffset(@NotNull final Direction d) {
-        final int dx;
-        final int dy;
-
-        switch (d) {
-            case NORTH:
-                dx = 0;
-                dy = -1;
-                break;
-            case SOUTH:
-                dx = 0;
-                dy = 1;
-                break;
-            case EAST:
-                dx = 1;
-                dy = 0;
-                break;
-            case WEST:
-                dx = -1;
-                dy = 0;
-                break;
-            default:
-                throw new IllegalStateException("Unknown direction " + d);
-        }
-
-        return new Position(x + dx, y + dy);
-    }
-
-
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(@Nullable Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 

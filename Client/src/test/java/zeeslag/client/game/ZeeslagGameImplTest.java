@@ -1,39 +1,41 @@
 package zeeslag.client.game;
 
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import zeeslag.client.gui.ZeeslagGui;
 import zeeslag.shared.Ship;
 import zeeslag.shared.ShipType;
 
+import java.util.Objects;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ZeeslagGameImplTest
 {
-    ZeeslagGui gui = new MockGui();
+
+    @NotNull
+    private final ZeeslagGui gui = new MockGui();
 
     @Test
-
-    public void PlaceShipIsOkay()
+    void PlaceShipIsOkay()
     {
         ZeeslagGameImpl game = new ZeeslagGameImpl(gui);
 
         //Ship Input properties
         int x = 1;
         int y =1;
-        Boolean horizontal=true;
         ShipType shipType= ShipType.SUBMARINE;
         //
-        game.placeShip(shipType,x,y,horizontal);
+        game.placeShip(shipType, x, y, true);
 
-        ShipType actualShipType = ZeeslagGameImpl.getGrid().getTile(x, y).getShip().getType();
+        ShipType actualShipType = Objects.requireNonNull(ZeeslagGameImpl.getGrid().getTile(x, y).getShip()).getType();
         assertEquals(ShipType.SUBMARINE,actualShipType);
 
 
     }
     @Test
-    public void PlaceShipsAutomaticallyIsOkay()
+    void PlaceShipsAutomaticallyIsOkay()
     {
         ZeeslagGameImpl game = new ZeeslagGameImpl(gui);
         game.placeShipsAutomatically();

@@ -19,7 +19,7 @@ public class ZeeslagWebSocketEventHandler implements ZeeslagWebSocketEventListen
 
 
     @Override
-    public void onReady(int userId) {
+    public void onReady() {
         zeeslagGame.notifyWhenReady();
     }
 

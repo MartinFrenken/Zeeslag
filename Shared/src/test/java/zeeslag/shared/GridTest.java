@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class GridTest {
 
     @Test
-    public void tryPlaceIsOkay() {
+    void tryPlaceIsOkay() {
         Grid grid = new Grid();
 
         //Ship properties
@@ -19,15 +19,15 @@ class GridTest {
         //
 
         Ship shipToPlace = new Ship(x, y, orientation, shipType);
-        Boolean firstPlaceSucceeded = grid.tryPlace(shipToPlace);
-        Boolean secondPlaceSucceeded = grid.tryPlace(shipToPlace);
+        boolean firstPlaceSucceeded = grid.tryPlace(shipToPlace);
+        boolean secondPlaceSucceeded = grid.tryPlace(shipToPlace);
         assertTrue(firstPlaceSucceeded);
         assertFalse(secondPlaceSucceeded);
     }
 
 
     @Test
-    public void tryPlaceOutOfBoundsIsOkay() {
+    void tryPlaceOutOfBoundsIsOkay() {
         Grid grid = new Grid();
         //Ship properties
         int x = -1;
@@ -37,8 +37,8 @@ class GridTest {
         //
 
         Ship shipToPlace = new Ship(x, y, orientation, shipType);
-        Boolean firstPlaceSucceeded = grid.tryPlace(shipToPlace);
-        Object expectedErrorMessage = new ShipOutOfBoundsError().getClass();
+        boolean firstPlaceSucceeded = grid.tryPlace(shipToPlace);
+        Object expectedErrorMessage = ShipOutOfBoundsError.class;
         Object actualErrorMessage = grid.getErrorMessage().getClass();
         assertFalse(firstPlaceSucceeded);
         assertEquals(expectedErrorMessage, actualErrorMessage);
@@ -46,7 +46,7 @@ class GridTest {
 
 
     @Test
-    public void removeShipIsOkay() {
+    void removeShipIsOkay() {
         Grid grid = new Grid();
         Ship shipToRemove = new Ship(1, 1, Orientation.HORIZONTAL, ShipType.AIRCRAFT_CARRIER);
         grid.tryPlace(shipToRemove);

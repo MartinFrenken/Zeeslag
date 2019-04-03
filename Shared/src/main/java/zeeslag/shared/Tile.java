@@ -6,15 +6,12 @@ import org.jetbrains.annotations.Nullable;
 public class Tile {
 
     private final Position position;
-    private final Grid grid;
     @Nullable
     private Ship ship;
-    private boolean hasBeenHit;
 
 
-    public Tile(Position position, Grid grid) {
+    Tile(Position position, Grid grid) {
         this.position = position;
-        this.grid = grid;
     }
 
 
@@ -29,38 +26,18 @@ public class Tile {
     }
 
 
-    public boolean isOccupied() {
+    boolean isOccupied() {
         return ship != null;
     }
 
 
-    public void removeShip() {
+    void removeShip() {
         ship = null;
-    }
-
-
-    public boolean hasShip() {
-        return ship != null;
-    }
-
-
-    public boolean hasBeenHit() {
-        return hasBeenHit;
-    }
-
-
-    public void setHasBeenHit(boolean hasBeenHit) {
-        this.hasBeenHit = hasBeenHit;
     }
 
 
     public Position getPosition() {
         return position;
-    }
-
-
-    public Grid getGrid() {
-        return grid;
     }
 
 }

@@ -3,7 +3,6 @@
  */
 package zeeslag.client.game;
 
-import zeeslag.shared.HitType;
 import zeeslag.shared.ShipType;
 
 /**
@@ -117,7 +116,5 @@ public interface ZeeslagGame {
     void resetGame();
 
     void stop();
-
-    void onAttackResult(int to, int x, int y, HitType hitType);
 
 }

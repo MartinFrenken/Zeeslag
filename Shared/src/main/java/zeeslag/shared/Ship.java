@@ -10,9 +10,13 @@ public class Ship {
 
     private final int x;
     private final int y;
+    @Nullable
     private final Orientation orientation;
+    @Nullable
     private final ShipType type;
+    @NotNull
     private transient final Set<Tile> destroyedTiles;
+    @NotNull
     private transient final Set<Tile> occupiedTiles;
     @Nullable
     private transient Grid grid;
@@ -50,14 +54,8 @@ public class Ship {
     }
 
 
-    public void setGrid(@NotNull Grid grid) {
+    void setGrid(@NotNull Grid grid) {
         this.grid = grid;
-    }
-
-
-    @NotNull
-    public Set<Tile> getDestroyedTiles() {
-        return destroyedTiles;
     }
 
 
@@ -82,7 +80,7 @@ public class Ship {
     }
 
 
-    public @NotNull Orientation getOrientation() {
+    @NotNull Orientation getOrientation() {
         if (orientation == null) throw new NullPointerException();
         return orientation;
     }

@@ -11,7 +11,8 @@ public class BasicAi implements Ai {
 
     private static final int USER_ID = 1;
     private Zeeslag game;
-    private Random random = new Random();
+    @NotNull
+    private final Random random = new Random();
 
     @Override
     public void setGame(@NotNull Zeeslag game) {

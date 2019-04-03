@@ -61,12 +61,12 @@ public class WebSocketEventServlet extends WebSocketServlet implements LoginList
     }
 
 
-    Set<WebSocketServer> getSocketServers() {
+    @NotNull Set<WebSocketServer> getSocketServers() {
         return socketServers;
     }
 
 
-    public void emitAttackResult(int receiver, int x, int y, HitType hit) {
+    public void emitAttackResult(int receiver, int x, int y, @NotNull HitType hit) {
         for (WebSocketServer socketServer : socketServers)
             socketServer.emitAttackResult(receiver, x, y, hit);
     }

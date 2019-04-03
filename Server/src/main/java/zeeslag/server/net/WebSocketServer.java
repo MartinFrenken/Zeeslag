@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.WebSocketAdapter;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import zeeslag.server.WebSocketServerEventListener;
 import zeeslag.shared.HitType;
@@ -28,7 +29,7 @@ class WebSocketServer extends WebSocketAdapter {
 
 
     @Override
-    public void onWebSocketConnect(Session session) {
+    public void onWebSocketConnect(@NotNull Session session) {
         super.onWebSocketConnect(session);
         webSocketEventServlet.getSocketServers().add(this);
         this.session = session;
@@ -100,7 +101,7 @@ class WebSocketServer extends WebSocketAdapter {
 
 
     @Override
-    public void onWebSocketError(Throwable cause) {
+    public void onWebSocketError(@NotNull Throwable cause) {
         super.onWebSocketError(cause);
         cause.printStackTrace(System.err);
     }
@@ -117,7 +118,7 @@ class WebSocketServer extends WebSocketAdapter {
     }
 
 
-    void emitAttackResult(int receiver, int x, int y, HitType hit) {
+    void emitAttackResult(int receiver, int x, int y, @NotNull HitType hit) {
         try {
             var json = new JsonObject();
             json.addProperty("action", "attackResult");

@@ -3,6 +3,7 @@
  */
 package zeeslag.client.gui;
 
+import org.jetbrains.annotations.NotNull;
 import zeeslag.shared.HitType;
 
 /**
@@ -18,6 +19,7 @@ public enum SquareState {
     SHIP_SUNK;     // A shot was fired at this square and a ship is sunk
 
 
+    @NotNull
     public static SquareState getSquareState(HitType shotType) {
         switch (shotType) {
             case MISSED:

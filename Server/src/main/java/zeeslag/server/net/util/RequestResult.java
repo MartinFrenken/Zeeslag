@@ -6,10 +6,11 @@ import org.jetbrains.annotations.Nullable;
 public final class RequestResult {
 
     private final boolean success;
+    @Nullable
     private final JsonObject data;
 
 
-    public RequestResult(boolean success, JsonObject data) {
+    public RequestResult(boolean success, @Nullable JsonObject data) {
         this.success = success;
         this.data = data;
     }

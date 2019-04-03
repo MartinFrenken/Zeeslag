@@ -2,6 +2,7 @@ package zeeslag.server.net;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonParser;
+import org.jetbrains.annotations.NotNull;
 import zeeslag.server.net.util.RequestHandler;
 import zeeslag.server.net.util.RequestResult;
 import zeeslag.shared.net.UserAuthData;
@@ -23,7 +24,7 @@ public class LoginServlet extends HttpServlet {
 
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException {
+    protected void doPost(@NotNull HttpServletRequest req, @NotNull HttpServletResponse res) throws IOException {
         RequestHandler.handleRequest(res, () -> {
             var body = new JsonParser().parse(req.getReader()).getAsJsonObject();
             var username = body.get("username").getAsString();

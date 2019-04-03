@@ -3,6 +3,7 @@
  */
 package zeeslag.client.game;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,29 +29,17 @@ public class ZeeslagGameImpl implements ZeeslagGame {
     @Nullable
     private ZeeslagWebSocketClient webSocketClient;
     private String name;
-    Random random = new Random();
+    @NotNull
+    private final Random random = new Random();
 
     public ZeeslagGameImpl(ZeeslagGui gui) {
         this.gui = gui;
     }
 
 
-    @Override
-    public void loginPlayer(String name, String password, boolean singlePlayerMode) {
-        log.debug("Register Player {} - password {}", name, password);
-        this.name = name;
-        var authData = api.login(name, password);
-        if (authData == null) {
-            gui.showErrorMessage(userId, "Failed to login");
-            return;
-        }
-
-        userId = authData.id;
-
-        gui.setPlayerNumber(userId, name);
-        webSocketClient = new ZeeslagWebSocketClient("ws://localhost:3000/ws", authData.token, userId, new ZeeslagWebSocketEventHandler(this));
-        if (singlePlayerMode)
-            webSocketClient.emitSinglePlayer();
+    @NotNull
+    static Grid getGrid() {
+        return grid;
     }
 
 
@@ -82,18 +71,22 @@ public class ZeeslagGameImpl implements ZeeslagGame {
     }
 
 
-    private boolean tryPlaceShipAndAddToGui(Ship ship, boolean auto) {
-
-        if (grid.tryPlace(ship)) {
-            for (Tile tile : ship.getOccupiedTiles())
-                gui.showSquarePlayer(userId, tile.getPosition().x, tile.getPosition().y, SquareState.SHIP);
-        } else {
-            if (!auto)
-                gui.showErrorMessage(userId, grid.getErrorMessage().toString());
-            return false;
+    @Override
+    public void loginPlayer(String name, String password, boolean singlePlayerMode) {
+        log.debug("Register Player {} - password {}", name, password);
+        this.name = name;
+        var authData = api.login(name, password);
+        if (authData == null) {
+            gui.showErrorMessage("Failed to login");
+            return;
         }
 
-        return true;
+        userId = authData.id;
+
+        gui.setPlayerNumber(userId, name);
+        webSocketClient = new ZeeslagWebSocketClient("ws://localhost:3000/ws", authData.token, userId, new ZeeslagWebSocketEventHandler(this));
+        if (singlePlayerMode)
+            webSocketClient.emitSinglePlayer();
     }
 
 
@@ -153,15 +146,18 @@ public class ZeeslagGameImpl implements ZeeslagGame {
     }
 
 
-    @Override
-    public void onAttackResult(int to, int x, int y, HitType hitType) {
-        if (userId == to) {
-            gui.opponentFiresShot(userId, hitType);
-            gui.showSquarePlayer(userId, x, y, SquareState.getSquareState(hitType));
+    private boolean tryPlaceShipAndAddToGui(@NotNull Ship ship, boolean auto) {
+
+        if (grid.tryPlace(ship)) {
+            for (Tile tile : ship.getOccupiedTiles())
+                gui.showSquarePlayer(userId, tile.getPosition().x, tile.getPosition().y, SquareState.SHIP);
         } else {
-            gui.playerFiresShot(userId, hitType);
-            gui.showSquareOpponent(userId, x, y, SquareState.getSquareState(hitType));
+            if (!auto)
+                gui.showErrorMessage(grid.getErrorMessage().toString());
+            return false;
         }
+
+        return true;
     }
 
 
@@ -180,8 +176,14 @@ public class ZeeslagGameImpl implements ZeeslagGame {
     }
 
 
-    public static Grid getGrid() {
-        return grid;
+    void onAttackResult(int to, int x, int y, @NotNull HitType hitType) {
+        if (userId == to) {
+            gui.opponentFiresShot(userId, hitType);
+            gui.showSquarePlayer(userId, x, y, SquareState.getSquareState(hitType));
+        } else {
+            gui.playerFiresShot(userId, hitType);
+            gui.showSquareOpponent(userId, x, y, SquareState.getSquareState(hitType));
+        }
     }
 
 }

@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class BasicAiTest
 {
     @Test
-    public void placeShipsAiIsOkay()
+    void placeShipsAiIsOkay()
     {
         BasicAi ai = new BasicAi();
         Zeeslag game = new Zeeslag(ai);

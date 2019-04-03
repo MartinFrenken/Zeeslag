@@ -1,7 +1,6 @@
 package zeeslag.shared;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import zeeslag.shared.errorMessages.ErrorMessage;
 import zeeslag.shared.errorMessages.ShipAlreadyExistsError;
 import zeeslag.shared.errorMessages.ShipCollisionError;
@@ -14,6 +13,7 @@ public class Grid {
 
     private final int width = 10;
     private final int height = 10;
+    @NotNull
     private final Tile[][] tiles;
     private final Set<Ship> ships = new HashSet<>();
     private final Set<ShipType> shipTypes = new HashSet<>();
@@ -50,21 +50,6 @@ public class Grid {
 
     public @NotNull Set<Ship> getShips() {
         return ships;
-    }
-
-
-    @Nullable
-    public Tile at(@NotNull final Position position) {
-        final Position normalized = normalize(position);
-        return tiles[normalized.y][normalized.x];
-    }
-
-
-    @NotNull
-    private Position normalize(@NotNull final Position position) {
-        final int x = ((position.x % width) + width) % width;
-        final int y = ((position.y % height) + height) % height;
-        return new Position(x, y);
     }
 
 
@@ -117,7 +102,7 @@ public class Grid {
     }
 
 
-    public void removeShip(@NotNull Ship ship) {
+    void removeShip(@NotNull Ship ship) {
         ships.remove(ship);
         shipTypes.remove(ship.getType());
     }

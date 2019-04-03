@@ -18,12 +18,16 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import zeeslag.client.game.ZeeslagGame;
 import zeeslag.client.game.ZeeslagGameImpl;
 import zeeslag.shared.HitType;
 import zeeslag.shared.ShipType;
+
+import java.util.Objects;
 
 /**
  * Main application of the sea battle game.
@@ -46,8 +50,8 @@ public class ZeeslagClient extends Application implements ZeeslagGui {
     private Button buttonPlaceMineSweeper;
     private Button buttonRemoveShip;
     private String opponentName;
-    private Label labelOpponentName;
     private Rectangle[][] squaresTargetArea;
+    @Nullable
     private String playerName = null;
     private int playerTurn = 0;
     private Label labelPlayerName;
@@ -70,7 +74,6 @@ public class ZeeslagClient extends Application implements ZeeslagGui {
     private boolean squareSelectedInOceanArea = false;
     private int selectedSquareX;
     private int selectedSquareY;
-    private String shipColour = "#ff00cc";
 
 
     /**
@@ -107,7 +110,7 @@ public class ZeeslagClient extends Application implements ZeeslagGui {
 
         // Label for opponent's name
         opponentName = "Opponent";
-        labelOpponentName = new Label(opponentName + "\'s grid");
+        Label labelOpponentName = new Label(opponentName + "\'s grid");
         labelOpponentName.setMinWidth(AREAWIDTH);
         grid.add(labelOpponentName, 0, 0, 1, 2);
 
@@ -375,7 +378,7 @@ public class ZeeslagClient extends Application implements ZeeslagGui {
     @Override
     public void setPlayerNumber(int playerNr, String name) {
         // Check identification of player
-        if (!this.playerName.equals(name)) {
+        if (!Objects.requireNonNull(this.playerName).equals(name)) {
             showMessage("ERROR: Wrong player name method setPlayerNumber()");
             return;
         }
@@ -403,26 +406,6 @@ public class ZeeslagClient extends Application implements ZeeslagGui {
             buttonRemoveShip.setDisable(false);
         });
         showMessage("Player " + name + " logined");
-    }
-
-
-    /**
-     * Set the name of the opponent.
-     * The opponent's name will be shown above the target area.
-     *
-     * @param playerNr identification of player
-     * @param name     opponent's name
-     */
-    @Override
-    public void setOpponentName(int playerNr, String name) {
-        // Check identification of player
-        if (playerNr != this.playerNr) {
-            showMessage("ERROR: Wrong player number method setOpponentName()");
-            return;
-        }
-        showMessage("Your opponent is " + name);
-        opponentName = name;
-        Platform.runLater(() -> labelOpponentName.setText(opponentName + "\'s grid"));
     }
 
 
@@ -586,11 +569,10 @@ public class ZeeslagClient extends Application implements ZeeslagGui {
     /**
      * Show error message.
      *
-     * @param playerNr     identification of player
      * @param errorMessage error message
      */
     @Override
-    public void showErrorMessage(int playerNr, String errorMessage) {
+    public void showErrorMessage(String errorMessage) {
         // Show the error message as an alert message
         showMessage(errorMessage);
     }
@@ -603,7 +585,7 @@ public class ZeeslagClient extends Application implements ZeeslagGui {
      * @param square      the square of which the color should be changed.
      * @param squareState position type to determine the color.
      */
-    private void setSquareColor(final Rectangle square, final SquareState squareState) {
+    private void setSquareColor(@NotNull final Rectangle square, @NotNull final SquareState squareState) {
         // Ensure that changing the color of the square is performed by
         // the JavaFX Application Thread.
         Platform.runLater(() -> {

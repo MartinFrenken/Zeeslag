@@ -21,14 +21,6 @@ public interface ZeeslagGui {
     void setPlayerNumber(int playerNr, String name);
 
     /**
-     * Set the name of the opponent in the GUI.
-     *
-     * @param playerNr identification of player
-     * @param name     opponent's name
-     */
-    void setOpponentName(int playerNr, String name);
-
-    /**
      * Notification that the game has started.
      *
      * @param playerNr identification of player
@@ -90,8 +82,7 @@ public interface ZeeslagGui {
     /**
      * Show error message.
      *
-     * @param playerNr     identification of player
      * @param errorMessage error message
      */
-    void showErrorMessage(int playerNr, String errorMessage);
+    void showErrorMessage(String errorMessage);
 }

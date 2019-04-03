@@ -2,7 +2,7 @@ package zeeslag.server;
 
 import org.jetbrains.annotations.NotNull;
 
-public interface Ai {
+interface Ai {
 
     void setGame(@NotNull Zeeslag game);
 

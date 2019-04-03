@@ -1,5 +1,6 @@
 package zeeslag.shared.errorMessages;
 
+import org.jetbrains.annotations.NotNull;
 import zeeslag.shared.ShipType;
 
 public class ShipAlreadyExistsError extends ErrorMessage{
@@ -9,8 +10,10 @@ public class ShipAlreadyExistsError extends ErrorMessage{
     {
         this.shipTypeThatAlreadyExisted=shipTypeThatAlreadyExisted;
     }
-    public String toString()
-    {
+
+
+    @NotNull
+    public String toString() {
         return "You have already placed a "+shipTypeThatAlreadyExisted;
     }
 }

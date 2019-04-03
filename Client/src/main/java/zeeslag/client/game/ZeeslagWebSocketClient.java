@@ -15,9 +15,11 @@ import java.util.Set;
 
 public class ZeeslagWebSocketClient extends WebSocketAdapter {
 
+    @NotNull
     private final String token;
     private final int playerId;
     private final WebSocketClient client = new WebSocketClient();
+    @NotNull
     private final ZeeslagWebSocketEventListener eventListener;
     private Session session;
 
@@ -60,6 +62,7 @@ public class ZeeslagWebSocketClient extends WebSocketAdapter {
     }
 
 
+    @NotNull
     private JsonObject createBaseActionJson(String action) {
         var json = new JsonObject();
         json.addProperty("action", action);
@@ -94,18 +97,8 @@ public class ZeeslagWebSocketClient extends WebSocketAdapter {
     }
 
 
-    void emitStart() {
-        try {
-            var json = createBaseActionJson("start");
-            session.getRemote().sendString(json.toString());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-
     @Override
-    public void onWebSocketConnect(Session session) {
+    public void onWebSocketConnect(@NotNull Session session) {
         super.onWebSocketConnect(session);
         try {
             var json = new JsonObject();
@@ -132,7 +125,7 @@ public class ZeeslagWebSocketClient extends WebSocketAdapter {
                 onAttackResult(json);
                 break;
             case "ready":
-                onReady(json);
+                onReady();
                 break;
             case "start":
                 onStart();
@@ -156,9 +149,8 @@ public class ZeeslagWebSocketClient extends WebSocketAdapter {
     }
 
 
-    private void onReady(@NotNull JsonObject json) {
-        var userId = json.get("sender").getAsInt();
-        eventListener.onReady(userId);
+    private void onReady() {
+        eventListener.onReady();
     }
 
 
@@ -180,7 +172,7 @@ public class ZeeslagWebSocketClient extends WebSocketAdapter {
 
 
     @Override
-    public void onWebSocketError(Throwable cause) {
+    public void onWebSocketError(@NotNull Throwable cause) {
         super.onWebSocketError(cause);
         cause.printStackTrace(System.err);
     }
