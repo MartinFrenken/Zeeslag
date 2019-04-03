@@ -1,4 +1,4 @@
-package zeeslag.shared.net;
+package zeeslag.shared;
 
 public enum Orientation {
     HORIZONTAL,

@@ -4,7 +4,7 @@ import org.eclipse.jetty.websocket.servlet.WebSocketServlet;
 import org.eclipse.jetty.websocket.servlet.WebSocketServletFactory;
 import org.jetbrains.annotations.NotNull;
 import zeeslag.server.WebSocketServerEventListener;
-import zeeslag.shared.net.HitType;
+import zeeslag.shared.HitType;
 import zeeslag.shared.net.UserAuthData;
 
 import java.util.HashMap;

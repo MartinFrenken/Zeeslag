@@ -1,9 +1,9 @@
 package zeeslag.server;
 
 import org.junit.jupiter.api.Test;
-import zeeslag.shared.net.Grid;
+import zeeslag.shared.Grid;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class BasicAiTest
 {

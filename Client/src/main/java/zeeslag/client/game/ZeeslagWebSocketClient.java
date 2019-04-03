@@ -6,8 +6,8 @@ import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.WebSocketAdapter;
 import org.eclipse.jetty.websocket.client.WebSocketClient;
 import org.jetbrains.annotations.NotNull;
-import zeeslag.shared.net.HitType;
-import zeeslag.shared.net.Ship;
+import zeeslag.shared.HitType;
+import zeeslag.shared.Ship;
 
 import java.io.IOException;
 import java.net.URI;

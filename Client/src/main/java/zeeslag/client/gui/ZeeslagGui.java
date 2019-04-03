@@ -3,7 +3,7 @@
  */
 package zeeslag.client.gui;
 
-import zeeslag.shared.net.HitType;
+import zeeslag.shared.HitType;
 
 /**
  * Interface provided by the graphical user interface of the sea battle game.

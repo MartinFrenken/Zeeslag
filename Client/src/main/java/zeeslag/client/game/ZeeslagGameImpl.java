@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import zeeslag.client.gui.SquareState;
 import zeeslag.client.gui.ZeeslagGui;
-import zeeslag.shared.net.*;
+import zeeslag.shared.*;
 
 import java.util.Objects;
 import java.util.Random;
@@ -88,7 +88,8 @@ public class ZeeslagGameImpl implements ZeeslagGame {
             for (Tile tile : ship.getOccupiedTiles())
                 gui.showSquarePlayer(userId, tile.getPosition().x, tile.getPosition().y, SquareState.SHIP);
         } else {
-            gui.showErrorMessage(userId, grid.getErrorMessage().toString());
+            if (!auto)
+                gui.showErrorMessage(userId, grid.getErrorMessage().toString());
             return false;
         }
 

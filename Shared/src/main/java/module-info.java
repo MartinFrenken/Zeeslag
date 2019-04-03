@@ -1,5 +1,6 @@
 module Shared {
     requires annotations;
+    exports zeeslag.shared;
     exports zeeslag.shared.net;
-    exports ErrorMessages;
+    exports zeeslag.shared.errorMessages;
 }

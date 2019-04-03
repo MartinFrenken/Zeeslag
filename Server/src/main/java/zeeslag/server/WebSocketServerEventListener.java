@@ -1,7 +1,7 @@
 package zeeslag.server;
 
 import org.jetbrains.annotations.NotNull;
-import zeeslag.shared.net.Ship;
+import zeeslag.shared.Ship;
 
 public interface WebSocketServerEventListener {
 

@@ -3,7 +3,7 @@
  */
 package zeeslag.client.gui;
 
-import zeeslag.shared.net.HitType;
+import zeeslag.shared.HitType;
 
 /**
  * Indicate the state of a square.

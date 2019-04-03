@@ -1,4 +1,4 @@
-package zeeslag.shared.net;
+package zeeslag.shared;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -17,14 +17,10 @@ public class Tile {
         this.grid = grid;
     }
 
+
     @Nullable
     public Ship getShip() {
         return ship;
-    }
-
-
-    public boolean isOccupied() {
-        return ship != null;
     }
 
 
@@ -33,17 +29,25 @@ public class Tile {
     }
 
 
+    public boolean isOccupied() {
+        return ship != null;
+    }
+
+
     public void removeShip() {
         ship = null;
     }
-    
+
+
     public boolean hasShip() {
         return ship != null;
     }
 
+
     public boolean hasBeenHit() {
         return hasBeenHit;
     }
+
 
     public void setHasBeenHit(boolean hasBeenHit) {
         this.hasBeenHit = hasBeenHit;

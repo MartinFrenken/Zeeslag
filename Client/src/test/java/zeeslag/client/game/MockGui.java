@@ -2,7 +2,7 @@ package zeeslag.client.game;
 
 import zeeslag.client.gui.SquareState;
 import zeeslag.client.gui.ZeeslagGui;
-import zeeslag.shared.net.HitType;
+import zeeslag.shared.HitType;
 
 public class MockGui implements ZeeslagGui
 {

@@ -1,4 +1,4 @@
-package ErrorMessages;
+package zeeslag.shared.errorMessages;
 
 public abstract class ErrorMessage
 {

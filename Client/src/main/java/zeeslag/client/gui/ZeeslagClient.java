@@ -22,8 +22,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import zeeslag.client.game.ZeeslagGame;
 import zeeslag.client.game.ZeeslagGameImpl;
-import zeeslag.shared.net.HitType;
-import zeeslag.shared.net.ShipType;
+import zeeslag.shared.HitType;
+import zeeslag.shared.ShipType;
 
 /**
  * Main application of the sea battle game.

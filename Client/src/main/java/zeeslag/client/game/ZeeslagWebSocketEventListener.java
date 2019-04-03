@@ -1,6 +1,6 @@
 package zeeslag.client.game;
 
-import zeeslag.shared.net.HitType;
+import zeeslag.shared.HitType;
 
 interface ZeeslagWebSocketEventListener {
 

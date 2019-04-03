@@ -1,9 +1,9 @@
 package zeeslag.server;
 
 import org.jetbrains.annotations.NotNull;
-import zeeslag.shared.net.Grid;
-import zeeslag.shared.net.HitType;
-import zeeslag.shared.net.Ship;
+import zeeslag.shared.Grid;
+import zeeslag.shared.HitType;
+import zeeslag.shared.Ship;
 
 import java.util.HashMap;
 import java.util.Map;

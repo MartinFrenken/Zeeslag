@@ -1,4 +1,4 @@
-package zeeslag.shared.net;
+package zeeslag.shared;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

@@ -1,6 +1,6 @@
-package ErrorMessages;
+package zeeslag.shared.errorMessages;
 
-import zeeslag.shared.net.ShipType;
+import zeeslag.shared.ShipType;
 
 public class ShipAlreadyExistsError extends ErrorMessage{
 

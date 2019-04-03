@@ -3,8 +3,8 @@
  */
 package zeeslag.client.game;
 
-import zeeslag.shared.net.HitType;
-import zeeslag.shared.net.ShipType;
+import zeeslag.shared.HitType;
+import zeeslag.shared.ShipType;
 
 /**
  * Interface provided by the Sea Battle game to the graphical user interface.

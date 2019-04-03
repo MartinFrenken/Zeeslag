@@ -1,17 +1,13 @@
 package zeeslag.client.game;
 
-import com.sun.javafx.application.PlatformImpl;
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
-import zeeslag.client.gui.ZeeslagClient;
 import zeeslag.client.gui.ZeeslagGui;
-import zeeslag.shared.net.*;
+import zeeslag.shared.Ship;
+import zeeslag.shared.ShipType;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ZeeslagGameImplTest
 {
@@ -31,8 +27,7 @@ class ZeeslagGameImplTest
         //
         game.placeShip(shipType,x,y,horizontal);
 
-
-        ShipType actualShipType =game.getGrid().getTile(x,y).getShip().getType();
+        ShipType actualShipType = ZeeslagGameImpl.getGrid().getTile(x, y).getShip().getType();
         assertEquals(ShipType.SUBMARINE,actualShipType);
 
 
@@ -42,7 +37,8 @@ class ZeeslagGameImplTest
     {
         ZeeslagGameImpl game = new ZeeslagGameImpl(gui);
         game.placeShipsAutomatically();
-       Set<Ship> ships= game.getGrid().getShips();
+        Set<Ship> ships = ZeeslagGameImpl.getGrid().getShips();
+       
        int expectedAmountOfShips = ShipType.values().length;
        int actualAmountOfShips = ships.size();
        assertEquals(expectedAmountOfShips,actualAmountOfShips);

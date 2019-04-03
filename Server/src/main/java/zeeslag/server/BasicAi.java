@@ -1,9 +1,9 @@
 package zeeslag.server;
 
 import org.jetbrains.annotations.NotNull;
-import zeeslag.shared.net.Orientation;
-import zeeslag.shared.net.Ship;
-import zeeslag.shared.net.ShipType;
+import zeeslag.shared.Orientation;
+import zeeslag.shared.Ship;
+import zeeslag.shared.ShipType;
 
 import java.util.Random;
 

@@ -1,4 +1,4 @@
-package zeeslag.shared.net;
+package zeeslag.shared;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -7,10 +7,12 @@ public class Position {
     public final int x;
     public final int y;
 
+
     public Position(final int x, final int y) {
         this.x = x;
         this.y = y;
     }
+
 
     @NotNull
     public Position directionalOffset(@NotNull final Direction d) {
@@ -41,6 +43,7 @@ public class Position {
         return new Position(x + dx, y + dy);
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -52,10 +55,12 @@ public class Position {
         return y == position.y;
     }
 
+
     @Override
     public int hashCode() {
         int result = x;
         result = 31 * result + y;
         return result;
     }
+
 }

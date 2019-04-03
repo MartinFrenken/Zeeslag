@@ -1,11 +1,11 @@
-package zeeslag.shared.net;
+package zeeslag.shared;
 
-import ErrorMessages.ErrorMessage;
-import ErrorMessages.ShipAlreadyExistsError;
-import ErrorMessages.ShipCollisionError;
-import ErrorMessages.ShipOutOfBoundsError;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import zeeslag.shared.errorMessages.ErrorMessage;
+import zeeslag.shared.errorMessages.ShipAlreadyExistsError;
+import zeeslag.shared.errorMessages.ShipCollisionError;
+import zeeslag.shared.errorMessages.ShipOutOfBoundsError;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -18,6 +18,7 @@ public class Grid {
     private final Set<Ship> ships = new HashSet<>();
     private final Set<ShipType> shipTypes = new HashSet<>();
     private ErrorMessage errorMessage;
+
 
     public Grid() {
 
@@ -58,6 +59,7 @@ public class Grid {
         return tiles[normalized.y][normalized.x];
     }
 
+
     @NotNull
     private Position normalize(@NotNull final Position position) {
         final int x = ((position.x % width) + width) % width;
@@ -68,24 +70,22 @@ public class Grid {
 
     public boolean tryPlace(@NotNull Ship ship) {
 
-        if(ship.getX()<0||ship.getY()<0)
-        {
+        if (ship.getX() < 0 || ship.getY() < 0) {
             errorMessage = new ShipOutOfBoundsError();
             return false;
         }
-        if (ship.getOrientation() == Orientation.HORIZONTAL && ship.getX() + ship.getSize() > width)
-        {
+        if (ship.getOrientation() == Orientation.HORIZONTAL && ship.getX() + ship.getSize() > width) {
             errorMessage = new ShipOutOfBoundsError();
             return false;
         }
-        if (ship.getOrientation() == Orientation.VERTICAL && ship.getY() + ship.getSize() > height)
-        {
+        if (ship.getOrientation() == Orientation.VERTICAL && ship.getY() + ship.getSize() > height) {
             errorMessage = new ShipOutOfBoundsError();
             return false;
         }
-        if (shipTypes.contains(ship.getType())){
+        if (shipTypes.contains(ship.getType())) {
             errorMessage = new ShipAlreadyExistsError(ship.getType());
-            return false;}
+            return false;
+        }
 
         for (int i = 0; i < ship.getSize(); i++) {
             var x = ship.getX() + (ship.getOrientation() == Orientation.HORIZONTAL ? i : 0);
@@ -110,7 +110,7 @@ public class Grid {
     public void clear() {
         ships.clear();
         shipTypes.clear();
-        
+
         for (var x = 0; x < width; x++)
             for (var y = 0; y < height; y++)
                 tiles[x][y].removeShip();
@@ -122,7 +122,9 @@ public class Grid {
         shipTypes.remove(ship.getType());
     }
 
+
     public ErrorMessage getErrorMessage() {
         return errorMessage;
     }
+
 }

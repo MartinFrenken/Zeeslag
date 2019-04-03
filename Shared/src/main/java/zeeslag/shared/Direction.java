@@ -1,4 +1,4 @@
-package zeeslag.shared.net;
+package zeeslag.shared;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -6,14 +6,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public enum Direction {
-
     NORTH,
     EAST,
     SOUTH,
     WEST;
-
     @NotNull
     private static final List<Direction> ALL_CARDINALS = new ArrayList<>();
+
 
     static {
         ALL_CARDINALS.add(NORTH);
@@ -21,6 +20,7 @@ public enum Direction {
         ALL_CARDINALS.add(EAST);
         ALL_CARDINALS.add(WEST);
     }
+
 
     @NotNull
     public Direction invertDirection() {
@@ -37,5 +37,4 @@ public enum Direction {
                 throw new IllegalStateException("Unknown direction " + this);
         }
     }
-
 }
