@@ -91,8 +91,7 @@ public class ZeeslagGameImpl implements ZeeslagGame {
             gui.showErrorMessage(userId, grid.getErrorMessage().toString());
             return false;
         }
-        if (!auto)
-            gui.showErrorMessage(userId, "Can't place a ship there");
+
         return true;
     }
 
