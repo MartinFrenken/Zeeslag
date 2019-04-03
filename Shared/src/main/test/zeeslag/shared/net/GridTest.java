@@ -1,5 +1,7 @@
 package zeeslag.shared.net;
 
+import ErrorMessages.ErrorMessage;
+import ErrorMessages.ShipOutOfBoundsError;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -23,6 +25,25 @@ class GridTest {
       Boolean secondPlaceSucceeded = grid.tryPlace(shipToPlace);
       assertTrue(firstPlaceSucceeded);
       assertFalse(secondPlaceSucceeded);
+    }
+    @Test
+    public void tryPlaceOutOfBoundsIsOkay()
+    {
+        Grid grid= new Grid();
+        //Ship properties
+        int x =-1;
+        int y =-1;
+        Orientation orientation = Orientation.HORIZONTAL;
+        ShipType shipType = ShipType.SUBMARINE;
+        //
+
+        Ship shipToPlace = new Ship(x,y,orientation,shipType);
+        Boolean firstPlaceSucceeded =  grid.tryPlace(shipToPlace);
+        Object expectedErrorMessage =new ShipOutOfBoundsError().getClass();
+        Object actualErrorMessage =grid.getErrorMessage().getClass();
+        assertFalse(firstPlaceSucceeded);
+        assertEquals(expectedErrorMessage,actualErrorMessage);
+
     }
     @Test
     public void removeShipIsOkay()

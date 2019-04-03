@@ -11,7 +11,7 @@ public class BasicAi implements Ai {
 
     private static final int USER_ID = 1;
     private Zeeslag game;
-
+    private Random random = new Random();
 
     @Override
     public void setGame(@NotNull Zeeslag game) {
@@ -37,7 +37,7 @@ public class BasicAi implements Ai {
 
     @Override
     public void placeShips() {
-        var random = new Random();
+
         for (ShipType shipType : ShipType.values()) {
             var isHorizontal = false;
             var x = 0;

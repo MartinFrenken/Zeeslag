@@ -28,7 +28,7 @@ public class ZeeslagGameImpl implements ZeeslagGame {
     @Nullable
     private ZeeslagWebSocketClient webSocketClient;
     private String name;
-
+    Random random = new Random();
 
     public ZeeslagGameImpl(ZeeslagGui gui) {
         this.gui = gui;
@@ -57,7 +57,6 @@ public class ZeeslagGameImpl implements ZeeslagGame {
     @Override
     public void placeShipsAutomatically() {
         clearGridAndGui();
-        var random = new Random();
         for (ShipType shipType : ShipType.values()) {
             var isHorizontal = false;
             var x = 0;

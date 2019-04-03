@@ -67,6 +67,12 @@ public class Grid {
 
 
     public boolean tryPlace(@NotNull Ship ship) {
+
+        if(ship.getX()<0||ship.getY()<0)
+        {
+            errorMessage = new ShipOutOfBoundsError();
+            return false;
+        }
         if (ship.getOrientation() == Orientation.HORIZONTAL && ship.getX() + ship.getSize() > width)
         {
             errorMessage = new ShipOutOfBoundsError();
