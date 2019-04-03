@@ -1,13 +1,15 @@
-package zeeslag.client.game;
+package java.zeeslag.client.game;
 
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
+import zeeslag.client.game.ZeeslagGameImpl;
 import zeeslag.client.gui.ZeeslagGui;
 import zeeslag.shared.Ship;
 import zeeslag.shared.ShipType;
 
 import java.util.Objects;
 import java.util.Set;
+import java.zeeslag.client.game.MockGui;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

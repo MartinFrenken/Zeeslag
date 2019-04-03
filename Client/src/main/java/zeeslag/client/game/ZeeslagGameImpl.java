@@ -38,7 +38,7 @@ public class ZeeslagGameImpl implements ZeeslagGame {
 
 
     @NotNull
-    static Grid getGrid() {
+    public static Grid getGrid() {
         return grid;
     }
 
