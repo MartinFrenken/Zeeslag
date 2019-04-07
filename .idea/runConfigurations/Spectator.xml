@@ -1,0 +1,11 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Spectator" type="Application" factoryName="Application">
+    <option name="MAIN_CLASS_NAME" value="zeeslag.client.gui.ZeeslagClient" />
+    <module name="Client" />
+    <option name="PROGRAM_PARAMETERS" value="-s" />
+    <option name="VM_PARAMETERS" value="--add-opens Shared/zeeslag.shared.net=gson" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

@@ -2,8 +2,7 @@
   <configuration default="false" name="ZeeslagClient" type="Application" factoryName="Application" singleton="false" nameIsGenerated="true">
     <option name="MAIN_CLASS_NAME" value="zeeslag.client.gui.ZeeslagClient" />
     <module name="Client" />
-    <option name="PROGRAM_PARAMETERS" value="-s" />
-    <option name="VM_PARAMETERS" value="--add-opens Shared/zeeslag.shared.net=gson" />
+    <option name="VM_PARAMETERS" value="--add-opens Shared/zeeslag.shared=gson" />
     <extension name="coverage">
       <pattern>
         <option name="PATTERN" value="zeeslag.shared.*" />

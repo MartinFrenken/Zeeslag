@@ -18,11 +18,4 @@
       <module name="Zeeslag" target="11" />
     </bytecodeTargetLevel>
   </component>
-  <component name="JavacSettings">
-    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="Client" options="-bootclasspath $APPLICATION_HOME_DIR$/jre64/lib/resources.jar:$APPLICATION_HOME_DIR$/jre64/lib/rt.jar:$APPLICATION_HOME_DIR$/jre64/lib/sunrsasign.jar:$APPLICATION_HOME_DIR$/jre64/lib/jsse.jar:$APPLICATION_HOME_DIR$/jre64/lib/jce.jar:$APPLICATION_HOME_DIR$/jre64/lib/charsets.jar:$APPLICATION_HOME_DIR$/jre64/lib/jfr.jar:$APPLICATION_HOME_DIR$/jre64/classes:$APPLICATION_HOME_DIR$/jre64/lib/jfxrt.jar" />
-      <module name="Server" options="-bootclasspath $APPLICATION_HOME_DIR$/jre64/lib/resources.jar:$APPLICATION_HOME_DIR$/jre64/lib/rt.jar:$APPLICATION_HOME_DIR$/jre64/lib/sunrsasign.jar:$APPLICATION_HOME_DIR$/jre64/lib/jsse.jar:$APPLICATION_HOME_DIR$/jre64/lib/jce.jar:$APPLICATION_HOME_DIR$/jre64/lib/charsets.jar:$APPLICATION_HOME_DIR$/jre64/lib/jfr.jar:$APPLICATION_HOME_DIR$/jre64/classes:$APPLICATION_HOME_DIR$/jre64/lib/jfxrt.jar" />
-      <module name="Shared" options="-bootclasspath $APPLICATION_HOME_DIR$/jre64/lib/resources.jar:$APPLICATION_HOME_DIR$/jre64/lib/rt.jar:$APPLICATION_HOME_DIR$/jre64/lib/sunrsasign.jar:$APPLICATION_HOME_DIR$/jre64/lib/jsse.jar:$APPLICATION_HOME_DIR$/jre64/lib/jce.jar:$APPLICATION_HOME_DIR$/jre64/lib/charsets.jar:$APPLICATION_HOME_DIR$/jre64/lib/jfr.jar:$APPLICATION_HOME_DIR$/jre64/classes:$APPLICATION_HOME_DIR$/jre64/lib/jfxrt.jar" />
-    </option>
-  </component>
 </project>
