@@ -5,6 +5,7 @@ import org.eclipse.jetty.websocket.servlet.WebSocketServletFactory;
 import org.jetbrains.annotations.NotNull;
 import zeeslag.server.WebSocketServerEventListener;
 import zeeslag.shared.HitType;
+import zeeslag.shared.Ship;
 import zeeslag.shared.net.UserAuthData;
 
 import java.util.HashMap;
@@ -75,6 +76,13 @@ public class WebSocketEventServlet extends WebSocketServlet implements LoginList
     public void emitReset() {
         for (WebSocketServer socketServer : socketServers)
             socketServer.emitReset();
+    }
+
+
+    public void emitPlaceShips(int userId, Ship[] ships) {
+        for (WebSocketServer socketServer : socketServers)
+            if (socketServer.isSpectator())
+                socketServer.emitPlaceShips(userId, ships);
     }
 
 }

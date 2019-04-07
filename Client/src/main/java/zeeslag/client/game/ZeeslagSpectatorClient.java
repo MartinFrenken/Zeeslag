@@ -6,6 +6,7 @@ import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.WebSocketAdapter;
 import org.eclipse.jetty.websocket.client.WebSocketClient;
 import zeeslag.shared.HitType;
+import zeeslag.shared.Ship;
 
 import java.net.URI;
 
@@ -51,9 +52,20 @@ public class ZeeslagSpectatorClient extends WebSocketAdapter {
             case "reset":
                 eventListener.onReset();
                 break;
+            case "placeShips":
+                onPlaceShips(json);
+                break;
             default:
                 throw new IllegalStateException("Invalid action: " + action);
         }
+    }
+
+
+    private void onPlaceShips(JsonObject json) {
+        var userId = json.get("sender").getAsInt();
+        var data = json.get("data").getAsJsonArray();
+        var ships = new Gson().fromJson(data, Ship[].class);
+        eventListener.onPlaceShips(userId, ships);
     }
 
 

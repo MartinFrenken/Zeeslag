@@ -1,6 +1,7 @@
 package zeeslag.client.game;
 
 import zeeslag.shared.HitType;
+import zeeslag.shared.Ship;
 
 public class ZeeslagWebSocketEventHandler implements ZeeslagWebSocketEventListener {
 
@@ -33,6 +34,12 @@ public class ZeeslagWebSocketEventHandler implements ZeeslagWebSocketEventListen
     @Override
     public void onReset() {
         zeeslagGame.onReset();
+    }
+
+
+    @Override
+    public void onPlaceShips(int userId, Ship[] ships) {
+        throw new IllegalStateException("Client shouldn't get ship placement events when not in spectator mode");
     }
 
 }

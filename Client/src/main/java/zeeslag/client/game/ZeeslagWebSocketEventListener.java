@@ -1,6 +1,7 @@
 package zeeslag.client.game;
 
 import zeeslag.shared.HitType;
+import zeeslag.shared.Ship;
 
 interface ZeeslagWebSocketEventListener {
 
@@ -11,5 +12,7 @@ interface ZeeslagWebSocketEventListener {
     void onStart();
 
     void onReset();
+
+    void onPlaceShips(int userId, Ship[] ships);
 
 }

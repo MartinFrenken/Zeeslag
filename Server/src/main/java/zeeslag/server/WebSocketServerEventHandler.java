@@ -45,6 +45,8 @@ public class WebSocketServerEventHandler implements WebSocketServerEventListener
             ZeeslagServer.getWebSocketServlet().emitStart();
 
         if (game.isSinglePlayer()) game.getAi().placeShips();
+
+        ZeeslagServer.getWebSocketServlet().emitPlaceShips(userId, ships);
     }
 
 

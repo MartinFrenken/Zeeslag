@@ -20,6 +20,13 @@ class WebSocketServer extends WebSocketAdapter {
     @Nullable
     private String token;
     private Session session;
+
+
+    boolean isSpectator() {
+        return isSpectator;
+    }
+
+
     private boolean isSpectator = false;
 
 
@@ -43,6 +50,13 @@ class WebSocketServer extends WebSocketAdapter {
     public void onWebSocketText(String message) {
         super.onWebSocketText(message);
         var json = new Gson().fromJson(message, JsonObject.class);
+        var action = json.get("action");
+
+        if (action != null && action.getAsString().equals("spectator")) {
+            isSpectator = true;
+            return;
+        }
+
         if (token == null) {
             var jsonToken = json.get("token");
             if (jsonToken != null)
@@ -54,9 +68,7 @@ class WebSocketServer extends WebSocketAdapter {
         if (isSpectator)
             return;
 
-        var action = json.get("action").getAsString();
-
-        switch (action) {
+        switch (Objects.requireNonNull(action).getAsString()) {
             case "placeShips":
                 onPlaceShips(json);
                 return;
@@ -68,9 +80,6 @@ class WebSocketServer extends WebSocketAdapter {
                 return;
             case "reset":
                 eventListener.onReset();
-                return;
-            case "spectator":
-                isSpectator = true;
                 return;
             default:
                 throw new IllegalStateException("Invalid action: " + action);
@@ -147,6 +156,20 @@ class WebSocketServer extends WebSocketAdapter {
     void emitReset() {
         var json = new JsonObject();
         json.addProperty("action", "reset");
+        try {
+            session.getRemote().sendString(json.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    void emitPlaceShips(int userId, Ship[] ships) {
+        var json = new JsonObject();
+        json.addProperty("action", "placeShips");
+        json.addProperty("sender", userId);
+        json.add("data", new Gson().toJsonTree(ships));
+
         try {
             session.getRemote().sendString(json.toString());
         } catch (IOException e) {

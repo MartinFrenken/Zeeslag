@@ -5,6 +5,7 @@ import zeeslag.shared.Orientation;
 import zeeslag.shared.Ship;
 import zeeslag.shared.ShipType;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class BasicAi implements Ai {
@@ -38,7 +39,8 @@ public class BasicAi implements Ai {
 
     @Override
     public void placeShips() {
-
+        var ships = new ArrayList<Ship>();
+        
         for (ShipType shipType : ShipType.values()) {
             var isHorizontal = false;
             var x = 0;
@@ -51,11 +53,14 @@ public class BasicAi implements Ai {
                 y = random.nextInt(game.getGrid(USER_ID).getHeight() - (isHorizontal ? 0 : shipType.getSize()));
                 ship = new Ship(x, y, isHorizontal ? Orientation.HORIZONTAL : Orientation.VERTICAL, shipType);
             }
+
+            ships.add(ship);
         }
 
         game.setPlayerReady(USER_ID);
         game.setGameState(GameState.FIGHTING);
 
+        ZeeslagServer.getWebSocketServlet().emitPlaceShips(USER_ID, ships.toArray(new Ship[]{}));
         ZeeslagServer.getWebSocketServlet().emitStart();
     }
 

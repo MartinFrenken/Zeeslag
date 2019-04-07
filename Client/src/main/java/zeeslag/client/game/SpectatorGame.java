@@ -5,7 +5,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import zeeslag.client.gui.SquareState;
 import zeeslag.client.gui.ZeeslagGui;
+import zeeslag.shared.Grid;
 import zeeslag.shared.HitType;
+import zeeslag.shared.Ship;
 import zeeslag.shared.ShipType;
 
 public class SpectatorGame implements ZeeslagGame {
@@ -59,6 +61,19 @@ public class SpectatorGame implements ZeeslagGame {
                         gui.showSquareOpponent(userId, x, y, SquareState.WATER);
                         gui.showSquarePlayer(userId, x, y, SquareState.WATER);
                     }
+                }
+            }
+
+
+            @Override
+            public void onPlaceShips(int id, Ship[] ships) {
+                var grid = new Grid();
+                for (var ship : ships) {
+                    grid.tryPlace(ship);
+                    for (var tile : ship.getOccupiedTiles())
+                        if (id == 1)
+                            gui.showSquareOpponent(userId, tile.getPosition().x, tile.getPosition().y, SquareState.SHIP);
+                        else gui.showSquarePlayer(userId, tile.getPosition().x, tile.getPosition().y, SquareState.SHIP);
                 }
             }
         });
