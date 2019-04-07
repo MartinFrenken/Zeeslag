@@ -22,11 +22,13 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import zeeslag.client.game.SpectatorGame;
 import zeeslag.client.game.ZeeslagGame;
 import zeeslag.client.game.ZeeslagGameImpl;
 import zeeslag.shared.HitType;
 import zeeslag.shared.ShipType;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 /**
@@ -74,12 +76,14 @@ public class ZeeslagClient extends Application implements ZeeslagGui {
     private boolean squareSelectedInOceanArea = false;
     private int selectedSquareX;
     private int selectedSquareY;
+    private static boolean isSpectatorMode;
 
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        isSpectatorMode = Arrays.asList(args).contains("-s");
         launch(args);
     }
 
@@ -364,8 +368,8 @@ public class ZeeslagClient extends Application implements ZeeslagGui {
         // The class ZeeslagGameImpl is not implemented yet.
         // When invoking methods of class ZeeslagGameImpl an
         // UnsupportedOperationException will be thrown
-      
-        game = new ZeeslagGameImpl(this);
+
+        game = isSpectatorMode ? new SpectatorGame(this) : new ZeeslagGameImpl(this);
     }
 
 

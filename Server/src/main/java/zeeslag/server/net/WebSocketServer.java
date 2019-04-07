@@ -20,6 +20,7 @@ class WebSocketServer extends WebSocketAdapter {
     @Nullable
     private String token;
     private Session session;
+    private boolean isSpectator = false;
 
 
     WebSocketServer(WebSocketEventServlet webSocketEventServlet, WebSocketServerEventListener eventListener) {
@@ -43,10 +44,14 @@ class WebSocketServer extends WebSocketAdapter {
         super.onWebSocketText(message);
         var json = new Gson().fromJson(message, JsonObject.class);
         if (token == null) {
-            token = json.get("token").getAsString();
+            var jsonToken = json.get("token");
+            if (jsonToken != null)
+                token = jsonToken.getAsString();
             return;
         }
         if (webSocketEventServlet.getPlayerId(token) != json.get("sender").getAsInt())
+            return;
+        if (isSpectator)
             return;
 
         var action = json.get("action").getAsString();
@@ -63,6 +68,9 @@ class WebSocketServer extends WebSocketAdapter {
                 return;
             case "reset":
                 eventListener.onReset();
+                return;
+            case "spectator":
+                isSpectator = true;
                 return;
             default:
                 throw new IllegalStateException("Invalid action: " + action);
@@ -140,7 +148,6 @@ class WebSocketServer extends WebSocketAdapter {
         var json = new JsonObject();
         json.addProperty("action", "reset");
         try {
-
             session.getRemote().sendString(json.toString());
         } catch (IOException e) {
             e.printStackTrace();
