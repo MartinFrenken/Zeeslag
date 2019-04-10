@@ -178,12 +178,31 @@ public class ZeeslagGameImpl implements ZeeslagGame {
     }
 
 
+    @SuppressWarnings("Duplicates")
     void onAttackResult(int to, int x, int y, @NotNull HitType hitType) {
         if (userId == to) {
             gui.opponentFiresShot(userId, hitType);
+            if(SquareState.getSquareState(hitType)==SquareState.SHIP_SUNK)
+            {
+               Ship destroyedShip = grid.getTile(x,y).getShip();
+                for (Tile tile: destroyedShip.getOccupiedTiles())
+                {
+                    gui.showSquarePlayer(userId, tile.getPosition().x, tile.getPosition().y, SquareState.getSquareState(hitType));
+                }
+                return;
+            }
             gui.showSquarePlayer(userId, x, y, SquareState.getSquareState(hitType));
         } else {
             gui.playerFiresShot(userId, hitType);
+            if(SquareState.getSquareState(hitType)==SquareState.SHIP_SUNK)
+            {
+                Ship destroyedShip = grid.getTile(x,y).getShip();
+                for (Tile tile: destroyedShip.getOccupiedTiles())
+                {
+                    gui.showSquarePlayer(userId, tile.getPosition().x, tile.getPosition().y, SquareState.getSquareState(hitType));
+                }
+                return;
+            }
             gui.showSquareOpponent(userId, x, y, SquareState.getSquareState(hitType));
         }
     }
