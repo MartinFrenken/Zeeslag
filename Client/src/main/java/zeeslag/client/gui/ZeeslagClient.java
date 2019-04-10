@@ -40,6 +40,8 @@ import java.util.Objects;
 public class ZeeslagClient extends Application implements ZeeslagGui {
 
     private static final Logger log = LoggerFactory.getLogger(ZeeslagClient.class);
+    private static boolean isSpectatorMode;
+    private static String host;
     private int playerNr = 0;
     private Button buttonPlaceAllShips;
     private Button buttonRemoveAllShips;
@@ -76,15 +78,21 @@ public class ZeeslagClient extends Application implements ZeeslagGui {
     private boolean squareSelectedInOceanArea = false;
     private int selectedSquareX;
     private int selectedSquareY;
-    private static boolean isSpectatorMode;
+    /**
+     * Event handler when mouse button is pressed in rectangle in ocean area.
+     * When not in playing mode: the square that was selected before will
+     * become light blue and the the selected square will become yellow.
+     * A message will be shown when in playing mode.
+     *
+     * @param x x-coordinate of selected square
+     * @param y y-coordinate of selected square
+     */
+    private Paint selectedSquareColor;
 
 
     public static String getHost() {
         return host;
     }
-
-
-    private static String host;
 
 
     /**
@@ -99,7 +107,7 @@ public class ZeeslagClient extends Application implements ZeeslagGui {
             host = "localhost:3000";
         else
             host = list.get(index + 1);
-        
+
         launch(args);
     }
 
@@ -215,20 +223,22 @@ public class ZeeslagClient extends Application implements ZeeslagGui {
         grid.add(passwordFieldPlayerPassword, 1, 8, 1, 2);
 
         // Radio buttons to choose between single-player and multi-player mode
-        radioSinglePlayer = new RadioButton("single-player mode");
-        Tooltip tooltipSinglePlayer = new Tooltip("Play game in single-player mode");
-        radioSinglePlayer.setTooltip(tooltipSinglePlayer);
-        radioSinglePlayer.setOnAction((EventHandler) event -> singlePlayerMode = true);
-        radioMultiPlayer = new RadioButton("multi-player mode");
-        Tooltip tooltipMultiPlayer = new Tooltip("Play game in multi-player mode");
-        radioMultiPlayer.setTooltip(tooltipMultiPlayer);
-        radioMultiPlayer.setOnAction((EventHandler) event -> singlePlayerMode = false);
-        ToggleGroup tgSingleMultiPlayer = new ToggleGroup();
-        radioSinglePlayer.setToggleGroup(tgSingleMultiPlayer);
-        radioMultiPlayer.setToggleGroup(tgSingleMultiPlayer);
-        radioSinglePlayer.setSelected(true);
-        grid.add(radioSinglePlayer, 1, 10, 1, 2);
-        grid.add(radioMultiPlayer, 1, 12, 1, 2);
+        if (!isSpectatorMode) {
+            radioSinglePlayer = new RadioButton("single-player mode");
+            Tooltip tooltipSinglePlayer = new Tooltip("Play game in single-player mode");
+            radioSinglePlayer.setTooltip(tooltipSinglePlayer);
+            radioSinglePlayer.setOnAction((EventHandler) event -> singlePlayerMode = true);
+            radioMultiPlayer = new RadioButton("multi-player mode");
+            Tooltip tooltipMultiPlayer = new Tooltip("Play game in multi-player mode");
+            radioMultiPlayer.setTooltip(tooltipMultiPlayer);
+            radioMultiPlayer.setOnAction((EventHandler) event -> singlePlayerMode = false);
+            ToggleGroup tgSingleMultiPlayer = new ToggleGroup();
+            radioSinglePlayer.setToggleGroup(tgSingleMultiPlayer);
+            radioMultiPlayer.setToggleGroup(tgSingleMultiPlayer);
+            radioSinglePlayer.setSelected(true);
+            grid.add(radioSinglePlayer, 1, 10, 1, 2);
+            grid.add(radioMultiPlayer, 1, 12, 1, 2);
+        }
 
         // Button to login the player
         buttonLoginPlayer = new Button("Login");
@@ -245,128 +255,129 @@ public class ZeeslagClient extends Application implements ZeeslagGui {
                     }
                 });
         grid.add(buttonLoginPlayer, 1, 14, 1, 3);
+        if (!isSpectatorMode) {
+            // Button to place the player's ships automatically
+            buttonPlaceAllShips = new Button("Place ships for me");
+            buttonPlaceAllShips.setMinWidth(BUTTONWIDTH);
+            Tooltip tooltipPlaceShips =
+                    new Tooltip("Press this button to let the computer place your ships");
+            buttonPlaceAllShips.setTooltip(tooltipPlaceShips);
+            buttonPlaceAllShips.setOnAction((EventHandler) event -> placeShipsAutomatically());
+            buttonPlaceAllShips.setDisable(true);
+            grid.add(buttonPlaceAllShips, 1, 18, 1, 3);
 
-        // Button to place the player's ships automatically
-        buttonPlaceAllShips = new Button("Place ships for me");
-        buttonPlaceAllShips.setMinWidth(BUTTONWIDTH);
-        Tooltip tooltipPlaceShips =
-                new Tooltip("Press this button to let the computer place your ships");
-        buttonPlaceAllShips.setTooltip(tooltipPlaceShips);
-        buttonPlaceAllShips.setOnAction((EventHandler) event -> placeShipsAutomatically());
-        buttonPlaceAllShips.setDisable(true);
-        grid.add(buttonPlaceAllShips, 1, 18, 1, 3);
+            // Button to remove the player's ships that are already placed
+            buttonRemoveAllShips = new Button("Remove all my ships");
+            buttonRemoveAllShips.setMinWidth(BUTTONWIDTH);
+            Tooltip tooltipRemoveAllShips =
+                    new Tooltip("Press this button to remove all your ships");
+            buttonRemoveAllShips.setTooltip(tooltipRemoveAllShips);
+            buttonRemoveAllShips.setOnAction((EventHandler) event -> removeAllShips());
+            buttonRemoveAllShips.setDisable(true);
+            grid.add(buttonRemoveAllShips, 1, 22, 1, 3);
 
-        // Button to remove the player's ships that are already placed
-        buttonRemoveAllShips = new Button("Remove all my ships");
-        buttonRemoveAllShips.setMinWidth(BUTTONWIDTH);
-        Tooltip tooltipRemoveAllShips =
-                new Tooltip("Press this button to remove all your ships");
-        buttonRemoveAllShips.setTooltip(tooltipRemoveAllShips);
-        buttonRemoveAllShips.setOnAction((EventHandler) event -> removeAllShips());
-        buttonRemoveAllShips.setDisable(true);
-        grid.add(buttonRemoveAllShips, 1, 22, 1, 3);
+            // Button to notify that the player is ready to start playing
+            buttonReadyToPlay = new Button("Ready to play");
+            buttonReadyToPlay.setMinWidth(BUTTONWIDTH);
+            Tooltip tooltipReadyToPlay =
+                    new Tooltip("Press this button when you are ready to play");
+            buttonReadyToPlay.setTooltip(tooltipReadyToPlay);
+            buttonReadyToPlay.setOnAction((EventHandler) event -> notifyWhenReady());
+            buttonReadyToPlay.setDisable(true);
+            grid.add(buttonReadyToPlay, 1, 26, 1, 3);
 
-        // Button to notify that the player is ready to start playing
-        buttonReadyToPlay = new Button("Ready to play");
-        buttonReadyToPlay.setMinWidth(BUTTONWIDTH);
-        Tooltip tooltipReadyToPlay =
-                new Tooltip("Press this button when you are ready to play");
-        buttonReadyToPlay.setTooltip(tooltipReadyToPlay);
-        buttonReadyToPlay.setOnAction((EventHandler) event -> notifyWhenReady());
-        buttonReadyToPlay.setDisable(true);
-        grid.add(buttonReadyToPlay, 1, 26, 1, 3);
+            // Button to start a new game
+            buttonStartNewGame = new Button("Start new game");
+            buttonStartNewGame.setMinWidth(BUTTONWIDTH);
+            Tooltip tooltipStartNewGame =
+                    new Tooltip("Press this button to start a new game");
+            buttonStartNewGame.setTooltip(tooltipStartNewGame);
+            buttonStartNewGame.setOnAction((EventHandler) event -> startNewGame());
+            buttonStartNewGame.setDisable(true);
+            grid.add(buttonStartNewGame, 1, 30, 1, 3);
 
-        // Button to start a new game
-        buttonStartNewGame = new Button("Start new game");
-        buttonStartNewGame.setMinWidth(BUTTONWIDTH);
-        Tooltip tooltipStartNewGame =
-                new Tooltip("Press this button to start a new game");
-        buttonStartNewGame.setTooltip(tooltipStartNewGame);
-        buttonStartNewGame.setOnAction((EventHandler) event -> startNewGame());
-        buttonStartNewGame.setDisable(true);
-        grid.add(buttonStartNewGame, 1, 30, 1, 3);
+            // Radio buttons to place ships horizontally or vertically
+            labelHorizontalVertical = new Label("Place next ship: ");
+            radioHorizontal = new RadioButton("horizontally");
+            Tooltip tooltipHorizontal = new Tooltip("Place next ship horizontally");
+            radioHorizontal.setTooltip(tooltipHorizontal);
+            radioHorizontal.setOnAction((EventHandler) event -> horizontal = true);
+            radioVertical = new RadioButton("vertically");
+            Tooltip tooltipVertical = new Tooltip("Place next ship vertically");
+            radioVertical.setTooltip(tooltipVertical);
+            radioVertical.setOnAction((EventHandler) event -> horizontal = false);
+            ToggleGroup tgHorizontalVertical = new ToggleGroup();
+            radioHorizontal.setToggleGroup(tgHorizontalVertical);
+            radioVertical.setToggleGroup(tgHorizontalVertical);
+            radioHorizontal.setSelected(true);
+            labelHorizontalVertical.setDisable(true);
+            radioHorizontal.setDisable(true);
+            radioVertical.setDisable(true);
+            grid.add(labelHorizontalVertical, 1, 36, 1, 2);
+            grid.add(radioHorizontal, 1, 38, 1, 2);
+            grid.add(radioVertical, 1, 40, 1, 2);
 
-        // Radio buttons to place ships horizontally or vertically
-        labelHorizontalVertical = new Label("Place next ship: ");
-        radioHorizontal = new RadioButton("horizontally");
-        Tooltip tooltipHorizontal = new Tooltip("Place next ship horizontally");
-        radioHorizontal.setTooltip(tooltipHorizontal);
-        radioHorizontal.setOnAction((EventHandler) event -> horizontal = true);
-        radioVertical = new RadioButton("vertically");
-        Tooltip tooltipVertical = new Tooltip("Place next ship vertically");
-        radioVertical.setTooltip(tooltipVertical);
-        radioVertical.setOnAction((EventHandler) event -> horizontal = false);
-        ToggleGroup tgHorizontalVertical = new ToggleGroup();
-        radioHorizontal.setToggleGroup(tgHorizontalVertical);
-        radioVertical.setToggleGroup(tgHorizontalVertical);
-        radioHorizontal.setSelected(true);
-        labelHorizontalVertical.setDisable(true);
-        radioHorizontal.setDisable(true);
-        radioVertical.setDisable(true);
-        grid.add(labelHorizontalVertical, 1, 36, 1, 2);
-        grid.add(radioHorizontal, 1, 38, 1, 2);
-        grid.add(radioVertical, 1, 40, 1, 2);
+            // Button to place aircraft carrier on selected square
+            buttonPlaceAircraftCarrier = new Button("Place aircraft carrier (5)");
+            buttonPlaceAircraftCarrier.setMinWidth(BUTTONWIDTH);
+            Tooltip tooltipPlaceAircraftCarrier =
+                    new Tooltip("Press this button to place the aircraft carrier on the selected square");
+            buttonPlaceAircraftCarrier.setTooltip(tooltipPlaceAircraftCarrier);
+            buttonPlaceAircraftCarrier.setOnAction((EventHandler) event -> placeShipAtSelectedSquare(ShipType.AIRCRAFT_CARRIER, horizontal));
+            buttonPlaceAircraftCarrier.setDisable(true);
+            grid.add(buttonPlaceAircraftCarrier, 1, 42, 1, 3);
 
-        // Button to place aircraft carrier on selected square
-        buttonPlaceAircraftCarrier = new Button("Place aircraft carrier (5)");
-        buttonPlaceAircraftCarrier.setMinWidth(BUTTONWIDTH);
-        Tooltip tooltipPlaceAircraftCarrier =
-                new Tooltip("Press this button to place the aircraft carrier on the selected square");
-        buttonPlaceAircraftCarrier.setTooltip(tooltipPlaceAircraftCarrier);
-        buttonPlaceAircraftCarrier.setOnAction((EventHandler) event -> placeShipAtSelectedSquare(ShipType.AIRCRAFT_CARRIER, horizontal));
-        buttonPlaceAircraftCarrier.setDisable(true);
-        grid.add(buttonPlaceAircraftCarrier, 1, 42, 1, 3);
+            // Button to place battle ship on selected square
+            buttonPlaceBattleShip = new Button("Place battle ship (4)");
+            buttonPlaceBattleShip.setMinWidth(BUTTONWIDTH);
+            Tooltip tooltipPlaceBattleShip =
+                    new Tooltip("Press this button to place the battle ship on the selected square");
+            buttonPlaceBattleShip.setTooltip(tooltipPlaceBattleShip);
+            buttonPlaceBattleShip.setOnAction((EventHandler) event -> placeShipAtSelectedSquare(ShipType.BATTLESHIP, horizontal));
+            buttonPlaceBattleShip.setDisable(true);
+            grid.add(buttonPlaceBattleShip, 1, 46, 1, 3);
 
-        // Button to place battle ship on selected square
-        buttonPlaceBattleShip = new Button("Place battle ship (4)");
-        buttonPlaceBattleShip.setMinWidth(BUTTONWIDTH);
-        Tooltip tooltipPlaceBattleShip =
-                new Tooltip("Press this button to place the battle ship on the selected square");
-        buttonPlaceBattleShip.setTooltip(tooltipPlaceBattleShip);
-        buttonPlaceBattleShip.setOnAction((EventHandler) event -> placeShipAtSelectedSquare(ShipType.BATTLESHIP, horizontal));
-        buttonPlaceBattleShip.setDisable(true);
-        grid.add(buttonPlaceBattleShip, 1, 46, 1, 3);
+            // Button to place battle ship on selected square
+            buttonPlaceCruiser = new Button("Place cruiser (3)");
+            buttonPlaceCruiser.setMinWidth(BUTTONWIDTH);
+            Tooltip tooltipPlaceCruiser =
+                    new Tooltip("Press this button to place the cruiser on the selected square");
+            buttonPlaceCruiser.setTooltip(tooltipPlaceCruiser);
+            buttonPlaceCruiser.setOnAction((EventHandler) event -> placeShipAtSelectedSquare(ShipType.CRUISER, horizontal));
+            buttonPlaceCruiser.setDisable(true);
+            grid.add(buttonPlaceCruiser, 1, 50, 1, 3);
 
-        // Button to place battle ship on selected square
-        buttonPlaceCruiser = new Button("Place cruiser (3)");
-        buttonPlaceCruiser.setMinWidth(BUTTONWIDTH);
-        Tooltip tooltipPlaceCruiser =
-                new Tooltip("Press this button to place the cruiser on the selected square");
-        buttonPlaceCruiser.setTooltip(tooltipPlaceCruiser);
-        buttonPlaceCruiser.setOnAction((EventHandler) event -> placeShipAtSelectedSquare(ShipType.CRUISER, horizontal));
-        buttonPlaceCruiser.setDisable(true);
-        grid.add(buttonPlaceCruiser, 1, 50, 1, 3);
+            // Button to place mine sweeper on selected square
+            buttonPlaceSubmarine = new Button("Place submarine (3)");
+            buttonPlaceSubmarine.setMinWidth(BUTTONWIDTH);
+            Tooltip tooltipPlaceSubmarine =
+                    new Tooltip("Press this button to place the submarine on the selected square");
+            buttonPlaceSubmarine.setTooltip(tooltipPlaceSubmarine);
+            buttonPlaceSubmarine.setOnAction((EventHandler) event -> placeShipAtSelectedSquare(ShipType.SUBMARINE, horizontal));
+            buttonPlaceSubmarine.setDisable(true);
+            grid.add(buttonPlaceSubmarine, 1, 54, 1, 3);
 
-        // Button to place mine sweeper on selected square
-        buttonPlaceSubmarine = new Button("Place submarine (3)");
-        buttonPlaceSubmarine.setMinWidth(BUTTONWIDTH);
-        Tooltip tooltipPlaceSubmarine =
-                new Tooltip("Press this button to place the submarine on the selected square");
-        buttonPlaceSubmarine.setTooltip(tooltipPlaceSubmarine);
-        buttonPlaceSubmarine.setOnAction((EventHandler) event -> placeShipAtSelectedSquare(ShipType.SUBMARINE, horizontal));
-        buttonPlaceSubmarine.setDisable(true);
-        grid.add(buttonPlaceSubmarine, 1, 54, 1, 3);
+            // Button to place mine sweeper on selected square
+            buttonPlaceMineSweeper = new Button("Place mine sweeper (2)");
+            buttonPlaceMineSweeper.setMinWidth(BUTTONWIDTH);
+            Tooltip tooltipPlaceMineSweeper =
+                    new Tooltip("Press this button to place the mine sweeper on the selected square");
+            buttonPlaceMineSweeper.setTooltip(tooltipPlaceMineSweeper);
+            buttonPlaceMineSweeper.setOnAction((EventHandler) event -> placeShipAtSelectedSquare(ShipType.MINESWEEPER, horizontal));
+            buttonPlaceMineSweeper.setDisable(true);
+            grid.add(buttonPlaceMineSweeper, 1, 58, 1, 3);
 
-        // Button to place mine sweeper on selected square
-        buttonPlaceMineSweeper = new Button("Place mine sweeper (2)");
-        buttonPlaceMineSweeper.setMinWidth(BUTTONWIDTH);
-        Tooltip tooltipPlaceMineSweeper =
-                new Tooltip("Press this button to place the mine sweeper on the selected square");
-        buttonPlaceMineSweeper.setTooltip(tooltipPlaceMineSweeper);
-        buttonPlaceMineSweeper.setOnAction((EventHandler) event -> placeShipAtSelectedSquare(ShipType.MINESWEEPER, horizontal));
-        buttonPlaceMineSweeper.setDisable(true);
-        grid.add(buttonPlaceMineSweeper, 1, 58, 1, 3);
-
-        // Button to remove ship that is positioned at selected square
-        buttonRemoveShip = new Button("Remove ship");
-        buttonRemoveShip.setMinWidth(BUTTONWIDTH);
-        Tooltip tooltipRemoveShip =
-                new Tooltip("Press this button to remove ship that is "
-                        + "positioned on the selected square");
-        buttonRemoveShip.setTooltip(tooltipRemoveShip);
-        buttonRemoveShip.setOnAction((EventHandler) event -> removeShipAtSelectedSquare());
-        buttonRemoveShip.setDisable(true);
-        grid.add(buttonRemoveShip, 1, 62, 1, 3);
+            // Button to remove ship that is positioned at selected square
+            buttonRemoveShip = new Button("Remove ship");
+            buttonRemoveShip.setMinWidth(BUTTONWIDTH);
+            Tooltip tooltipRemoveShip =
+                    new Tooltip("Press this button to remove ship that is "
+                            + "positioned on the selected square");
+            buttonRemoveShip.setTooltip(tooltipRemoveShip);
+            buttonRemoveShip.setOnAction((EventHandler) event -> removeShipAtSelectedSquare());
+            buttonRemoveShip.setDisable(true);
+            grid.add(buttonRemoveShip, 1, 62, 1, 3);
+        }
 
         // Set font for all labeled objects
         for (Node n : grid.getChildren()) {
@@ -409,21 +420,25 @@ public class ZeeslagClient extends Application implements ZeeslagGui {
             textFieldPlayerName.setDisable(true);
             labelYourPassword.setDisable(true);
             passwordFieldPlayerPassword.setDisable(true);
-            radioSinglePlayer.setDisable(true);
-            radioMultiPlayer.setDisable(true);
+            if (!isSpectatorMode) {
+                radioSinglePlayer.setDisable(true);
+                radioMultiPlayer.setDisable(true);
+            }
             buttonLoginPlayer.setDisable(true);
+            if (!isSpectatorMode) {
             labelHorizontalVertical.setDisable(false);
             radioHorizontal.setDisable(false);
             radioVertical.setDisable(false);
-            buttonPlaceAllShips.setDisable(false);
-            buttonRemoveAllShips.setDisable(false);
-            buttonReadyToPlay.setDisable(false);
-            buttonPlaceAircraftCarrier.setDisable(false);
-            buttonPlaceBattleShip.setDisable(false);
-            buttonPlaceCruiser.setDisable(false);
-            buttonPlaceSubmarine.setDisable(false);
-            buttonPlaceMineSweeper.setDisable(false);
-            buttonRemoveShip.setDisable(false);
+                buttonPlaceAllShips.setDisable(false);
+                buttonRemoveAllShips.setDisable(false);
+                buttonReadyToPlay.setDisable(false);
+                buttonPlaceAircraftCarrier.setDisable(false);
+                buttonPlaceBattleShip.setDisable(false);
+                buttonPlaceCruiser.setDisable(false);
+                buttonPlaceSubmarine.setDisable(false);
+                buttonPlaceMineSweeper.setDisable(false);
+                buttonRemoveShip.setDisable(false);
+            }
         });
         showMessage("Player " + name + " logined");
     }
@@ -715,6 +730,7 @@ public class ZeeslagClient extends Application implements ZeeslagGui {
      *                   vertically.
      */
     private void placeShipAtSelectedSquare(ShipType shipType, boolean horizontal) {
+        if (!isSpectatorMode) return;
         if (squareSelectedInOceanArea) {
             int bowX = selectedSquareX;
             int bowY = selectedSquareY;
@@ -790,19 +806,8 @@ public class ZeeslagClient extends Application implements ZeeslagGui {
     }
 
 
-    /**
-     * Event handler when mouse button is pressed in rectangle in ocean area.
-     * When not in playing mode: the square that was selected before will
-     * become light blue and the the selected square will become yellow.
-     * A message will be shown when in playing mode.
-     *
-     * @param x x-coordinate of selected square
-     * @param y y-coordinate of selected square
-     */
-    private Paint selectedSquareColor;
-
-
     private void rectangleOceanAreaMousePressed(int x, int y) {
+        if (isSpectatorMode) return;
         if (!playingMode) {
             // Game is not in playing mode: select square to place a ship
             if (squareSelectedInOceanArea) {
