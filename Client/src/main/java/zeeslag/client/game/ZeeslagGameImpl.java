@@ -8,6 +8,7 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import zeeslag.client.gui.SquareState;
+import zeeslag.client.gui.ZeeslagClient;
 import zeeslag.client.gui.ZeeslagGui;
 import zeeslag.shared.*;
 
@@ -22,15 +23,16 @@ import java.util.Random;
 public class ZeeslagGameImpl implements ZeeslagGame {
 
     private static final Logger log = LoggerFactory.getLogger(ZeeslagGameImpl.class);
-    private static final ZeeslagApi api = new ZeeslagApi("http://localhost:3000/api");
+    private static final ZeeslagApi api = new ZeeslagApi("http://" + ZeeslagClient.getHost() + "/api");
     private static final Grid grid = new Grid();
     private final ZeeslagGui gui;
+    @NotNull
+    private final Random random = new Random();
     private int userId;
     @Nullable
     private ZeeslagWebSocketClient webSocketClient;
     private String name;
-    @NotNull
-    private final Random random = new Random();
+
 
     public ZeeslagGameImpl(ZeeslagGui gui) {
         this.gui = gui;
@@ -38,7 +40,7 @@ public class ZeeslagGameImpl implements ZeeslagGame {
 
 
     @NotNull
-    public static Grid getGrid() {
+    static Grid getGrid() {
         return grid;
     }
 
@@ -84,7 +86,7 @@ public class ZeeslagGameImpl implements ZeeslagGame {
         userId = authData.id;
 
         gui.setPlayerNumber(userId, name);
-        webSocketClient = new ZeeslagWebSocketClient("ws://localhost:3000/ws", authData.token, userId, new ZeeslagWebSocketEventHandler(this));
+        webSocketClient = new ZeeslagWebSocketClient("ws://" + ZeeslagClient.getHost() + "/ws", authData.token, userId, new ZeeslagWebSocketEventHandler(this));
         if (singlePlayerMode)
             webSocketClient.emitSinglePlayer();
     }

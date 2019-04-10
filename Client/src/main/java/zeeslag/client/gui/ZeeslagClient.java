@@ -77,6 +77,13 @@ public class ZeeslagClient extends Application implements ZeeslagGui {
     private int selectedSquareX;
     private int selectedSquareY;
     private static boolean isSpectatorMode;
+
+
+    public static String getHost() {
+        return host;
+    }
+
+
     private static String host;
 
 
