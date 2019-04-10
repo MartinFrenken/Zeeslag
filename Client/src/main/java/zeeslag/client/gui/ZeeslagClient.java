@@ -77,13 +77,22 @@ public class ZeeslagClient extends Application implements ZeeslagGui {
     private int selectedSquareX;
     private int selectedSquareY;
     private static boolean isSpectatorMode;
+    private static String host;
 
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        isSpectatorMode = Arrays.asList(args).contains("-s");
+        var list = Arrays.asList(args);
+        isSpectatorMode = list.contains("-s");
+
+        var index = list.indexOf("-h");
+        if (index == -1 || index > list.size())
+            host = "localhost:3000";
+        else
+            host = list.get(index + 1);
+        
         launch(args);
     }
 
