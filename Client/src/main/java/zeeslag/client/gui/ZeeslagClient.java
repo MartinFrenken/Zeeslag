@@ -788,10 +788,10 @@ public class ZeeslagClient extends Application implements ZeeslagGui {
             if (playersTurn()) {
                 // It is this player's turn
                 // Player fires a shot at the selected target area
-                game.fireShotGui(x, y);
-                squaresTargetArea[x][y].setFill(Color.YELLOW);
+                var success = game.fireShotGui(x, y);
                 // Opponent's turn
-                switchTurn();
+                if (success)
+                    switchTurn();
             } else {
                 // It is not this player's turn yet
                 showMessage("Wait till " + opponentName + " has fired a shot");

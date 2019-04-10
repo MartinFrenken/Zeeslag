@@ -111,8 +111,8 @@ public class SpectatorGame implements ZeeslagGame {
 
 
     @Override
-    public void fireShotGui(int posX, int posY) {
-
+    public boolean fireShotGui(int posX, int posY) {
+        return true;
     }
 
 

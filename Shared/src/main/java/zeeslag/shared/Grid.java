@@ -27,7 +27,7 @@ public class Grid {
         for (int x = 0; x < width; ++x) {
             for (int y = 0; y < height; y++) {
                 if (tiles[x] == null) tiles[x] = new Tile[height];
-                tiles[x][y] = new Tile(new Position(x, y), this);
+                tiles[x][y] = new Tile(new Position(x, y));
             }
         }
     }

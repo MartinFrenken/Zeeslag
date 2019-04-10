@@ -28,7 +28,7 @@ class ZeeslagGameImplTest {
         //
         game.placeShip(shipType, x, y, true);
 
-        ShipType actualShipType = Objects.requireNonNull(ZeeslagGameImpl.getGrid().getTile(x, y).getShip()).getType();
+        ShipType actualShipType = Objects.requireNonNull(game.getGrid().getTile(x, y).getShip()).getType();
         assertEquals(ShipType.SUBMARINE, actualShipType);
     }
 
@@ -37,7 +37,7 @@ class ZeeslagGameImplTest {
     void PlaceShipsAutomaticallyIsOkay() {
         ZeeslagGameImpl game = new ZeeslagGameImpl(gui);
         game.placeShipsAutomatically();
-        Set<Ship> ships = ZeeslagGameImpl.getGrid().getShips();
+        Set<Ship> ships = game.getGrid().getShips();
 
         int expectedAmountOfShips = ShipType.values().length;
         int actualAmountOfShips = ships.size();

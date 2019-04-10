@@ -8,9 +8,10 @@ public class Tile {
     private final Position position;
     @Nullable
     private Ship ship;
+    private boolean hasBeenHit = false;
 
 
-    Tile(Position position, Grid grid) {
+    Tile(Position position) {
         this.position = position;
     }
 
@@ -38,6 +39,16 @@ public class Tile {
 
     public Position getPosition() {
         return position;
+    }
+
+
+    public boolean hasBeenHit() {
+        return hasBeenHit;
+    }
+
+
+    public void setHasBeenHit(boolean hasBeenHit) {
+        this.hasBeenHit = hasBeenHit;
     }
 
 }

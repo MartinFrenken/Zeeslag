@@ -23,8 +23,9 @@ import java.util.Random;
 public class ZeeslagGameImpl implements ZeeslagGame {
 
     private static final Logger log = LoggerFactory.getLogger(ZeeslagGameImpl.class);
-    private static final ZeeslagApi api = new ZeeslagApi("http://" + ZeeslagClient.getHost() + "/api");
-    private static final Grid grid = new Grid();
+    private final ZeeslagApi api = new ZeeslagApi("http://" + ZeeslagClient.getHost() + "/api");
+    private final Grid grid = new Grid();
+    private final Grid enemyGrid = new Grid();
     private final ZeeslagGui gui;
     @NotNull
     private final Random random = new Random();
@@ -40,7 +41,7 @@ public class ZeeslagGameImpl implements ZeeslagGame {
 
 
     @NotNull
-    static Grid getGrid() {
+    Grid getGrid() {
         return grid;
     }
 
@@ -130,9 +131,10 @@ public class ZeeslagGameImpl implements ZeeslagGame {
 
 
     @Override
-    public void fireShotGui(int posX, int posY) {
-        Objects.requireNonNull(webSocketClient).emitAttack(posX, posY);
-        gui.playerFiresShot(userId, HitType.HIT);
+    public boolean fireShotGui(int posX, int posY) {
+        if (!enemyGrid.getTile(posX, posY).hasBeenHit())
+            Objects.requireNonNull(webSocketClient).emitAttack(posX, posY);
+        return !enemyGrid.getTile(posX, posY).hasBeenHit();
     }
 
 
@@ -149,7 +151,6 @@ public class ZeeslagGameImpl implements ZeeslagGame {
 
 
     private boolean tryPlaceShipAndAddToGui(@NotNull Ship ship, boolean auto) {
-
         if (grid.tryPlace(ship)) {
             for (Tile tile : ship.getOccupiedTiles())
                 gui.showSquarePlayer(userId, tile.getPosition().x, tile.getPosition().y, SquareState.SHIP);
@@ -178,31 +179,23 @@ public class ZeeslagGameImpl implements ZeeslagGame {
     }
 
 
-    @SuppressWarnings("Duplicates")
     void onAttackResult(int to, int x, int y, @NotNull HitType hitType) {
         if (userId == to) {
+            grid.getTile(x, y).setHasBeenHit(true);
             gui.opponentFiresShot(userId, hitType);
-            if(SquareState.getSquareState(hitType)==SquareState.SHIP_SUNK)
-            {
-               Ship destroyedShip = grid.getTile(x,y).getShip();
-                for (Tile tile: destroyedShip.getOccupiedTiles())
-                {
-                    gui.showSquarePlayer(userId, tile.getPosition().x, tile.getPosition().y, SquareState.getSquareState(hitType));
+            if (SquareState.getSquareState(hitType) == SquareState.SHIP_SUNK) {
+                Ship destroyedShip = grid.getTile(x, y).getShip();
+                if (destroyedShip != null) {
+                    for (Tile tile : destroyedShip.getOccupiedTiles()) {
+                        gui.showSquarePlayer(userId, tile.getPosition().x, tile.getPosition().y, SquareState.getSquareState(hitType));
+                    }
                 }
                 return;
             }
             gui.showSquarePlayer(userId, x, y, SquareState.getSquareState(hitType));
         } else {
+            enemyGrid.getTile(x, y).setHasBeenHit(true);
             gui.playerFiresShot(userId, hitType);
-            if(SquareState.getSquareState(hitType)==SquareState.SHIP_SUNK)
-            {
-                Ship destroyedShip = grid.getTile(x,y).getShip();
-                for (Tile tile: destroyedShip.getOccupiedTiles())
-                {
-                    gui.showSquarePlayer(userId, tile.getPosition().x, tile.getPosition().y, SquareState.getSquareState(hitType));
-                }
-                return;
-            }
             gui.showSquareOpponent(userId, x, y, SquareState.getSquareState(hitType));
         }
     }
